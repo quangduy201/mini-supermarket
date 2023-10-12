@@ -8,6 +8,13 @@ public class __ {
         public static final String PASSWORD = "account_password";
         public static final String LAST_SIGNED_IN = "account_last_signed_in";
         public static final String DELETED = "account_deleted";
+        public static class Attributes {
+            public static final String USERNAME = "username";
+            public static final String PASSWORD = "password";
+            public static final String ROLE = "role";
+            public static final String STAFF = "staff";
+            public static final String LAST_SIGNED_IN = "last_signed_in";
+        }
     }
 
     public static class BRAND {
@@ -15,6 +22,10 @@ public class __ {
         public static final String ID = "brand_id";
         public static final String NAME = "brand_name";
         public static final String DELETED = "brand_deleted";
+        public static class Attributes {
+            public static final String NAME = "name";
+            public static final String SUPPLIER = "supplier";
+        }
     }
 
     public static class CATEGORY {
@@ -23,6 +34,10 @@ public class __ {
         public static final String NAME = "category_name";
         public static final String QUANTITY = "category_quantity";
         public static final String DELETED = "category_deleted";
+        public static class Attributes {
+            public static final String NAME = "name";
+            public static final String QUANTITY = "quantity";
+        }
     }
 
     public static class CUSTOMER {
@@ -36,10 +51,24 @@ public class __ {
         public static final String SIGNED_UP_DATE = "customer_signed_up_date";
         public static final String POINT = "customer_point";
         public static final String DELETED = "customer_deleted";
+        public static class Attributes {
+            public static final String NAME = "name";
+            public static final String GENDER = "gender";
+            public static final String BIRTHDATE = "birthdate";
+            public static final String PHONE = "phone";
+            public static final String MEMBERSHIP = "membership";
+            public static final String SIGNED_UP_DATE = "signed_up_date";
+            public static final String POINT = "point";
+        }
     }
 
     public static class DECENTRALIZATION {
         public static final String DECENTRALIZATION = "decentralization";
+        public static class Attributes {
+            public static final String ROLE_ID = "id.role";
+            public static final String MODULE_ID = "id.module";
+            public static final String FUNCTION_ID = "id.function";
+        };
     }
 
     public static class DISCOUNT {
@@ -50,17 +79,34 @@ public class __ {
         public static final String END_DATE = "discount_end_date";
         public static final String STATUS = "discount_status";
         public static final String DELETED = "discount_deleted";
+        public static class Attributes {
+            public static final String PERCENT = "percent";
+            public static final String START_DATE = "start_date";
+            public static final String END_DATE = "end_date";
+            public static final String STATUS = "status";
+        }
     }
 
     public static class DISCOUNT_DETAIL {
         public static final String DISCOUNT_DETAIL = "discount_detail";
         public static final String STATUS = "discount_detail_status";
+        public static class Attributes {
+            public static final String DISCOUNT_ID = "id.discount";
+            public static final String PRODUCT_ID = "id.product";
+            public static final String STATUS = "status";
+        }
     }
 
     public static class EXPORT_DETAIL {
         public static final String EXPORT_DETAIL = "export_detail";
         public static final String QUANTITY = "export_detail_quantity";
         public static final String TOTAL = "export_detail_total";
+        public static class Attributes {
+            public static final String EXPORT_NOTE_ID = "id.exportNote";
+            public static final String SHIPMENT_ID = "id.shipment";
+            public static final String QUANTITY = "quantity";
+            public static final String TOTAL = "total";
+        }
     }
 
     public static class EXPORT_NOTE {
@@ -70,6 +116,12 @@ public class __ {
         public static final String TOTAL = "export_note_total";
         public static final String REASON = "export_note_reason";
         public static final String DELETED = "export_note_deleted";
+        public static class Attributes {
+            public static final String STAFF = "staff";
+            public static final String INVOICE_DATE = "invoice_date";
+            public static final String TOTAL = "total";
+            public static final String REASON = "reason";
+        }
     }
 
     public static class FUNCTION {
@@ -77,6 +129,9 @@ public class __ {
         public static final String ID = "function_id";
         public static final String NAME = "function_name";
         public static final String DELETED = "function_deleted";
+        public static class Attributes {
+            public static final String NAME = "name";
+        }
     }
 
     public static class IMPORT_NOTE {
@@ -85,6 +140,12 @@ public class __ {
         public static final String RECEIVED_DATE = "import_note_received_date";
         public static final String TOTAL = "import_note_total";
         public static final String DELETED = "import_note_deleted";
+        public static class Attributes {
+            public static final String STAFF = "staff";
+            public static final String RECEIVED_DATE = "received_date";
+            public static final String TOTAL = "total";
+            public static final String SUPPLIER = "supplier";
+        }
     }
 
     public static class MODULE {
@@ -92,6 +153,9 @@ public class __ {
         public static final String ID = "module_id";
         public static final String NAME = "module_name";
         public static final String DELETED = "module_deleted";
+        public static class Attributes {
+            public static final String NAME = "name";
+        }
     }
 
     public static class PRODUCT {
@@ -104,6 +168,16 @@ public class __ {
         public static final String IMAGE = "product_image";
         public static final String BARCODE = "product_barcode";
         public static final String DELETED = "product_deleted";
+        public static class Attributes {
+            public static final String NAME = "name";
+            public static final String BRAND = "brand";
+            public static final String CATEGORY = "category";
+            public static final String UNIT = "unit";
+            public static final String COST = "cost";
+            public static final String QUANTITY = "quantity";
+            public static final String IMAGE = "image";
+            public static final String BARCODE = "barcode";
+        }
     }
 
     public static class PROMOTION {
@@ -113,16 +187,31 @@ public class __ {
         public static final String END_DATE = "promotion_end_date";
         public static final String STATUS = "promotion_status";
         public static final String DELETED = "promotion_deleted";
+        public static class Attributes {
+            public static final String START_DATE = "start_date";
+            public static final String END_DATE = "end_date";
+            public static final String STATUS = "status";
+        }
     }
 
     public static class PROMOTION_GIFT {
         public static final String PROMOTION_GIFT = "promotion_gift";
         public static final String QUANTITY = "promotion_gift_quantity";
+        public static class Attributes {
+            public static final String PROMOTION_ID = "id.promotion";
+            public static final String PRODUCT_ID = "id.product";
+            public static final String QUANTITY = "quantity";
+        }
     }
 
     public static class PROMOTION_ITEM {
         public static final String PROMOTION_ITEM = "promotion_item";
         public static final String QUANTITY = "promotion_item_quantity";
+        public static class Attributes {
+            public static final String PROMOTION_ID = "id.promotion";
+            public static final String PRODUCT_ID = "id.product";
+            public static final String QUANTITY = "quantity";
+        }
     }
 
     public static class RECEIPT {
@@ -133,6 +222,15 @@ public class __ {
         public static final String RECEIVED = "receipt_received";
         public static final String EXCESS = "receipt_excess";
         public static final String DELETED = "receipt_deleted";
+        public static class Attributes {
+            public static final String STAFF = "staff";
+            public static final String CUSTOMER = "customer";
+            public static final String INVOICE_DATE = "invoice_date";
+            public static final String TOTAL = "total";
+            public static final String RECEIVED = "received";
+            public static final String EXCESS = "excess";
+
+        }
     }
 
     public static class RECEIPT_DETAIL {
@@ -140,6 +238,13 @@ public class __ {
         public static final String QUANTITY = "receipt_detail_quantity";
         public static final String TOTAL = "receipt_detail_total";
         public static final String PERCENT = "receipt_detail_percent";
+        public static class Attributes {
+            public static final String RECEIPT_ID = "id.receipt";
+            public static final String PRODUCT_ID = "id.product";
+            public static final String QUANTITY = "quantity";
+            public static final String TOTAL = "total";
+            public static final String PERCENT = "percent";
+        }
     }
 
     public static class ROLE {
@@ -147,6 +252,9 @@ public class __ {
         public static final String ID = "role_id";
         public static final String NAME = "role_name";
         public static final String DELETED = "role_deleted";
+        public static class Attributes {
+            public static final String NAME = "name";
+        }
     }
 
     public static class SHIPMENT {
@@ -159,6 +267,16 @@ public class __ {
         public static final String EXP = "shipment_exp";
         public static final String SKU = "shipment_sku";
         public static final String DELETED = "shipment_deleted";
+        public static class Attributes {
+            public static final String PRODUCT = "product";
+            public static final String UNIT_PRICE = "unit_price";
+            public static final String QUANTITY = "quantity";
+            public static final String REMAIN = "remain";
+            public static final String MFG = "mfg";
+            public static final String EXP = "exp";
+            public static final String SKU = "sku";
+            public static final String IMPORT_NOTE = "importNote";
+        }
     }
 
     public static class STAFF {
@@ -172,6 +290,15 @@ public class __ {
         public static final String EMAIL = "staff_email";
         public static final String ENTRY_DATE = "staff_entry_date";
         public static final String DELETED = "staff_deleted";
+        public static class Attributes {
+            public static final String NAME = "name";
+            public static final String GENDER = "gender";
+            public static final String BIRTHDATE = "birthdate";
+            public static final String PHONE = "phone";
+            public static final String ADDRESS = "address";
+            public static final String EMAIL = "email";
+            public static final String ENTRY_DATE = "entry_date";
+        }
     }
 
     public static class STATISTIC {
@@ -181,6 +308,11 @@ public class __ {
         public static final String AMOUNT = "statistic_amount";
         public static final String EXPENSES = "statistic_expenses";
         public static final String DELETED = "statistic_deleted";
+        public static class Attributes {
+            public static final String DATE = "date";
+            public static final String AMOUNT = "amount";
+            public static final String EXPENSES = "expenses";
+        }
     }
 
     public static class SUPPLIER {
@@ -191,5 +323,11 @@ public class __ {
         public static final String ADDRESS = "supplier_address";
         public static final String EMAIL = "supplier_email";
         public static final String DELETED = "supplier_deleted";
+        public static class Attributes {
+            public static final String NAME = "name";
+            public static final String PHONE = "phone";
+            public static final String ADDRESS = "address";
+            public static final String EMAIL = "email";
+        }
     }
 }
