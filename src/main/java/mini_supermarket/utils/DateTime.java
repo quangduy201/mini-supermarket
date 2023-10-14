@@ -1,6 +1,7 @@
 package mini_supermarket.utils;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -265,6 +266,10 @@ public class DateTime implements Serializable {
             }
         }
         throw new IllegalArgumentException("Invalid date and time");
+    }
+
+    public static long calculateTime(DateTime dateTime1, DateTime dateTime2) {
+        return Duration.between(LocalDateTime.of(dateTime2.getYear(), dateTime1.getMonth(), dateTime1.getDate(), dateTime1.getHour(), dateTime1.getMinute(), dateTime1.getSecond()), LocalDateTime.of(dateTime2.getYear(), dateTime2.getMonth(), dateTime2.getDate(), dateTime2.getHour(), dateTime2.getMinute(), dateTime2.getSecond())).toSeconds();
     }
 
     @Override
