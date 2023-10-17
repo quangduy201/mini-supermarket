@@ -134,3 +134,5 @@ public class Shipment extends EntityDTO implements Serializable {
             importNote;
     }
 }
+
+
