@@ -1,0 +1,42 @@
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.c3p0.checkoutTimeout">3000</property>
+        <property name="hibernate.c3p0.min_size">5</property>
+        <property name="hibernate.c3p0.max_size">20</property>
+        <property name="hibernate.c3p0.timeout">300</property>
+        <property name="hibernate.c3p0.max_statements">50</property>
+        <property name="hibernate.c3p0.idle_test_period">3000</property>
+
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.highlight_sql">true</property>
+
+        <mapping class="mini_supermarket.DTO.Account" />
+        <mapping class="mini_supermarket.DTO.Brand" />
+        <mapping class="mini_supermarket.DTO.Category" />
+        <mapping class="mini_supermarket.DTO.Customer" />
+        <mapping class="mini_supermarket.DTO.Decentralization" />
+        <mapping class="mini_supermarket.DTO.Discount" />
+        <mapping class="mini_supermarket.DTO.DiscountDetail" />
+        <mapping class="mini_supermarket.DTO.ExportDetail" />
+        <mapping class="mini_supermarket.DTO.ExportNote" />
+        <mapping class="mini_supermarket.DTO.Function" />
+        <mapping class="mini_supermarket.DTO.ImportNote" />
+        <mapping class="mini_supermarket.DTO.Module" />
+        <mapping class="mini_supermarket.DTO.Product" />
+        <mapping class="mini_supermarket.DTO.Promotion" />
+        <mapping class="mini_supermarket.DTO.PromotionGift" />
+        <mapping class="mini_supermarket.DTO.PromotionItem" />
+        <mapping class="mini_supermarket.DTO.Receipt" />
+        <mapping class="mini_supermarket.DTO.ReceiptDetail" />
+        <mapping class="mini_supermarket.DTO.Role" />
+        <mapping class="mini_supermarket.DTO.Shipment" />
+        <mapping class="mini_supermarket.DTO.Staff" />
+        <mapping class="mini_supermarket.DTO.Statistic" />
+        <mapping class="mini_supermarket.DTO.Supplier" />
+    </session-factory>
+</hibernate-configuration>

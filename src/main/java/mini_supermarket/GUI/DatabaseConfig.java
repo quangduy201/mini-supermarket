@@ -1,10 +1,10 @@
 package mini_supermarket.GUI;
 
 import mini_supermarket.main.MiniSupermarket;
+import mini_supermarket.utils.Log;
 import mini_supermarket.utils.Password;
 import mini_supermarket.utils.Resource;
 import mini_supermarket.utils.Settings;
-import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,19 +13,17 @@ import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Properties;
 
 public class DatabaseConfig extends JDialog {
     private Properties properties;
-    private JLabel lbPort;
-    private JLabel lbDatabase;
-    private JLabel lbUsername;
-    private JLabel lbPassword;
-    private JTextField txtPort;
-    private JTextField txtDatabase;
-    private JTextField txtUsername;
-    private JTextField txtPassword;
+    private JPanel panel;
+    private JLabel[] labels;
+    private JTextField[] textFields;
+    private JButton btnConfirm;
+    private JButton btnCancel;
 
     public DatabaseConfig(Properties properties) {
         super((Frame) null, "Cấu hình database", true);
@@ -34,93 +32,100 @@ public class DatabaseConfig extends JDialog {
     }
 
     public void initComponents() {
-        JPanel panel = new JPanel(new MigLayout());
+        panel = new JPanel();
+        labels = new JLabel[4];
+        Arrays.setAll(labels, i -> new JLabel());
+        textFields = new JTextField[4];
+        Arrays.setAll(textFields, i -> new JTextField());
+        textFields[3] = new JPasswordField();
+        btnConfirm = new JButton();
+        btnCancel = new JButton();
 
-        lbPort = new JLabel("Port");
-        lbPort.setFont(new Font("Roboto", Font.BOLD, 14));
-        lbPort.setHorizontalAlignment(JLabel.LEFT);
-        txtPort = new JTextField();
-        txtPort.setFont(new Font("Roboto", Font.PLAIN, 14));
-        txtPort.setText(properties.getProperty("db.port"));
-        txtPort.addActionListener(e -> confirm());
+        Font fontLabel = new Font("Roboto", Font.BOLD, 14);
+        Font fontTextField = new Font("Roboto", Font.PLAIN, 14);
 
-        lbDatabase = new JLabel("Tên database");
-        lbDatabase.setFont(new Font("Roboto", Font.BOLD, 14));
-        lbDatabase.setHorizontalAlignment(JLabel.LEFT);
-        txtDatabase = new JTextField();
-        txtDatabase.setFont(new Font("Roboto", Font.PLAIN, 14));
-        txtDatabase.setText(properties.getProperty("db.database"));
-        txtDatabase.addActionListener(e -> confirm());
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        lbUsername = new JLabel("Username");
-        lbUsername.setFont(new Font("Roboto", Font.BOLD, 14));
-        lbUsername.setHorizontalAlignment(JLabel.LEFT);
-        txtUsername = new JTextField();
-        txtUsername.setFont(new Font("Roboto", Font.PLAIN, 14));
-        txtUsername.setText(properties.getProperty("db.username"));
-        txtUsername.addActionListener(e -> confirm());
+        labels[0].setText("Port:");
+        labels[1].setText("Database:");
+        labels[2].setText("Username:");
+        labels[3].setText("Password:");
+        textFields[0].setText(properties.getProperty("db.port"));
+        textFields[1].setText(properties.getProperty("db.database"));
+        textFields[2].setText(properties.getProperty("db.username"));
+        for (int i = 0; i < 4; i++) {
+            gbc.gridy = i;
+            gbc.gridx = 0;
+            gbc.weightx = 0.25;
+            gbc.gridwidth = 1;
+            labels[i].setHorizontalAlignment(JLabel.LEFT);
+            labels[i].setLabelFor(textFields[i]);
+            labels[i].setFont(fontLabel);
+            panel.add(labels[i], gbc);
 
-        lbPassword = new JLabel("Password");
-        lbPassword.setFont(new Font("Roboto", Font.BOLD, 14));
-        lbPassword.setHorizontalAlignment(JLabel.LEFT);
-        txtPassword = new JPasswordField();
-        txtPassword.setFont(new Font("Roboto", Font.PLAIN, 14));
-        txtPassword.addActionListener(e -> confirm());
+            gbc.gridx = 1;
+            gbc.weightx = 0.75;
+            gbc.gridwidth = 3;
+            textFields[i].setFont(fontTextField);
+            textFields[i].addActionListener(e -> confirm());
+            panel.add(textFields[i], gbc);
+        }
 
-        JButton btnConfirm = new JButton("Xác nhận");
-        btnConfirm.setFont(new Font("Roboto", Font.PLAIN, 12));
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        c.insets = new Insets(10, 0, 10, 0);
+        c.gridx = 0;
+        btnConfirm.setText("Xác nhận");
         btnConfirm.addActionListener(e -> confirm());
+        buttonPanel.add(btnConfirm, c);
 
-        JButton btnCancel = new JButton("Hủy");
-        btnCancel.setFont(new Font("Roboto", Font.PLAIN, 12));
+        c.gridx = 1;
+        btnCancel.setText("Hủy");
         btnCancel.addActionListener(e -> cancel());
+        buttonPanel.add(btnCancel, c);
 
-        panel.add(lbPort);
-        panel.add(txtPort, "wrap,growx");
-        panel.add(lbDatabase);
-        panel.add(txtDatabase, "wrap,growx");
-        panel.add(lbUsername);
-        panel.add(txtUsername, "wrap,growx");
-        panel.add(lbPassword);
-        panel.add(txtPassword, "wrap,growx");
-        panel.add(btnConfirm, "cell 1 4");
-        panel.add(btnCancel, "cell 1 4");
+        setLayout(new BorderLayout());
+        getContentPane().add(panel, BorderLayout.CENTER);
+        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
-        setSize(300, 250);
+        setMinimumSize(new Dimension(400, 350));
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        setResizable(false);
-        setLocationRelativeTo(MiniSupermarket.splashScreen);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 cancel();
             }
         });
-
-        setContentPane(panel);
-        repaint();
-        revalidate();
+        pack();
+        setLocationRelativeTo(MiniSupermarket.splashScreen);
         setVisible(true);
     }
 
     public void confirm() {
         try {
-            Files.createDirectories(Paths.get(Resource.getResourcePath("settings", false)));
+            Files.createDirectories(Resource.getPathFromResource("settings", false));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Log.error(DatabaseConfig.class, e.toString());
             return;
         }
-        try (OutputStream outputStream = new FileOutputStream(Resource.getResourcePath(Settings.DATABASE_FILE, false))) {
-            properties.setProperty("db.port", txtPort.getText());
-            properties.setProperty("db.database", txtDatabase.getText());
-            properties.setProperty("db.username", txtUsername.getText());
-            String encryptedPassword = Password.encrypt(txtPassword.getText(), txtDatabase.getText());
+        Path path = Resource.getPathFromResource(Settings.DATABASE_FILE, false);
+        Resource.setReadOnly(path, false);
+        try (OutputStream outputStream = new FileOutputStream(path.toFile())) {
+            properties.setProperty("db.port", textFields[0].getText());
+            properties.setProperty("db.database", textFields[1].getText());
+            properties.setProperty("db.username", textFields[2].getText());
+            String encryptedPassword = Password.encrypt(textFields[3].getText(), textFields[1].getText());
             properties.setProperty("db.password", encryptedPassword);
             properties.store(outputStream, "Database configuration");
+            Resource.setReadOnly(path, true);
             setEnabled(false);
             dispose();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Log.error(DatabaseConfig.class, e.toString());
         }
     }
 
