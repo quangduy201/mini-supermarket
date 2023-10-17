@@ -3,19 +3,17 @@ package mini_supermarket.DTO;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import mini_supermarket.utils.__;
 
 import java.io.Serializable;
 
 @Embeddable
 public class ExportDetailId implements Serializable {
-    public static final String EXPORT_NOTE = "exportNote";
-    public static final String SHIPMENT = "shipment";
-
     @ManyToOne
-    @JoinColumn(name = ExportNote.EXPORT_NOTE_ID)
+    @JoinColumn(name = __.EXPORT_NOTE.COLUMN.ID)
     private ExportNote exportNote;
     @ManyToOne
-    @JoinColumn(name = Shipment.SHIPMENT_ID)
+    @JoinColumn(name = __.SHIPMENT.COLUMN.ID)
     private Shipment shipment;
 
     public ExportDetailId() {
@@ -26,11 +24,11 @@ public class ExportDetailId implements Serializable {
         this.shipment = shipment;
     }
 
-    public ExportNote getExport() {
+    public ExportNote getExportNote() {
         return exportNote;
     }
 
-    public void setExport(ExportNote exportNote) {
+    public void setExportNote(ExportNote exportNote) {
         this.exportNote = exportNote;
     }
 
@@ -47,13 +45,13 @@ public class ExportDetailId implements Serializable {
         if (this == object) return true;
         if (!(object instanceof ExportDetailId that)) return false;
 
-        if (!getExport().equals(that.getExport())) return false;
+        if (!getExportNote().equals(that.getExportNote())) return false;
         return getShipment().equals(that.getShipment());
     }
 
     @Override
     public int hashCode() {
-        int result = getExport().hashCode();
+        int result = getExportNote().hashCode();
         result = 31 * result + getShipment().hashCode();
         return result;
     }

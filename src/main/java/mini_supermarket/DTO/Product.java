@@ -2,50 +2,41 @@ package mini_supermarket.DTO;
 
 import jakarta.persistence.*;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "product")
+@Table(name = __.PRODUCT.PRODUCT)
 public class Product extends EntityDTO implements Serializable {
-    public static final String PRODUCT_ID = "product_id";
-    public static final String NAME = "name";
-    public static final String BRAND = "brand";
-    public static final String CATEGORY = "category";
-    public static final String UNIT = "unit";
-    public static final String COST = "cost";
-    public static final String QUANTITY = "quantity";
-    public static final String IMAGE = "image";
-    public static final String BARCODE = "barcode";
-
-    @Column(name = NAME)
+    @Column(name = __.PRODUCT.NAME)
     private String name;
     @ManyToOne
-    @JoinColumn(name = Brand.BRAND_ID)
+    @JoinColumn(name = __.BRAND.COLUMN.ID)
     private Brand brand;
     @ManyToOne
-    @JoinColumn(name = Category.CATEGORY_ID)
+    @JoinColumn(name = __.CATEGORY.COLUMN.ID)
     private Category category;
-    @Column(name = UNIT)
+    @Column(name = __.PRODUCT.UNIT)
     private String unit;
-    @Column(name = COST)
+    @Column(name = __.PRODUCT.COST)
     private Double cost;
-    @Column(name = QUANTITY)
+    @Column(name = __.PRODUCT.QUANTITY)
     private Double quantity;
-    @Column(name = IMAGE)
+    @Column(name = __.PRODUCT.IMAGE)
     private String image;
-    @Column(name = BARCODE)
+    @Column(name = __.PRODUCT.BARCODE)
     private String barcode;
-    @OneToMany(mappedBy = DiscountDetail.PRODUCT_ID, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.DISCOUNT_DETAIL.PRODUCT, cascade = CascadeType.ALL)
     private Set<DiscountDetail> discountDetails;
-    @OneToMany(mappedBy = ReceiptDetail.PRODUCT_ID, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.RECEIPT_DETAIL.PRODUCT, cascade = CascadeType.ALL)
     private Set<ReceiptDetail> receiptDetails;
-    @OneToMany(mappedBy = Shipment.PRODUCT, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.SHIPMENT.PRODUCT, cascade = CascadeType.ALL)
     private Set<Shipment> shipments;
-    @OneToMany(mappedBy = PromotionItem.PRODUCT_ID, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.PROMOTION_ITEM.PRODUCT, cascade = CascadeType.ALL)
     private Set<PromotionItem> promotionItems;
-    @OneToMany(mappedBy = PromotionGift.PRODUCT_ID, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.PROMOTION_GIFT.PRODUCT, cascade = CascadeType.ALL)
     private Set<PromotionGift> promotionGifts;
 
     public Product() {
@@ -124,6 +115,46 @@ public class Product extends EntityDTO implements Serializable {
 
     public void setBarcode(String barcode) {
         this.barcode = barcode;
+    }
+
+    public Set<DiscountDetail> getDiscountDetails() {
+        return discountDetails;
+    }
+
+    public void setDiscountDetails(Set<DiscountDetail> discountDetails) {
+        this.discountDetails = discountDetails;
+    }
+
+    public Set<ReceiptDetail> getReceiptDetails() {
+        return receiptDetails;
+    }
+
+    public void setReceiptDetails(Set<ReceiptDetail> receiptDetails) {
+        this.receiptDetails = receiptDetails;
+    }
+
+    public Set<Shipment> getShipments() {
+        return shipments;
+    }
+
+    public void setShipments(Set<Shipment> shipments) {
+        this.shipments = shipments;
+    }
+
+    public Set<PromotionItem> getPromotionItems() {
+        return promotionItems;
+    }
+
+    public void setPromotionItems(Set<PromotionItem> promotionItems) {
+        this.promotionItems = promotionItems;
+    }
+
+    public Set<PromotionGift> getPromotionGifts() {
+        return promotionGifts;
+    }
+
+    public void setPromotionGifts(Set<PromotionGift> promotionGifts) {
+        this.promotionGifts = promotionGifts;
     }
 
     @Override

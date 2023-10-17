@@ -4,16 +4,13 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "decentralization")
+@Table(name = __.DECENTRALIZATION.DECENTRALIZATION)
 public class Decentralization extends RelationshipDTO implements Serializable {
-    public static final String ROLE_ID = ID + "." + DecentralizationId.ROLE;
-    public static final String MODULE_ID = ID + "." + DecentralizationId.MODULE;
-    public static final String FUNCTION_ID = ID + "." + DecentralizationId.FUNCTION;
-
     @EmbeddedId
     private DecentralizationId id;
 

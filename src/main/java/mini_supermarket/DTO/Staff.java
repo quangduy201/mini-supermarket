@@ -3,46 +3,38 @@ package mini_supermarket.DTO;
 import jakarta.persistence.*;
 import mini_supermarket.utils.Date;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "staff")
+@Table(name = __.STAFF.STAFF)
 public class Staff extends EntityDTO implements Serializable {
-    public static final String STAFF_ID = "staff_id";
-    public static final String NAME = "name";
-    public static final String GENDER = "gender";
-    public static final String BIRTHDATE = "birthdate";
-    public static final String PHONE = "phone";
-    public static final String ADDRESS = "address";
-    public static final String EMAIL = "email";
-    public static final String ENTRY_DATE = "entry_date";
-
-    @Column(name = NAME)
+    @Column(name = __.STAFF.NAME)
     private String name;
-    @Column(name = GENDER)
+    @Column(name = __.STAFF.GENDER)
     private Boolean gender;
     @Type(mini_supermarket.utils.DateUserType.class)
-    @Column(name = BIRTHDATE)
+    @Column(name = __.STAFF.BIRTHDATE)
     private Date birthdate;
-    @Column(name = PHONE)
+    @Column(name = __.STAFF.PHONE)
     private String phone;
-    @Column(name = ADDRESS)
+    @Column(name = __.STAFF.ADDRESS)
     private String address;
-    @Column(name = EMAIL)
+    @Column(name = __.STAFF.EMAIL)
     private String email;
     @Type(mini_supermarket.utils.DateUserType.class)
-    @Column(name = ENTRY_DATE)
+    @Column(name = __.STAFF.ENTRY_DATE)
     private Date entryDate;
-    @OneToMany(mappedBy = Account.STAFF, cascade = CascadeType.ALL)
-    private Set<Account> accounts;
-    @OneToMany(mappedBy = Receipt.STAFF, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = __.ACCOUNT.STAFF, cascade = CascadeType.ALL)
+    private Account account;
+    @OneToMany(mappedBy = __.RECEIPT.STAFF, cascade = CascadeType.ALL)
     private Set<Receipt> receipts;
-    @OneToMany(mappedBy = ImportNote.STAFF, cascade = CascadeType.ALL)
-    private Set<ImportNote> imports;
-    @OneToMany(mappedBy = ExportNote.STAFF, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.IMPORT_NOTE.STAFF, cascade = CascadeType.ALL)
+    private Set<ImportNote> importNotes;
+    @OneToMany(mappedBy = __.EXPORT_NOTE.STAFF, cascade = CascadeType.ALL)
     private Set<ExportNote> exportNotes;
 
     public Staff() {
@@ -114,12 +106,12 @@ public class Staff extends EntityDTO implements Serializable {
         this.entryDate = entryDate;
     }
 
-    public Set<Account> getAccounts() {
-        return accounts;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setAccounts(Set<Account> accounts) {
-        this.accounts = accounts;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public Set<Receipt> getReceipts() {
@@ -130,12 +122,12 @@ public class Staff extends EntityDTO implements Serializable {
         this.receipts = receipts;
     }
 
-    public Set<ImportNote> getImports() {
-        return imports;
+    public Set<ImportNote> getImportNotes() {
+        return importNotes;
     }
 
-    public void setImports(Set<ImportNote> imports) {
-        this.imports = imports;
+    public void setImportNotes(Set<ImportNote> importNotes) {
+        this.importNotes = importNotes;
     }
 
     public Set<ExportNote> getExports() {

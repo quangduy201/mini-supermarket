@@ -5,24 +5,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import mini_supermarket.utils.Date;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "statistic")
+@Table(name = __.STATISTIC.STATISTIC)
 public class Statistic extends EntityDTO implements Serializable {
-    public static final String STATISTIC_ID = "statistic_id";
-    public static final String DATE = "date";
-    public static final String AMOUNT = "amount";
-    public static final String EXPENSES = "expenses";
-
     @Type(mini_supermarket.utils.DateUserType.class)
-    @Column(name = DATE)
+    @Column(name = __.STATISTIC.DATE)
     private Date date;
-    @Column(name = AMOUNT)
+    @Column(name = __.STATISTIC.AMOUNT)
     private Double amount;
-    @Column(name = EXPENSES)
+    @Column(name = __.STATISTIC.EXPENSES)
     private Double expenses;
 
     public Statistic() {

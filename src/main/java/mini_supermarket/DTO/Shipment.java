@@ -2,45 +2,37 @@ package mini_supermarket.DTO;
 
 import jakarta.persistence.*;
 import mini_supermarket.utils.Date;
+import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "shipment")
+@Table(name = __.SHIPMENT.SHIPMENT)
 public class Shipment extends EntityDTO implements Serializable {
-    public static final String SHIPMENT_ID = "shipment_id";
-    public static final String PRODUCT = "product";
-    public static final String UNIT_PRICE = "unit_price";
-    public static final String QUANTITY = "quantity";
-    public static final String REMAIN = "remain";
-    public static final String MFG = "mfg";
-    public static final String EXP = "exp";
-    public static final String SKU = "sku";
-    public static final String IMPORT_NOTE = "importNote";
-
     @ManyToOne
-    @JoinColumn(name = Product.PRODUCT_ID)
+    @JoinColumn(name = __.PRODUCT.COLUMN.ID)
     private Product product;
-    @Column(name = UNIT_PRICE)
+    @Column(name = __.SHIPMENT.UNIT_PRICE)
     private Double unitPrice;
-    @Column(name = QUANTITY)
+    @Column(name = __.SHIPMENT.QUANTITY)
     private Double quantity;
-    @Column(name = REMAIN)
+    @Column(name = __.SHIPMENT.REMAIN)
     private Double remain;
     @Type(mini_supermarket.utils.DateUserType.class)
-    @Column(name = MFG)
+    @Column(name = __.SHIPMENT.MFG)
     private Date mfg;
     @Type(mini_supermarket.utils.DateUserType.class)
-    @Column(name = EXP)
+    @Column(name = __.SHIPMENT.EXP)
     private Date exp;
-    @Column(name = SKU)
+    @Column(name = __.SHIPMENT.SKU)
     private String sku;
     @ManyToOne
-    @JoinColumn(name = ImportNote.IMPORT_NOTE_ID)
+    @JoinColumn(name = __.IMPORT_NOTE.COLUMN.ID)
     private ImportNote importNote;
-    @OneToMany(mappedBy = ExportDetail.SHIPMENT_ID, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.EXPORT_DETAIL.SHIPMENT, cascade = CascadeType.ALL)
     private Set<ExportDetail> exportDetails;
 
     public Shipment() {
@@ -127,5 +119,18 @@ public class Shipment extends EntityDTO implements Serializable {
 
     public void setExportDetails(Set<ExportDetail> exportDetails) {
         this.exportDetails = exportDetails;
+    }
+
+    @Override
+    public String toString() {
+        return getId() + VNString.NULL +
+            product + VNString.NULL +
+            unitPrice + VNString.NULL +
+            quantity + VNString.NULL +
+            remain + VNString.NULL +
+            mfg + VNString.NULL +
+            exp + VNString.NULL +
+            sku + VNString.NULL +
+            importNote;
     }
 }

@@ -3,19 +3,17 @@ package mini_supermarket.DTO;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import mini_supermarket.utils.__;
 
 import java.io.Serializable;
 
 @Embeddable
 public class ReceiptDetailId implements Serializable {
-    public static final String RECEIPT = "receipt";
-    public static final String PRODUCT = "product";
-
     @ManyToOne
-    @JoinColumn(name = Receipt.RECEIPT_ID)
+    @JoinColumn(name = __.RECEIPT.COLUMN.ID)
     private Receipt receipt;
     @ManyToOne
-    @JoinColumn(name = Product.PRODUCT_ID)
+    @JoinColumn(name = __.PRODUCT.COLUMN.ID)
     private Product product;
 
     public ReceiptDetailId() {

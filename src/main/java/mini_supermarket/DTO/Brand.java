@@ -2,23 +2,20 @@ package mini_supermarket.DTO;
 
 import jakarta.persistence.*;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "brand")
+@Table(name = __.BRAND.BRAND)
 public class Brand extends EntityDTO implements Serializable {
-    public static final String BRAND_ID = "brand_id";
-    public static final String NAME = "name";
-    public static final String SUPPLIER = "supplier";
-
-    @Column(name = NAME)
+    @Column(name = __.BRAND.NAME)
     private String name;
     @ManyToOne
-    @JoinColumn(name = Supplier.SUPPLIER_ID)
+    @JoinColumn(name = __.SUPPLIER.COLUMN.ID)
     private Supplier supplier;
-    @OneToMany(mappedBy = Product.BRAND, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.PRODUCT.BRAND, cascade = CascadeType.ALL)
     private Set<Product> products;
 
     public Brand() {

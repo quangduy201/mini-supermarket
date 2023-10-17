@@ -3,32 +3,26 @@ package mini_supermarket.DTO;
 import jakarta.persistence.*;
 import mini_supermarket.utils.DateTime;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "account")
+@Table(name = __.ACCOUNT.ACCOUNT)
 public class Account extends EntityDTO implements Serializable {
-    public static final String ACCOUNT_ID = "account_id";
-    public static final String USERNAME = "username";
-    public static final String PASSWORD = "password";
-    public static final String ROLE = "role";
-    public static final String STAFF = "staff";
-    public static final String LAST_SIGNED_IN = "last_signed_in";
-
-    @Column(name = USERNAME)
+    @Column(name = __.ACCOUNT.USERNAME)
     private String username;
-    @Column(name = PASSWORD)
+    @Column(name = __.ACCOUNT.PASSWORD)
     private String password;
     @ManyToOne
-    @JoinColumn(name = Role.ROLE_ID)
+    @JoinColumn(name = __.ROLE.COLUMN.ID)
     private Role role;
-    @ManyToOne
-    @JoinColumn(name = Staff.STAFF_ID)
+    @OneToOne
+    @JoinColumn(name = __.STAFF.COLUMN.ID)
     private Staff staff;
     @Type(mini_supermarket.utils.DateTimeUserType.class)
-    @Column(name = LAST_SIGNED_IN)
+    @Column(name = __.ACCOUNT.LAST_SIGNED_IN)
     private DateTime lastSignedIn;
 
     public Account() {

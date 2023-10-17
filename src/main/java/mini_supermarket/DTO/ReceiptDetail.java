@@ -5,25 +5,20 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "receipt_detail")
+@Table(name = __.RECEIPT_DETAIL.RECEIPT_DETAIL)
 public class ReceiptDetail extends RelationshipDTO implements Serializable {
-    public static final String RECEIPT_ID = ID + "." + ReceiptDetailId.RECEIPT;
-    public static final String PRODUCT_ID = ID + "." + ReceiptDetailId.PRODUCT;
-    public static final String QUANTITY = "quantity";
-    public static final String TOTAL = "total";
-    public static final String PERCENT = "percent";
-
     @EmbeddedId
     private ReceiptDetailId id;
-    @Column(name = QUANTITY)
+    @Column(name = __.RECEIPT_DETAIL.QUANTITY)
     private Double quantity;
-    @Column(name = TOTAL)
+    @Column(name = __.RECEIPT_DETAIL.TOTAL)
     private Double total;
-    @Column(name = PERCENT)
+    @Column(name = __.RECEIPT_DETAIL.PERCENT)
     private Double percent;
 
     public ReceiptDetail() {

@@ -3,38 +3,31 @@ package mini_supermarket.DTO;
 import jakarta.persistence.*;
 import mini_supermarket.utils.DateTime;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "receipt")
+@Table(name = __.RECEIPT.RECEIPT)
 public class Receipt extends EntityDTO implements Serializable {
-    public static final String RECEIPT_ID = "receipt_id";
-    public static final String STAFF = "staff";
-    public static final String CUSTOMER = "customer";
-    public static final String INVOICE_DATE = "invoice_date";
-    public static final String TOTAL = "total";
-    public static final String RECEIVED = "received";
-    public static final String EXCESS = "excess";
-
     @ManyToOne
-    @JoinColumn(name = Staff.STAFF_ID)
+    @JoinColumn(name = __.STAFF.COLUMN.ID)
     private Staff staff;
     @ManyToOne
-    @JoinColumn(name = Customer.CUSTOMER_ID)
+    @JoinColumn(name = __.CUSTOMER.COLUMN.ID)
     private Customer customer;
     @Type(mini_supermarket.utils.DateTimeUserType.class)
-    @Column(name = INVOICE_DATE)
+    @Column(name = __.RECEIPT.INVOICE_DATE)
     private DateTime invoiceDate;
-    @Column(name = TOTAL)
+    @Column(name = __.RECEIPT.TOTAL)
     private Double total;
-    @Column(name = RECEIVED)
+    @Column(name = __.RECEIPT.RECEIVED)
     private Double received;
-    @Column(name = EXCESS)
+    @Column(name = __.RECEIPT.EXCESS)
     private Double excess;
-    @OneToMany(mappedBy = ReceiptDetail.RECEIPT_ID, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.RECEIPT_DETAIL.RECEIPT, cascade = CascadeType.ALL)
     private Set<ReceiptDetail> receiptDetails;
 
     public Receipt() {

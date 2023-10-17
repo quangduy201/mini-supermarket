@@ -3,31 +3,26 @@ package mini_supermarket.DTO;
 import jakarta.persistence.*;
 import mini_supermarket.utils.Date;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "discount")
+@Table(name = __.DISCOUNT.DISCOUNT)
 public class Discount extends EntityDTO implements Serializable {
-    public static final String DISCOUNT_ID = "discount_id";
-    public static final String PERCENT = "percent";
-    public static final String START_DATE = "start_date";
-    public static final String END_DATE = "end_date";
-    public static final String STATUS = "status";
-
-    @Column(name = PERCENT)
+    @Column(name = __.DISCOUNT.PERCENT)
     private Double percent;
     @Type(mini_supermarket.utils.DateUserType.class)
-    @Column(name = START_DATE)
+    @Column(name = __.DISCOUNT.START_DATE)
     private Date startDate;
     @Type(mini_supermarket.utils.DateUserType.class)
-    @Column(name = END_DATE)
+    @Column(name = __.DISCOUNT.END_DATE)
     private Date endDate;
-    @Column(name = STATUS)
+    @Column(name = __.DISCOUNT.STATUS)
     private Boolean status;
-    @OneToMany(mappedBy = DiscountDetail.DISCOUNT_ID, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.DISCOUNT_DETAIL.DISCOUNT, cascade = CascadeType.ALL)
     private Set<DiscountDetail> discountDetails;
 
     public Discount() {

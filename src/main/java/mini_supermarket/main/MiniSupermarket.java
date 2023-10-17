@@ -1,13 +1,9 @@
 package mini_supermarket.main;
 
-import com.formdev.flatlaf.FlatIntelliJLaf;
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import mini_supermarket.GUI.Login;
 import mini_supermarket.GUI.Main;
 import mini_supermarket.GUI.SplashScreen;
-import mini_supermarket.utils.HibernateUtil;
-import mini_supermarket.utils.Settings;
+import mini_supermarket.utils.*;
 
 public class MiniSupermarket {
     public static SplashScreen splashScreen;
@@ -19,19 +15,28 @@ public class MiniSupermarket {
     }
 
     public static void start() {
-        FlatRobotoFont.install();
-        FlatLaf.setPreferredFontFamily(FlatRobotoFont.FAMILY);
-        FlatIntelliJLaf.setup();
+        try {
+            Thread initSettings = new Thread(() -> {
+                Settings.initialize();
+                HibernateUtil.initialize();
+            });
+            Log.initialize();
+            I18n.initialize();
+            UI.initialize();
+            initSettings.start();
+            MiniSupermarket.initialize();
+            initSettings.join();
+        } catch (Exception e) {
+            Log.error("Cannot initialize the application.");
+        }
+        splashScreen.dispose();
+        login.setVisible(true);
+    }
+
+    public static void initialize() {
         splashScreen = new SplashScreen();
         login = new Login();
         main = new Main();
-    }
-
-    public static void init() {
-        Settings.initialize();
-        HibernateUtil.initialize();
-        splashScreen.dispose();
-        login.setVisible(true);
     }
 
     public static void exit(int status) {

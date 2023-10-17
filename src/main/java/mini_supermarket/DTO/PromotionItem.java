@@ -5,19 +5,16 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "promotion_item")
+@Table(name = __.PROMOTION_ITEM.PROMOTION_ITEM)
 public class PromotionItem extends RelationshipDTO implements Serializable {
-    public static final String PROMOTION_ID = ID + "." + PromotionDetailId.PROMOTION;
-    public static final String PRODUCT_ID = ID + "." + PromotionDetailId.PRODUCT;
-    public static final String QUANTITY = "quantity";
-
     @EmbeddedId
     private PromotionDetailId id;
-    @Column(name = QUANTITY)
+    @Column(name = __.PROMOTION_ITEM.QUANTITY)
     private Double quantity;
 
     public PromotionItem() {

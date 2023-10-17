@@ -5,22 +5,18 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "export_detail")
+@Table(name = __.EXPORT_DETAIL.EXPORT_DETAIL)
 public class ExportDetail extends RelationshipDTO implements Serializable {
-    public static final String EXPORT_NOTE_ID = ID + "." + ExportDetailId.EXPORT_NOTE;
-    public static final String SHIPMENT_ID = ID + "." + ExportDetailId.SHIPMENT;
-    public static final String QUANTITY = "quantity";
-    public static final String TOTAL = "total";
-
     @EmbeddedId
     private ExportDetailId id;
-    @Column(name = QUANTITY)
+    @Column(name = __.EXPORT_DETAIL.QUANTITY)
     private Double quantity;
-    @Column(name = TOTAL)
+    @Column(name = __.EXPORT_DETAIL.TOTAL)
     private Double total;
 
     public ExportDetail() {
@@ -58,7 +54,7 @@ public class ExportDetail extends RelationshipDTO implements Serializable {
 
     @Override
     public String toString() {
-        return id.getExport() + VNString.NULL +
+        return id.getExportNote() + VNString.NULL +
             id.getShipment() + VNString.NULL +
             quantity + VNString.NULL +
             total;

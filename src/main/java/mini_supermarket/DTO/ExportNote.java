@@ -3,31 +3,26 @@ package mini_supermarket.DTO;
 import jakarta.persistence.*;
 import mini_supermarket.utils.DateTime;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "export_note")
+@Table(name = __.EXPORT_NOTE.EXPORT_NOTE)
 public class ExportNote extends EntityDTO implements Serializable {
-    public static final String EXPORT_NOTE_ID = "export_note_id";
-    public static final String STAFF = "staff";
-    public static final String INVOICE_DATE = "invoice_date";
-    public static final String TOTAL = "total";
-    public static final String REASON = "reason";
-
     @ManyToOne
-    @JoinColumn(name = Staff.STAFF_ID)
+    @JoinColumn(name = __.STAFF.COLUMN.ID)
     private Staff staff;
     @Type(mini_supermarket.utils.DateTimeUserType.class)
-    @Column(name = INVOICE_DATE)
+    @Column(name = __.EXPORT_NOTE.INVOICE_DATE)
     private DateTime invoiceDate;
-    @Column(name = TOTAL)
+    @Column(name = __.EXPORT_NOTE.TOTAL)
     private Double total;
-    @Column(name = REASON)
+    @Column(name = __.EXPORT_NOTE.REASON)
     private String reason;
-    @OneToMany(mappedBy = ExportDetail.EXPORT_NOTE_ID, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.EXPORT_DETAIL.EXPORT_NOTE, cascade = CascadeType.ALL)
     private Set<ExportDetail> exportDetails;
 
     public ExportNote() {
