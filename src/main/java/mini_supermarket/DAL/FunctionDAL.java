@@ -8,8 +8,8 @@ import java.util.List;
 public class FunctionDAL extends EntityDAL<Function> {
     public FunctionDAL() {
         super(Function.class, List.of(
-            __.FUNCTION.ID,
-            __.FUNCTION.NAME
+            __.FUNCTION.COLUMN.ID,
+            __.FUNCTION.COLUMN.NAME
         ));
     }
 }

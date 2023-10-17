@@ -8,11 +8,11 @@ import java.util.List;
 public class SupplierDAL extends EntityDAL<Supplier> {
     public SupplierDAL() {
         super(Supplier.class, List.of(
-            __.SUPPLIER.ID,
-            __.SUPPLIER.NAME,
-            __.SUPPLIER.ADDRESS,
-            __.SUPPLIER.PHONE,
-            __.SUPPLIER.EMAIL
+            __.SUPPLIER.COLUMN.ID,
+            __.SUPPLIER.COLUMN.NAME,
+            __.SUPPLIER.COLUMN.PHONE,
+            __.SUPPLIER.COLUMN.ADDRESS,
+            __.SUPPLIER.COLUMN.EMAIL
         ));
     }
 }

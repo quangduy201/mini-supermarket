@@ -9,9 +9,12 @@ import java.util.List;
 public class DecentralizationDAL extends RelationshipDAL<Decentralization, DecentralizationId> {
     public DecentralizationDAL() {
         super(Decentralization.class, List.of(
-            __.ROLE.ID,
-            __.MODULE.ID,
-            __.FUNCTION.ID
+            __.ROLE.COLUMN.ID,
+            __.ROLE.COLUMN.NAME,
+            __.MODULE.COLUMN.ID,
+            __.MODULE.COLUMN.NAME,
+            __.FUNCTION.COLUMN.ID,
+            __.FUNCTION.COLUMN.NAME
         ));
     }
 }

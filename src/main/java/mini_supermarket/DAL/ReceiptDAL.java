@@ -8,27 +8,27 @@ import java.util.List;
 public class ReceiptDAL extends EntityDAL<Receipt> {
     public ReceiptDAL() {
         super(Receipt.class, List.of(
-            __.RECEIPT.ID,
-            __.STAFF.ID,
-            __.STAFF.NAME,
-            __.STAFF.GENDER,
-            __.STAFF.BIRTHDATE,
-            __.STAFF.PHONE,
-            __.STAFF.ADDRESS,
-            __.STAFF.EMAIL,
-            __.STAFF.ENTRY_DATE,
-            __.CUSTOMER.ID,
-            __.CUSTOMER.NAME,
-            __.CUSTOMER.GENDER,
-            __.CUSTOMER.BIRTHDATE,
-            __.CUSTOMER.PHONE,
-            __.CUSTOMER.MEMBERSHIP,
-            __.CUSTOMER.SIGNED_UP_DATE,
-            __.CUSTOMER.POINT,
-            __.RECEIPT.INVOICE_DATE,
-            __.RECEIPT.TOTAL,
-            __.RECEIPT.RECEIVED,
-            __.RECEIPT.EXCESS
+            __.RECEIPT.COLUMN.ID,
+            __.STAFF.COLUMN.ID,
+            __.STAFF.COLUMN.NAME,
+            __.STAFF.COLUMN.GENDER,
+            __.STAFF.COLUMN.BIRTHDATE,
+            __.STAFF.COLUMN.PHONE,
+            __.STAFF.COLUMN.ADDRESS,
+            __.STAFF.COLUMN.EMAIL,
+            __.STAFF.COLUMN.ENTRY_DATE,
+            __.CUSTOMER.COLUMN.ID,
+            __.CUSTOMER.COLUMN.NAME,
+            __.CUSTOMER.COLUMN.GENDER,
+            __.CUSTOMER.COLUMN.BIRTHDATE,
+            __.CUSTOMER.COLUMN.PHONE,
+            __.CUSTOMER.COLUMN.MEMBERSHIP,
+            __.CUSTOMER.COLUMN.SIGNED_UP_DATE,
+            __.CUSTOMER.COLUMN.POINT,
+            __.RECEIPT.COLUMN.INVOICE_DATE,
+            __.RECEIPT.COLUMN.TOTAL,
+            __.RECEIPT.COLUMN.RECEIVED,
+            __.RECEIPT.COLUMN.EXCESS
         ));
     }
 }

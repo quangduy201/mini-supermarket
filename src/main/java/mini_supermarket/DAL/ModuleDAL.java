@@ -8,8 +8,8 @@ import java.util.List;
 public class ModuleDAL extends EntityDAL<Module> {
     public ModuleDAL() {
         super(Module.class, List.of(
-            __.MODULE.ID,
-            __.MODULE.NAME
+            __.MODULE.COLUMN.ID,
+            __.MODULE.COLUMN.NAME
         ));
     }
 }

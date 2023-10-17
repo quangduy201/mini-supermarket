@@ -8,11 +8,11 @@ import java.util.List;
 public class DiscountDAL extends EntityDAL<Discount> {
     public DiscountDAL() {
         super(Discount.class, List.of(
-            __.DISCOUNT.ID,
-            __.DISCOUNT.PERCENT,
-            __.DISCOUNT.START_DATE,
-            __.DISCOUNT.END_DATE,
-            __.DISCOUNT.STATUS
+            __.DISCOUNT.COLUMN.ID,
+            __.DISCOUNT.COLUMN.PERCENT,
+            __.DISCOUNT.COLUMN.START_DATE,
+            __.DISCOUNT.COLUMN.END_DATE,
+            __.DISCOUNT.COLUMN.STATUS
         ));
     }
 }

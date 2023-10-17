@@ -8,9 +8,9 @@ import java.util.List;
 public class CategoryDAL extends EntityDAL<Category> {
     public CategoryDAL() {
         super(Category.class, List.of(
-            __.CATEGORY.ID,
-            __.CATEGORY.NAME,
-            __.CATEGORY.QUANTITY
+            __.CATEGORY.COLUMN.ID,
+            __.CATEGORY.COLUMN.NAME,
+            __.CATEGORY.COLUMN.QUANTITY
         ));
     }
 }

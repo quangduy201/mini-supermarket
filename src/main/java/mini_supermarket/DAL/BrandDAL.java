@@ -8,13 +8,13 @@ import java.util.List;
 public class BrandDAL extends EntityDAL<Brand> {
     public BrandDAL() {
         super(Brand.class, List.of(
-            __.BRAND.ID,
-            __.BRAND.NAME,
-            __.SUPPLIER.ID,
-            __.SUPPLIER.NAME,
-            __.SUPPLIER.ADDRESS,
-            __.SUPPLIER.PHONE,
-            __.SUPPLIER.EMAIL
+            __.BRAND.COLUMN.ID,
+            __.BRAND.COLUMN.NAME,
+            __.SUPPLIER.COLUMN.ID,
+            __.SUPPLIER.COLUMN.NAME,
+            __.SUPPLIER.COLUMN.PHONE,
+            __.SUPPLIER.COLUMN.ADDRESS,
+            __.SUPPLIER.COLUMN.EMAIL
         ));
     }
 }

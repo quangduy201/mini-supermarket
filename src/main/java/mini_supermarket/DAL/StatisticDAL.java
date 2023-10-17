@@ -8,10 +8,10 @@ import java.util.List;
 public class StatisticDAL extends EntityDAL<Statistic> {
     public StatisticDAL() {
         super(Statistic.class, List.of(
-            __.STATISTIC.ID,
-            __.STATISTIC.DATE,
-            __.STATISTIC.AMOUNT,
-            __.STATISTIC.EXPENSES
+            __.STATISTIC.COLUMN.ID,
+            __.STATISTIC.COLUMN.DATE,
+            __.STATISTIC.COLUMN.AMOUNT,
+            __.STATISTIC.COLUMN.EXPENSES
         ));
     }
 }

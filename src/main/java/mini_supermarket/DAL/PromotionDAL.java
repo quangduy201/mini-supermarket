@@ -8,10 +8,10 @@ import java.util.List;
 public class PromotionDAL extends EntityDAL<Promotion> {
     public PromotionDAL() {
         super(Promotion.class, List.of(
-            __.PROMOTION.ID,
-            __.PROMOTION.START_DATE,
-            __.PROMOTION.END_DATE,
-            __.PROMOTION.STATUS
+            __.PROMOTION.COLUMN.ID,
+            __.PROMOTION.COLUMN.START_DATE,
+            __.PROMOTION.COLUMN.END_DATE,
+            __.PROMOTION.COLUMN.STATUS
         ));
     }
 }

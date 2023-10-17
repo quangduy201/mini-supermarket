@@ -8,14 +8,14 @@ import java.util.List;
 public class CustomerDAL extends EntityDAL<Customer> {
     public CustomerDAL() {
         super(Customer.class, List.of(
-            __.CUSTOMER.ID,
-            __.CUSTOMER.NAME,
-            __.CUSTOMER.GENDER,
-            __.CUSTOMER.BIRTHDATE,
-            __.CUSTOMER.PHONE,
-            __.CUSTOMER.MEMBERSHIP,
-            __.CUSTOMER.SIGNED_UP_DATE,
-            __.CUSTOMER.POINT
+            __.CUSTOMER.COLUMN.ID,
+            __.CUSTOMER.COLUMN.NAME,
+            __.CUSTOMER.COLUMN.GENDER,
+            __.CUSTOMER.COLUMN.BIRTHDATE,
+            __.CUSTOMER.COLUMN.PHONE,
+            __.CUSTOMER.COLUMN.MEMBERSHIP,
+            __.CUSTOMER.COLUMN.SIGNED_UP_DATE,
+            __.CUSTOMER.COLUMN.POINT
         ));
     }
 }

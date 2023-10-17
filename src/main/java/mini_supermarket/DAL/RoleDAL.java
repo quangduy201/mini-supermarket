@@ -8,8 +8,8 @@ import java.util.List;
 public class RoleDAL extends EntityDAL<Role> {
     public RoleDAL() {
         super(Role.class, List.of(
-            __.ROLE.ID,
-            __.ROLE.NAME
+            __.ROLE.COLUMN.ID,
+            __.ROLE.COLUMN.NAME
         ));
     }
 }
