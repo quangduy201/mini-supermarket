@@ -7,8 +7,8 @@ import java.time.format.DateTimeFormatter;
 public class DateTime implements Serializable {
     public LocalDateTime dateTime;
 
-    public static DateTime MIN = new DateTime();
-    public static DateTime MAX = new DateTime();
+    public static final DateTime MIN = new DateTime();
+    public static final DateTime MAX = new DateTime();
     static {
         MIN.dateTime = LocalDateTime.of(1000, 1, 1, 0, 0, 0, 0);
         MAX.dateTime = LocalDateTime.of(9999, 12, 31, 23, 59, 59, 999999);

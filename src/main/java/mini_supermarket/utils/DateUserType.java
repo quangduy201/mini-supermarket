@@ -35,18 +35,18 @@ public class DateUserType implements UserType<Date> {
     }
 
     @Override
-    public Date nullSafeGet(ResultSet resultSet, int i, SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws SQLException {
-        LocalDate date = resultSet.getDate(i).toLocalDate();
+    public Date nullSafeGet(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner) throws SQLException {
+        LocalDate date = rs.getDate(position).toLocalDate();
         return new Date(date);
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, Date date, int i, SharedSessionContractImplementor sharedSessionContractImplementor) throws SQLException {
+    public void nullSafeSet(PreparedStatement st, Date date, int index, SharedSessionContractImplementor session) throws SQLException {
         if (date == null) {
-            preparedStatement.setNull(i, Types.DATE);
+            st.setNull(index, Types.DATE);
         } else {
             LocalDate localDate = date.date;
-            preparedStatement.setDate(i, java.sql.Date.valueOf(localDate));
+            st.setDate(index, java.sql.Date.valueOf(localDate));
         }
     }
 

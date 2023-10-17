@@ -45,4 +45,31 @@ public class VNString {
         NumberFormat formatter = NumberFormat.getCurrencyInstance(locale);
         return formatter.format(money);
     }
+
+    public static String snakeCaseToCamelCase(String snakeCase) {
+        StringBuilder camelCase = new StringBuilder();
+        String[] parts = snakeCase.split("_");
+        for (int i = 0; i < parts.length; i++) {
+            if (i == 0) {
+                camelCase.append(parts[i]);
+            } else {
+                camelCase.append(Character.toUpperCase(parts[i].charAt(0)));
+                camelCase.append(parts[i].substring(1));
+            }
+        }
+        return camelCase.toString();
+    }
+
+    public static String camelCaseToSnakeCase(String camelCase) {
+        StringBuilder snakeCase = new StringBuilder();
+        for (int i = 0; i < camelCase.length(); i++) {
+            char currentChar = camelCase.charAt(i);
+            if (Character.isUpperCase(currentChar)) {
+                snakeCase.append('_').append(Character.toLowerCase(currentChar));
+            } else {
+                snakeCase.append(currentChar);
+            }
+        }
+        return snakeCase.toString();
+    }
 }

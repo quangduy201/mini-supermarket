@@ -35,18 +35,18 @@ public class DateTimeUserType implements UserType<DateTime> {
     }
 
     @Override
-    public DateTime nullSafeGet(ResultSet resultSet, int i, SharedSessionContractImplementor sharedSessionContractImplementor, Object o) throws SQLException {
-        LocalDateTime dateTime = resultSet.getTimestamp(i).toLocalDateTime();
+    public DateTime nullSafeGet(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner) throws SQLException {
+        LocalDateTime dateTime = rs.getTimestamp(position).toLocalDateTime();
         return new DateTime(dateTime);
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement preparedStatement, DateTime dateTime, int i, SharedSessionContractImplementor sharedSessionContractImplementor) throws SQLException {
+    public void nullSafeSet(PreparedStatement st, DateTime dateTime, int index, SharedSessionContractImplementor session) throws SQLException {
         if (dateTime == null) {
-            preparedStatement.setNull(i, Types.TIMESTAMP);
+            st.setNull(index, Types.TIMESTAMP);
         } else {
             LocalDateTime localDateTime = dateTime.dateTime;
-            preparedStatement.setTimestamp(i, java.sql.Timestamp.valueOf(localDateTime));
+            st.setTimestamp(index, java.sql.Timestamp.valueOf(localDateTime));
         }
     }
 
