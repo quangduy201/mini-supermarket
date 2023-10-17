@@ -129,3 +129,5 @@ public class Shipment extends EntityDTO implements Serializable {
         this.exportDetails = exportDetails;
     }
 }
+
+
