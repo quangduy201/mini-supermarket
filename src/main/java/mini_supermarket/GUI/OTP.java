@@ -16,6 +16,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalDateTime;
 
 public class OTP extends JDialog {
     private static final int OTP_LENGTH = 6;
@@ -77,34 +78,24 @@ public class OTP extends JDialog {
         buttons[0].setBackground(new Color(0x018847));
         buttons[0].setForeground(new Color(0xFFFFFF));
         buttons[0].setFont(new Font("Arial", Font.BOLD, 12));
-        buttons[0].addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                cancel();
-            }
-        });
+        buttons[0].addActionListener(e -> dispose());
         panel.add(buttons[0]);
 
         buttons[1] = new JButton("Tiếp tục");
         buttons[1].setBackground(new Color(0x018847));
         buttons[1].setForeground(new Color(0xFFFFFF));
         buttons[1].setFont(new Font("Arial", Font.BOLD, 12));
-        buttons[1].addActionListener(e->toStep(++step));
+        buttons[1].addActionListener(e -> validateStep1(txtEnterEmail.getText()));
         panel.add(buttons[1]);
     }
 
     private void showConfirmPanel() {
         otpConfirmPanel.removeAll();
 
-        JLabel username = new JLabel("Tên tài khoản", SwingConstants.CENTER);
+        JLabel username = new JLabel(account.getUsername(), SwingConstants.CENTER);
         username.setFont(new Font("Arial", Font.BOLD, 20));
         username.setPreferredSize(new Dimension(500, 32));
         otpConfirmPanel.add(username, "span,center");
-
-        JLabel label1 = new JLabel("Hệ thống vừa gửi mã OTP đến email của bạn.", SwingConstants.CENTER);
-        label1.setFont(new Font("Arial", Font.BOLD, 14));
-        label1.setPreferredSize(new Dimension(500, 32));
-        otpConfirmPanel.add(label1, "span,center,wrap");
 
         JLabel label2 = new JLabel("Vui lòng nhập mã vào ô bên dưới.", SwingConstants.CENTER);
         label2.setFont(new Font("Arial", Font.BOLD, 14));
@@ -130,9 +121,8 @@ public class OTP extends JDialog {
 
                 if (currentText.matches("\\d{0,6}")) { // Only allow 0 to 6 digits
                     super.replace(fb, offset, length, text, attrs);
-                    if (currentText.length() == OTP.OTP_LENGTH)
-//                        validateStep2(currentText);
-                        toStep(++step);
+                    if (currentText.length() == 6)
+                        validateStep2(currentText);
                 }
             }
         });
@@ -264,25 +254,36 @@ public class OTP extends JDialog {
         if (currentCountDownThread != null)
             currentCountDownThread.interrupt();
         currentCountDownThread = new Thread(() -> {
-            DateTime start = DateTime.now();
+//            activeOtp = Email.getOTP();
+            nothing.setText("Hệ thống đang gửi mã OTP...");
+//            Email.sendOTP(email, "Đặt lại mật khẩu Bách Hoá Xanh", activeOtp);
+            DateTime start = new DateTime();
             long temp = 0;
             while (seconds - temp > 0 && !Thread.currentThread().isInterrupted()) {
-                temp = DateTime.calculateTime(start, DateTime.now());
+                temp = DateTime.calculateTime(start, new DateTime());
                 nothing.setText("(" + (seconds - temp) + "s)");
             }
+//            activeOtp = "";
+            nothing.setText("Mã OTP đã hết thời gian hiệu lực vui lòng chọn gửi lại.");
         });
         currentCountDownThread.start();
     }
 
 
+    private void validateStep1(String text) {
+        toStep(++step);
+    }
+
     private void validateStep2(String currentText) {
+        toStep(++step);
     }
 
     private void validateStep3(String password, String confirm) {
+        this.dispose();
     }
     public static void main(String[] args) {
-        new OTP();
+//        System.out.println(LocalDateTime.now());
 //        System.out.println(DateTime.calculateTime(new DateTime(2023, 10, 14, 19, 51, 10, 0), DateTime.now()));
-
+        System.out.println(DateTime.parse("2023-10-15 00:33:53.947789"));
     }
 }

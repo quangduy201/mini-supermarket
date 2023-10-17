@@ -1,14 +1,13 @@
 package mini_supermarket.GUI;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+
 import mini_supermarket.BLL.AccountBLL;
-import mini_supermarket.DTO.Account;
 import mini_supermarket.main.MiniSupermarket;
 import mini_supermarket.utils.DateTime;
-import mini_supermarket.utils.Resource;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDateTime;
@@ -44,24 +43,27 @@ public class Login extends JFrame {
         });
 
         contentPane = new JPanel(new BorderLayout());
+//        contentPane.setBackground(new Color(0x02723A));
         setContentPane(contentPane);
 
         header = new JPanel(new BorderLayout());
         header.setPreferredSize(new Dimension(700, 110));
-        header.setBackground(new Color(0x018847));
-        header.setBorder(BorderFactory.createMatteBorder(0, 0, 5, 0, new Color(0x018847)));
+        header.setBackground(new Color(0x028948));
+        header.setBorder(BorderFactory.createMatteBorder(0, -60, 5, 0, new Color(0xF0F0F0FF)));
         header.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentPane.add(header, BorderLayout.NORTH);
 
-        lbBanner_Header = new JLabel(new ImageIcon(Resource.loadImageIcon("img/logo_full.png").getImage().getScaledInstance(500, 270 , Image.SCALE_SMOOTH | Image.SCALE_DEFAULT)));
-        lbBanner_Header.setPreferredSize(new Dimension(700, 90));
-        lbBanner_Header.setBorder(BorderFactory.createMatteBorder(0, 0, 5, 0, new Color(0xFFFFFF)));
+        lbBanner_Header = new JLabel();
+        lbBanner_Header.setSize(new Dimension(700, 100));
+        lbBanner_Header.setIcon(new FlatSVGIcon("img/banner_header.svg"));
+        lbBanner_Header.setHorizontalAlignment(SwingConstants.CENTER);
         header.add(lbBanner_Header, BorderLayout.CENTER);
 
         lbLogin = new JLabel("Đăng Nhập", SwingConstants.CENTER);
-        lbLogin.setForeground(new Color(0x018847));
+        lbLogin.setBackground(new Color(0xF0F0F0FF));
+        lbLogin.setForeground(new Color(0x028948));
         lbLogin.setFont(new Font("Lexend", Font.BOLD, 30));
-        lbLogin.setBorder(new EmptyBorder(30,0,0,0));
+        lbLogin.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, new Color(0x028948)));
         contentPane.add(lbLogin, BorderLayout.CENTER);
 
         login = new JPanel(new FlowLayout());
@@ -128,7 +130,6 @@ public class Login extends JFrame {
 
         lbForgetPasswd = new JLabel("Quên mật khẩu?");
         lbForgetPasswd.setFont(new Font("Lexend", Font.PLAIN, 12));
-        lbForgetPasswd.setForeground(new Color(0x018847));
         lbForgetPasswd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         lbForgetPasswd.addMouseListener(new MouseAdapter() {
             @Override
@@ -140,7 +141,7 @@ public class Login extends JFrame {
             public void mouseExited(MouseEvent e) {
                 lbForgetPasswd.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
             }
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 forgotPassword();
             }
         });
@@ -165,7 +166,6 @@ public class Login extends JFrame {
             }
         });
         formLogin.add(btLogin, "span, center, wrap");
-        pack();
     }
 
     private void forgotPassword() {
