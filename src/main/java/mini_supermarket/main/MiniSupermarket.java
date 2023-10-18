@@ -31,6 +31,7 @@ public class MiniSupermarket {
         }
         splashScreen.dispose();
         login.setVisible(true);
+        main.setVisible(true);
     }
 
     public static void initialize() {
