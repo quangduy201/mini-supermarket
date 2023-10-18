@@ -1,6 +1,7 @@
 package mini_supermarket.utils;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -157,6 +158,11 @@ public class Date implements Serializable {
         if (text.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4}$"))
             return parse(text, "dd/MM/yyyy");
         throw new IllegalArgumentException("Invalid date");
+    }
+
+    public static long calculateDays(Date date1, Date date2) {
+        Duration duration = Duration.between(date1.date, date2.date);
+        return duration.toDays();
     }
 
     @Override

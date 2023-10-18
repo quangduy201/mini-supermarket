@@ -1,24 +1,45 @@
 package mini_supermarket.utils;
 
 import java.util.Locale;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 
 public class I18n {
     private static ResourceBundle resourceBundle;
-    private static Locale currentLocale;
+    private static Language language;
+
+    public enum Language {
+        ENGLISH(Locale.ENGLISH),
+        VIETNAMESE(new Locale("vi"));
+
+        private final Locale locale;
+
+        Language(Locale locale) {
+            this.locale = locale;
+        }
+
+        public Locale getLocale() {
+            return locale;
+        }
+    }
 
     public static void initialize() {
-        setCurrentLocale(Locale.ENGLISH);
+        Properties properties = Resource.loadProperties(Settings.CONFIG_FILE);
+        String language = properties.getProperty("language");
+        if (language.equalsIgnoreCase("vi"))
+            setCurrentLanguage(Language.VIETNAMESE);
+        else
+            setCurrentLanguage(Language.ENGLISH);
     }
 
-    public static Locale getCurrentLocale() {
-        return currentLocale;
+    public static Language getCurrentLanguage() {
+        return language;
     }
 
-    public static void setCurrentLocale(Locale locale) {
-        currentLocale = locale;
-        resourceBundle = ResourceBundle.getBundle("i18n.messages", currentLocale);
+    public static void setCurrentLanguage(Language language) {
+        I18n.language = language;
+        resourceBundle = ResourceBundle.getBundle("i18n.messages", I18n.language.locale);
     }
 
     public static String getString(String key, Object... args) {

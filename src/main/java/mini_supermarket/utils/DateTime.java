@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
 public class DateTime implements Serializable {
     public LocalDateTime dateTime;
@@ -268,8 +269,21 @@ public class DateTime implements Serializable {
         throw new IllegalArgumentException("Invalid date and time");
     }
 
-    public static long calculateTime(DateTime dateTime1, DateTime dateTime2) {
-        return Duration.between(LocalDateTime.of(dateTime2.getYear(), dateTime1.getMonth(), dateTime1.getDate(), dateTime1.getHour(), dateTime1.getMinute(), dateTime1.getSecond()), LocalDateTime.of(dateTime2.getYear(), dateTime2.getMonth(), dateTime2.getDate(), dateTime2.getHour(), dateTime2.getMinute(), dateTime2.getSecond())).toSeconds();
+    public static long calculateTime(DateTime dateTime1, DateTime dateTime2, TimeUnit timeUnit) {
+        Duration duration = Duration.between(dateTime1.dateTime, dateTime2.dateTime);
+        return switch (timeUnit) {
+            case NANOSECONDS -> duration.toNanos();
+            case MICROSECONDS -> duration.toNanos() / 1000;
+            case MILLISECONDS -> duration.toMillis();
+            case SECONDS -> duration.getSeconds();
+            case MINUTES -> duration.toMinutes();
+            case HOURS -> duration.toHours();
+            case DAYS -> duration.toDays();
+        };
+    }
+
+    public static long calculateTime(DateTime datetime1, DateTime dateTime2) {
+        return calculateTime(datetime1, dateTime2, TimeUnit.SECONDS);
     }
 
     @Override
