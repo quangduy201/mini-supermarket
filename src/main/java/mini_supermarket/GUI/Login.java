@@ -43,6 +43,6 @@ public class Login extends JFrame {
         panel.add(cancel);
         panel.add(refresh);
         getContentPane().add(panel);
-        pack();
+//        pack();
     }
 }

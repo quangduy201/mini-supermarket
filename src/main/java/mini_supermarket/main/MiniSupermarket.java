@@ -9,16 +9,22 @@ import mini_supermarket.GUI.SplashScreen;
 import mini_supermarket.utils.HibernateUtil;
 import mini_supermarket.utils.Settings;
 
+import javax.swing.*;
+import java.awt.*;
+
 public class MiniSupermarket {
     public static SplashScreen splashScreen;
     public static Login login;
     public static Main main;
 
     public static void main(String[] args) {
+
         start();
     }
 
     public static void start() {
+        UIManager.put("ScrollBar.thumbArc", 999);
+        UIManager.put("ScrollBar.thumbInsets", new Insets(2, 2, 2, 2));
         FlatRobotoFont.install();
         FlatLaf.setPreferredFontFamily(FlatRobotoFont.FAMILY);
         FlatIntelliJLaf.setup();
@@ -31,7 +37,7 @@ public class MiniSupermarket {
         Settings.initialize();
         HibernateUtil.initialize();
         splashScreen.dispose();
-        login.setVisible(true);
+        main.setVisible(true);
     }
 
     public static void exit(int status) {
