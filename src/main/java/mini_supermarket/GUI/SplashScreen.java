@@ -1,31 +1,33 @@
 package mini_supermarket.GUI;
 
-import mini_supermarket.main.MiniSupermarket;
 import mini_supermarket.utils.Resource;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class SplashScreen extends JFrame {
-    private JLabel image;
-    private JProgressBar progressBar;
+    private final JPanel panel;
+    private final JLabel image;
+    private final JProgressBar progressBar;
 
     public SplashScreen() {
-        setUndecorated(true);
-        image = new JLabel(Resource.loadImageIcon("img/logo_full.png"));
+        panel = new JPanel();
+        image = new JLabel();
         progressBar = new JProgressBar();
-        progressBar.setIndeterminate(true); // You can use an indeterminate progress bar
 
-        JPanel panel = new JPanel(new BorderLayout());
+        panel.setLayout(new BorderLayout());
         panel.setBackground(new Color(0x008848));
-        panel.add(image, BorderLayout.NORTH);
-        panel.add(progressBar, BorderLayout.CENTER);
+
+        image.setIcon(Resource.loadSVGIcon("img/logo.svg"));
+        panel.add(image, BorderLayout.CENTER);
+
+        progressBar.setIndeterminate(true);
+        panel.add(progressBar, BorderLayout.SOUTH);
+
         getContentPane().add(panel);
+        setUndecorated(true);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
-
-        Thread backgroundThread = new Thread(MiniSupermarket::init);
-        backgroundThread.start();
     }
 }

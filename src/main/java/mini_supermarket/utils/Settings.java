@@ -2,7 +2,6 @@ package mini_supermarket.utils;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class Settings {
     public static final String CONFIG_FILE = "settings/config.properties";
@@ -11,9 +10,9 @@ public class Settings {
 
     public static void initialize() {
         try {
-            Files.createDirectories(Paths.get(Resource.getResourcePath("settings", false)));
+            Files.createDirectories(Resource.getPathFromResource("settings", false));
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            Log.error(Settings.class, e.toString());
             return;
         }
         Resource.copyResource(DATABASE_FILE, DATABASE_FILE);

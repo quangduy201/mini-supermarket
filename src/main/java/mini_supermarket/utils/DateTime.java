@@ -1,18 +1,21 @@
 package mini_supermarket.utils;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
 public class DateTime implements Serializable {
-    public LocalDateTime dateTime;
+    public static final DateTime MIN = new DateTime();
+    public static final DateTime MAX = new DateTime();
 
-    public static DateTime MIN = new DateTime();
-    public static DateTime MAX = new DateTime();
     static {
         MIN.dateTime = LocalDateTime.of(1000, 1, 1, 0, 0, 0, 0);
         MAX.dateTime = LocalDateTime.of(9999, 12, 31, 23, 59, 59, 999999);
     }
+
+    public LocalDateTime dateTime;
 
     public DateTime() {
         this.dateTime = LocalDateTime.now();
@@ -64,6 +67,80 @@ public class DateTime implements Serializable {
 
     public static DateTime of(DateTime dateTime) {
         return new DateTime(dateTime);
+    }
+
+    public static boolean isLeapYear(int year) {
+        return Date.isLeapYear(year);
+    }
+
+    public static boolean isValidDateTime(LocalDateTime localDateTime) {
+        return !localDateTime.isBefore(MIN.dateTime) && !localDateTime.isAfter(MAX.dateTime);
+    }
+
+    public static boolean isValidDateTime(int y, int M, int d, int h, int m, int s, int ns) {
+        try {
+            return isValidDateTime(LocalDateTime.of(y, M, d, h, m, s, ns));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static boolean isValidDateTime(int y, int M, int d, int h, int m, int s) {
+        return isValidDateTime(y, M, d, h, m, s, 0);
+    }
+
+    public static boolean isValidDateTime(int y, int M, int d, int h, int m) {
+        return isValidDateTime(y, M, d, h, m, 0, 0);
+    }
+
+    public static DateTime parse(String text, String pattern) {
+        try {
+            LocalDateTime localDateTime = LocalDateTime.parse(text, DateTimeFormatter.ofPattern(pattern));
+            if (!isValidDateTime(localDateTime))
+                throw new IllegalArgumentException("Invalid date and time");
+            return new DateTime(localDateTime);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid date and time");
+        }
+    }
+
+    public static DateTime parse(String text) {
+        if (text.matches("^\\d{4}-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01]) (\\d{2}:\\d{2}(?::\\d{2}(\\.\\d{1,6})?)?)?$")) {
+            if (text.contains(".")) {
+                return parse(text, "yyyy-MM-dd HH:mm:ss.SSSSSS");
+            } else if (text.contains(":")) {
+                return parse(text, "yyyy-MM-dd HH:mm:ss");
+            } else {
+                return parse(text, "yyyy-MM-dd");
+            }
+        }
+        if (text.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4} (\\d{2}:\\d{2}(?::\\d{2}(\\.\\d{1,6})?)?)?$")) {
+            if (text.contains(".")) {
+                return parse(text, "dd/MM/yyyy HH:mm:ss.SSSSSS");
+            } else if (text.contains(":")) {
+                return parse(text, "dd/MM/yyyy HH:mm:ss");
+            } else {
+                return parse(text, "dd/MM/yyyy");
+            }
+        }
+        throw new IllegalArgumentException("Invalid date and time");
+    }
+
+    public static long calculateTime(DateTime dateTime1, DateTime dateTime2, TimeUnit timeUnit) {
+        Duration duration = Duration.between(dateTime1.dateTime, dateTime2.dateTime);
+        return switch (timeUnit) {
+            case NANOSECONDS -> duration.toNanos();
+            case MICROSECONDS -> duration.toNanos() / 1000;
+            case MILLISECONDS -> duration.toMillis();
+            case SECONDS -> duration.getSeconds();
+            case MINUTES -> duration.toMinutes();
+            case HOURS -> duration.toHours();
+            case DAYS -> duration.toDays();
+        };
+    }
+
+    public static long calculateTime(DateTime datetime1, DateTime dateTime2) {
+        return calculateTime(datetime1, dateTime2, TimeUnit.SECONDS);
     }
 
     public int getYear() {
@@ -208,63 +285,6 @@ public class DateTime implements Serializable {
 
     public DateTime minusNanos(long nanosToAdd) {
         return new DateTime(dateTime.minusNanos(nanosToAdd));
-    }
-
-    public static boolean isLeapYear(int year) {
-        return Date.isLeapYear(year);
-    }
-
-    public static boolean isValidDateTime(LocalDateTime localDateTime) {
-        return !localDateTime.isBefore(MIN.dateTime) && !localDateTime.isAfter(MAX.dateTime);
-    }
-
-    public static boolean isValidDateTime(int y, int M, int d, int h, int m, int s, int ns) {
-        try {
-            return isValidDateTime(LocalDateTime.of(y, M, d, h, m, s, ns));
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static boolean isValidDateTime(int y, int M, int d, int h, int m, int s) {
-        return isValidDateTime(y, M, d, h, m, s, 0);
-    }
-
-    public static boolean isValidDateTime(int y, int M, int d, int h, int m) {
-        return isValidDateTime(y, M, d, h, m, 0, 0);
-    }
-
-    public static DateTime parse(String text, String pattern) {
-        try {
-            LocalDateTime localDateTime = LocalDateTime.parse(text, DateTimeFormatter.ofPattern(pattern));
-            if (!isValidDateTime(localDateTime))
-                throw new IllegalArgumentException("Invalid date and time");
-            return new DateTime(localDateTime);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid date and time");
-        }
-    }
-
-    public static DateTime parse(String text) {
-        if (text.matches("^\\d{4}-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01]) (\\d{2}:\\d{2}(?::\\d{2}(\\.\\d{1,6})?)?)?$")) {
-            if (text.contains(".")) {
-                return parse(text, "yyyy-MM-dd HH:mm:ss.SSSSSS");
-            } else if (text.contains(":")) {
-                return parse(text, "yyyy-MM-dd HH:mm:ss");
-            } else {
-                return parse(text, "yyyy-MM-dd");
-            }
-        }
-        if (text.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4} (\\d{2}:\\d{2}(?::\\d{2}(\\.\\d{1,6})?)?)?$")) {
-            if (text.contains(".")) {
-                return parse(text, "dd/MM/yyyy HH:mm:ss.SSSSSS");
-            } else if (text.contains(":")) {
-                return parse(text, "dd/MM/yyyy HH:mm:ss");
-            } else {
-                return parse(text, "dd/MM/yyyy");
-            }
-        }
-        throw new IllegalArgumentException("Invalid date and time");
     }
 
     @Override

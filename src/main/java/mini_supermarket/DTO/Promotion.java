@@ -3,30 +3,26 @@ package mini_supermarket.DTO;
 import jakarta.persistence.*;
 import mini_supermarket.utils.Date;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "promotion")
+@Table(name = __.PROMOTION.PROMOTION)
 public class Promotion extends EntityDTO implements Serializable {
-    public static final String PROMOTION_ID = "promotion_id";
-    public static final String START_DATE = "start_date";
-    public static final String END_DATE = "end_date";
-    public static final String STATUS = "status";
-
     @Type(mini_supermarket.utils.DateUserType.class)
-    @Column(name = START_DATE)
+    @Column(name = __.PROMOTION.START_DATE)
     private Date startDate;
     @Type(mini_supermarket.utils.DateUserType.class)
-    @Column(name = END_DATE)
+    @Column(name = __.PROMOTION.END_DATE)
     private Date endDate;
-    @Column(name = STATUS)
+    @Column(name = __.PROMOTION.STATUS)
     private Boolean status;
-    @OneToMany(mappedBy = PromotionItem.PROMOTION_ID, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.PROMOTION_ITEM.PROMOTION, cascade = CascadeType.ALL)
     private Set<PromotionItem> promotionItems;
-    @OneToMany(mappedBy = PromotionGift.PROMOTION_ID, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.PROMOTION_GIFT.PROMOTION, cascade = CascadeType.ALL)
     private Set<PromotionGift> promotionGifts;
 
     public Promotion() {

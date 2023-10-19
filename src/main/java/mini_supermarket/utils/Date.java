@@ -1,18 +1,20 @@
 package mini_supermarket.utils;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Date implements Serializable {
-    public LocalDate date;
+    public static final Date MIN = new Date();
+    public static final Date MAX = new Date();
 
-    public static Date MIN = new Date();
-    public static Date MAX = new Date();
     static {
         MIN.date = LocalDate.of(1000, 1, 1);
         MAX.date = LocalDate.of(9999, 12, 31);
     }
+
+    public LocalDate date;
 
     public Date() {
         this.date = LocalDate.now();
@@ -48,6 +50,48 @@ public class Date implements Serializable {
 
     public static Date of(Date date) {
         return new Date(date);
+    }
+
+    public static boolean isLeapYear(int year) {
+        if (!isValidDate(year, 1, 1))
+            return false;
+        return LocalDate.of(year, 1, 1).isLeapYear();
+    }
+
+    public static boolean isValidDate(LocalDate localDate) {
+        return !localDate.isBefore(MIN.date) && !localDate.isAfter(MAX.date);
+    }
+
+    public static boolean isValidDate(int y, int m, int d) {
+        try {
+            return isValidDate(LocalDate.of(y, m, d));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static Date parse(String text, String pattern) {
+        try {
+            LocalDate localDate = LocalDate.parse(text, DateTimeFormatter.ofPattern(pattern));
+            if (!isValidDate(localDate))
+                throw new IllegalArgumentException("Invalid date");
+            return new Date(localDate);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid date");
+        }
+    }
+
+    public static Date parse(String text) {
+        if (text.matches("^\\d{4}-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$"))
+            return parse(text, "yyyy-MM-dd");
+        if (text.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4}$"))
+            return parse(text, "dd/MM/yyyy");
+        throw new IllegalArgumentException("Invalid date");
+    }
+
+    public static long calculateDays(Date date1, Date date2) {
+        Duration duration = Duration.between(date1.date, date2.date);
+        return duration.toDays();
     }
 
     public int getYear() {
@@ -120,43 +164,6 @@ public class Date implements Serializable {
 
     public Date minusDays(long daysToSubtract) {
         return new Date(date.minusDays(daysToSubtract));
-    }
-
-    public static boolean isLeapYear(int year) {
-        if (!isValidDate(year, 1, 1))
-            return false;
-        return LocalDate.of(year, 1, 1).isLeapYear();
-    }
-
-    public static boolean isValidDate(LocalDate localDate) {
-        return !localDate.isBefore(MIN.date) && !localDate.isAfter(MAX.date);
-    }
-
-    public static boolean isValidDate(int y, int m, int d) {
-        try {
-            return isValidDate(LocalDate.of(y, m, d));
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public static Date parse(String text, String pattern) {
-        try {
-            LocalDate localDate = LocalDate.parse(text, DateTimeFormatter.ofPattern(pattern));
-            if (!isValidDate(localDate))
-                throw new IllegalArgumentException("Invalid date");
-            return new Date(localDate);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid date");
-        }
-    }
-
-    public static Date parse(String text) {
-        if (text.matches("^\\d{4}-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$"))
-            return parse(text, "yyyy-MM-dd");
-        if (text.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4}$"))
-            return parse(text, "dd/MM/yyyy");
-        throw new IllegalArgumentException("Invalid date");
     }
 
     @Override

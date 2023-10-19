@@ -3,32 +3,27 @@ package mini_supermarket.DTO;
 import jakarta.persistence.*;
 import mini_supermarket.utils.DateTime;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "import_note")
+@Table(name = __.IMPORT_NOTE.IMPORT_NOTE)
 public class ImportNote extends EntityDTO implements Serializable {
-    public static final String IMPORT_NOTE_ID = "import_note_id";
-    public static final String STAFF = "staff";
-    public static final String RECEIVED_DATE = "received_date";
-    public static final String TOTAL = "total";
-    public static final String SUPPLIER = "supplier";
-
     @ManyToOne
-    @JoinColumn(name = Staff.STAFF_ID)
+    @JoinColumn(name = __.STAFF.COLUMN.ID)
     private Staff staff;
     @Type(mini_supermarket.utils.DateTimeUserType.class)
-    @Column(name = RECEIVED_DATE)
+    @Column(name = __.IMPORT_NOTE.RECEIVED_DATE)
     private DateTime receivedDate;
-    @Column(name = TOTAL)
+    @Column(name = __.IMPORT_NOTE.TOTAL)
     private Double total;
     @ManyToOne
-    @JoinColumn(name = Supplier.SUPPLIER_ID)
+    @JoinColumn(name = __.SUPPLIER.COLUMN.ID)
     private Supplier supplier;
-    @OneToMany(mappedBy = Shipment.IMPORT_NOTE, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.SHIPMENT.IMPORT_NOTE, cascade = CascadeType.ALL)
     private Set<Shipment> shipments;
 
     public ImportNote() {

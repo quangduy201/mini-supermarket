@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="COLOR_TIME">
+            {
+            FATAL=Blink Red Dim,
+            ERROR=Bright_Red Dim,
+            WARN=Bright_Yellow Dim,
+            INFO=Bright_Blue Dim,
+            DEBUG=Bright_Cyan Dim,
+            TRACE=Bright_Green Dim
+            }
+        </Property>
+        <Property name="COLOR_LEVEL">
+            {
+            FATAL=Blink Red Bright,
+            ERROR=Bright_Red Bright,
+            WARN=Bright_Yellow Bright,
+            INFO=Bright_Blue Bright,
+            DEBUG=Bright_Cyan Bright,
+            TRACE=Bright_Green Bright
+            }
+        </Property>
+        <Property name="COLOR_THREAD">{Bright Underline Magenta}</Property>
+        <Property name="COLOR_AT">{Bright Underline Magenta}</Property>
+        <Property name="COLOR_LOGGER">{Bright Underline Magenta}</Property>
+        <Property name="COLOR_ARROW">{Bright Yellow}</Property>
+        <Property name="COLOR_MESSAGE">{Normal}</Property>
+
+        <Property name="TIME">%highlight{%d{HH:mm:ss}}${COLOR_TIME}</Property>
+        <Property name="LEVEL">%highlight{%level{WARN=WARNING}}${COLOR_LEVEL}</Property>
+        <Property name="THREAD">%style{%thread}${COLOR_THREAD}</Property>
+        <Property name="AT">%style{@}${COLOR_AT}</Property>
+        <Property name="LOGGER">%style{%logger{36}}${COLOR_LOGGER}</Property>
+        <Property name="ARROW">%style{~>}${COLOR_ARROW}</Property>
+        <Property name="MESSAGE">%style{%message}${COLOR_MESSAGE}</Property>
+
+        <Property name="LOG_PATTERN">${TIME} [${LEVEL}] ${LOGGER} ${ARROW} ${MESSAGE}%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}" disableAnsi="false" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console" />
+        </Root>
+        <Logger name="org.hibernate" level="warn" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>
+        <Logger name="org.hibernate.dialect" level="error" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>
+        <Logger name="com.mchange.v2" level="warn" additivity="false">
+            <AppenderRef ref="Console" />
+        </Logger>
+    </Loggers>
+</Configuration>

@@ -5,19 +5,16 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "discount_detail")
+@Table(name = __.DISCOUNT_DETAIL.DISCOUNT_DETAIL)
 public class DiscountDetail extends RelationshipDTO implements Serializable {
-    public static final String DISCOUNT_ID = ID + "." + DiscountDetailId.DISCOUNT;
-    public static final String PRODUCT_ID = ID + "." + DiscountDetailId.PRODUCT;
-    public static final String STATUS = "status";
-
     @EmbeddedId
     private DiscountDetailId id;
-    @Column(name = STATUS)
+    @Column(name = __.DISCOUNT_DETAIL.STATUS)
     private Boolean status;
 
     public DiscountDetail() {

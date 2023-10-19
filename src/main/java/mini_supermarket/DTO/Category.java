@@ -2,22 +2,19 @@ package mini_supermarket.DTO;
 
 import jakarta.persistence.*;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "category")
+@Table(name = __.CATEGORY.CATEGORY)
 public class Category extends EntityDTO implements Serializable {
-    public static final String CATEGORY_ID = "category_id";
-    public static final String NAME = "name";
-    public static final String QUANTITY = "quantity";
-
-    @Column(name = NAME)
+    @Column(name = __.CATEGORY.NAME)
     private String name;
-    @Column(name = QUANTITY)
+    @Column(name = __.CATEGORY.QUANTITY)
     private Integer quantity;
-    @OneToMany(mappedBy = Product.CATEGORY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.PRODUCT.CATEGORY, cascade = CascadeType.ALL)
     private Set<Product> products;
 
     public Category() {

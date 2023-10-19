@@ -3,40 +3,32 @@ package mini_supermarket.DTO;
 import jakarta.persistence.*;
 import mini_supermarket.utils.Date;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "customer")
+@Table(name = __.CUSTOMER.CUSTOMER)
 public class Customer extends EntityDTO implements Serializable {
-    public static final String CUSTOMER_ID = "customer_id";
-    public static final String NAME = "name";
-    public static final String GENDER = "gender";
-    public static final String BIRTHDATE = "birthdate";
-    public static final String PHONE = "phone";
-    public static final String MEMBERSHIP = "membership";
-    public static final String SIGNED_UP_DATE = "signed_up_date";
-    public static final String POINT = "point";
-
-    @Column(name = NAME)
+    @Column(name = __.CUSTOMER.NAME)
     private String name;
-    @Column(name = GENDER)
+    @Column(name = __.CUSTOMER.GENDER)
     private Boolean gender;
     @Type(mini_supermarket.utils.DateUserType.class)
-    @Column(name = BIRTHDATE)
+    @Column(name = __.CUSTOMER.BIRTHDATE)
     private Date birthdate;
-    @Column(name = PHONE)
+    @Column(name = __.CUSTOMER.PHONE)
     private String phone;
-    @Column(name = MEMBERSHIP)
+    @Column(name = __.CUSTOMER.MEMBERSHIP)
     private Boolean membership;
     @Type(mini_supermarket.utils.DateUserType.class)
-    @Column(name = SIGNED_UP_DATE)
+    @Column(name = __.CUSTOMER.SIGNED_UP_DATE)
     private Date signedUpDate;
-    @Column(name = POINT)
+    @Column(name = __.CUSTOMER.POINT)
     private Integer point;
-    @OneToMany(mappedBy = Receipt.CUSTOMER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.RECEIPT.CUSTOMER, cascade = CascadeType.ALL)
     private Set<Receipt> receipts;
 
     public Customer() {

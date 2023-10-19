@@ -2,21 +2,19 @@ package mini_supermarket.DTO;
 
 import jakarta.persistence.*;
 import mini_supermarket.utils.VNString;
+import mini_supermarket.utils.__;
 
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name = __.ROLE.ROLE)
 public class Role extends EntityDTO implements Serializable {
-    public static final String ROLE_ID = "role_id";
-    public static final String NAME = "name";
-
-    @Column(name = NAME)
+    @Column(name = __.ROLE.NAME)
     private String name;
-    @OneToMany(mappedBy = Account.ROLE, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.ACCOUNT.ROLE, cascade = CascadeType.ALL)
     private Set<Account> accounts;
-    @OneToMany(mappedBy = Decentralization.ROLE_ID, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = __.DECENTRALIZATION.ROLE, cascade = CascadeType.ALL)
     private Set<Decentralization> decentralizations;
 
     public Role() {

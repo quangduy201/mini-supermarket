@@ -3,23 +3,20 @@ package mini_supermarket.DTO;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import mini_supermarket.utils.__;
 
 import java.io.Serializable;
 
 @Embeddable
 public class DecentralizationId implements Serializable {
-    public static final String ROLE = "role";
-    public static final String MODULE = "module";
-    public static final String FUNCTION = "function";
-
     @ManyToOne
-    @JoinColumn(name = Role.ROLE_ID)
+    @JoinColumn(name = __.ROLE.COLUMN.ID)
     private Role role;
     @ManyToOne
-    @JoinColumn(name = Module.MODULE_ID)
+    @JoinColumn(name = __.MODULE.COLUMN.ID)
     private Module module;
     @ManyToOne
-    @JoinColumn(name = Function.FUNCTION_ID)
+    @JoinColumn(name = __.FUNCTION.COLUMN.ID)
     private Function function;
 
     public DecentralizationId() {
