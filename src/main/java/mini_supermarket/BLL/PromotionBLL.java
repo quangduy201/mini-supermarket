@@ -18,11 +18,11 @@ public class PromotionBLL extends EntityBLL<Promotion> {
         List<Promotion> promotions;
         promotions = findBy(__.PROMOTION.ID, promotion.getId());
         if (!promotions.isEmpty()) {
-            String message = I18n.getString("promotion.exists");
+            String message = I18n.get("messages", "promotion.exists");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("promotion.exists.not");
+        String message = I18n.get("messages", "promotion.exists.not");
         return new Pair<>(false, message);
     }
 }

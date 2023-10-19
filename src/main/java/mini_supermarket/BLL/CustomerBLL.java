@@ -8,7 +8,7 @@ import mini_supermarket.utils.__;
 
 import java.util.List;
 
-public class CustomerBLL extends EntityBLL<Customer>{
+public class CustomerBLL extends EntityBLL<Customer> {
     public CustomerBLL() {
         super(new CustomerDAL());
     }
@@ -18,7 +18,7 @@ public class CustomerBLL extends EntityBLL<Customer>{
         List<Customer> customers;
         customers = findBy(__.CUSTOMER.ID, customer.getId());
         if (!customers.isEmpty()) {
-            String message = I18n.getString("customer.exists");
+            String message = I18n.get("messages", "customer.exists");
             return new Pair<>(true, message);
         }
 
@@ -26,11 +26,11 @@ public class CustomerBLL extends EntityBLL<Customer>{
             __.CUSTOMER.PHONE, customer.getPhone(),
             __.CUSTOMER.DELETED, false);
         if (!customers.isEmpty()) {
-            String message = I18n.getString("customer.exists.phone", customer.getPhone());
+            String message = I18n.get("messages", "customer.exists.phone", customer.getPhone());
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("customer.exists.not");
+        String message = I18n.get("messages", "customer.exists.not");
         return new Pair<>(false, message);
     }
 }

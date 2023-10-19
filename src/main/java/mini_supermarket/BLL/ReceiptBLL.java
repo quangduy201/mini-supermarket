@@ -18,11 +18,11 @@ public class ReceiptBLL extends EntityBLL<Receipt> {
         List<Receipt> receipts;
         receipts = findBy(__.RECEIPT.ID, receipt.getId());
         if (!receipts.isEmpty()) {
-            String message = I18n.getString("receipt.exists");
+            String message = I18n.get("messages", "receipt.exists");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("receipt.exists.not");
+        String message = I18n.get("messages", "receipt.exists.not");
         return new Pair<>(false, message);
     }
 }

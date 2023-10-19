@@ -6,8 +6,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class RoundFrame {
-    private JFrame frame;
-    private JPanel contentPane;
+    private final JFrame frame;
+    private final JPanel contentPane;
     private Point mouseDownCompCoords = null;
 
     public RoundFrame() {

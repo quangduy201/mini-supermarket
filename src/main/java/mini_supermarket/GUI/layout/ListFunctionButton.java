@@ -1,10 +1,8 @@
 package mini_supermarket.GUI.layout;
 
-import mini_supermarket.GUI.Main;
 import mini_supermarket.GUI.component.Button;
 import mini_supermarket.GUI.component.FunctionButton;
 import mini_supermarket.GUI.component.RoundPanel;
-import mini_supermarket.main.MiniSupermarket;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,13 +13,12 @@ import java.awt.event.ComponentEvent;
 import java.util.List;
 
 public class ListFunctionButton extends RoundPanel {
-    private Button btnLeftArrow;
-    private Button btnRightArrow;
-    private RoundPanel mainFunction;
-    private RoundPanel ListFunction;
-
-    private RoundPanel panelFunction;
-    private JScrollPane scrollListFunc;
+    private final Button btnLeftArrow;
+    private final Button btnRightArrow;
+    private final RoundPanel mainFunction;
+    private final RoundPanel ListFunction;
+    private final RoundPanel panelFunction;
+    private final JScrollPane scrollListFunc;
 
     public ListFunctionButton(List<String> nameFunction) {
         super(20);
@@ -41,12 +38,12 @@ public class ListFunctionButton extends RoundPanel {
         btnRightArrow.setRadius(20);
 
         panelFunction = new RoundPanel(20);
-        panelFunction.setBackground(new Color(215,215,215));
+        panelFunction.setBackground(new Color(215, 215, 215));
 
-        mainFunction.setBackground(new Color(215,215,215));
+        mainFunction.setBackground(new Color(215, 215, 215));
         mainFunction.setLayout(new BorderLayout());
-        btnLeftArrow.setPreferredSize(new Dimension(30,100));
-        btnRightArrow.setPreferredSize(new Dimension(30,100));
+        btnLeftArrow.setPreferredSize(new Dimension(30, 100));
+        btnRightArrow.setPreferredSize(new Dimension(30, 100));
         mainFunction.add(panelFunction, BorderLayout.CENTER);
         mainFunction.add(btnLeftArrow, BorderLayout.WEST);
         mainFunction.add(btnRightArrow, BorderLayout.EAST);
@@ -54,9 +51,8 @@ public class ListFunctionButton extends RoundPanel {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-                int width= getSized();
-                System.out.println(width);
-                if(width < 550) {
+                int width = getSized();
+                if (width < 550) {
                     btnLeftArrow.setVisible(true);
                     btnRightArrow.setVisible(true);
                 } else {
@@ -71,10 +67,10 @@ public class ListFunctionButton extends RoundPanel {
         gbc.weighty = 1.0;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(3,3,2,2);
+        gbc.insets = new Insets(3, 3, 2, 2);
 
         ListFunction.setLayout(new FlowLayout(FlowLayout.LEFT));
-        ListFunction.setBackground(new Color(215,215,215));
+        ListFunction.setBackground(new Color(215, 215, 215));
         FunctionButton add = new FunctionButton("Thêm");
         FunctionButton edit = new FunctionButton("Sua");
         FunctionButton remove = new FunctionButton("Xoa");
@@ -91,7 +87,7 @@ public class ListFunctionButton extends RoundPanel {
 
         scrollListFunc = new JScrollPane(ListFunction);
         scrollListFunc.setBorder(null);
-        scrollListFunc.getViewport().setBackground(new Color(215,215,215));
+        scrollListFunc.getViewport().setBackground(new Color(215, 215, 215));
         scrollListFunc.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scrollListFunc.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
@@ -116,5 +112,8 @@ public class ListFunctionButton extends RoundPanel {
             }
         });
     }
-    public int getSized() {return this.getWidth();}
+
+    public int getSized() {
+        return this.getWidth();
+    }
 }

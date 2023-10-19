@@ -10,6 +10,7 @@ public class __ {
         public static final String STAFF = "staff";
         public static final String LAST_SIGNED_IN = "last_signed_in";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "account_id";
             public static final String USERNAME = "account_username";
@@ -25,6 +26,7 @@ public class __ {
         public static final String NAME = "name";
         public static final String SUPPLIER = "supplier";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "brand_id";
             public static final String NAME = "brand_name";
@@ -38,6 +40,7 @@ public class __ {
         public static final String NAME = "name";
         public static final String QUANTITY = "quantity";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "category_id";
             public static final String NAME = "category_name";
@@ -57,6 +60,7 @@ public class __ {
         public static final String SIGNED_UP_DATE = "signed_up_date";
         public static final String POINT = "point";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "customer_id";
             public static final String NAME = "customer_name";
@@ -75,6 +79,7 @@ public class __ {
         public static final String ROLE = "id.role";
         public static final String MODULE = "id.module";
         public static final String FUNCTION = "id.function";
+
         public static class COLUMN {
 
         }
@@ -88,6 +93,7 @@ public class __ {
         public static final String END_DATE = "end_date";
         public static final String STATUS = "status";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "discount_id";
             public static final String PERCENT = "discount_percent";
@@ -103,6 +109,7 @@ public class __ {
         public static final String DISCOUNT = "id.discount";
         public static final String PRODUCT = "id.product";
         public static final String STATUS = "status";
+
         public static class COLUMN {
             public static final String STATUS = "discount_detail_status";
         }
@@ -114,6 +121,7 @@ public class __ {
         public static final String SHIPMENT = "id.shipment";
         public static final String QUANTITY = "quantity";
         public static final String TOTAL = "total";
+
         public static class COLUMN {
             public static final String QUANTITY = "export_detail_quantity";
             public static final String TOTAL = "export_detail_total";
@@ -128,6 +136,7 @@ public class __ {
         public static final String TOTAL = "total";
         public static final String REASON = "reason";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "export_note_id";
             public static final String INVOICE_DATE = "export_note_invoice_date";
@@ -142,6 +151,7 @@ public class __ {
         public static final String ID = "id";
         public static final String NAME = "name";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "function_id";
             public static final String NAME = "function_name";
@@ -157,6 +167,7 @@ public class __ {
         public static final String TOTAL = "total";
         public static final String SUPPLIER = "supplier";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "import_note_id";
             public static final String RECEIVED_DATE = "import_note_received_date";
@@ -170,6 +181,7 @@ public class __ {
         public static final String ID = "id";
         public static final String NAME = "name";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "module_id";
             public static final String NAME = "module_name";
@@ -189,6 +201,7 @@ public class __ {
         public static final String IMAGE = "image";
         public static final String BARCODE = "barcode";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "product_id";
             public static final String NAME = "product_name";
@@ -208,6 +221,7 @@ public class __ {
         public static final String END_DATE = "end_date";
         public static final String STATUS = "status";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "promotion_id";
             public static final String START_DATE = "promotion_start_date";
@@ -222,6 +236,7 @@ public class __ {
         public static final String PROMOTION = "id.promotion";
         public static final String PRODUCT = "id.product";
         public static final String QUANTITY = "quantity";
+
         public static class COLUMN {
             public static final String QUANTITY = "promotion_gift_quantity";
         }
@@ -232,6 +247,7 @@ public class __ {
         public static final String PROMOTION = "id.promotion";
         public static final String PRODUCT = "id.product";
         public static final String QUANTITY = "quantity";
+
         public static class COLUMN {
             public static final String QUANTITY = "promotion_item_quantity";
         }
@@ -247,6 +263,7 @@ public class __ {
         public static final String RECEIVED = "received";
         public static final String EXCESS = "excess";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "receipt_id";
             public static final String INVOICE_DATE = "receipt_invoice_date";
@@ -265,6 +282,7 @@ public class __ {
         public static final String QUANTITY = "quantity";
         public static final String TOTAL = "total";
         public static final String PERCENT = "percent";
+
         public static class COLUMN {
             public static final String QUANTITY = "receipt_detail_quantity";
             public static final String TOTAL = "receipt_detail_total";
@@ -277,6 +295,7 @@ public class __ {
         public static final String ID = "id";
         public static final String NAME = "name";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "role_id";
             public static final String NAME = "role_name";
@@ -296,6 +315,7 @@ public class __ {
         public static final String SKU = "sku";
         public static final String IMPORT_NOTE = "importNote";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "shipment_id";
             public static final String UNIT_PRICE = "shipment_unit_price";
@@ -319,6 +339,7 @@ public class __ {
         public static final String EMAIL = "email";
         public static final String ENTRY_DATE = "entry_date";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "staff_id";
             public static final String NAME = "staff_name";
@@ -339,6 +360,7 @@ public class __ {
         public static final String AMOUNT = "amount";
         public static final String EXPENSES = "expenses";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "statistic_id";
             public static final String DATE = "statistic_date";
@@ -356,6 +378,7 @@ public class __ {
         public static final String ADDRESS = "address";
         public static final String EMAIL = "email";
         public static final String DELETED = "deleted";
+
         public static class COLUMN {
             public static final String ID = "supplier_id";
             public static final String NAME = "supplier_name";

@@ -44,11 +44,9 @@ public abstract class BaseBLL<DTO extends BaseDTO, ID extends Serializable> {
      * The method allows for flexible filtering of DTO objects by providing zero or more attribute-value pairs.
      *
      * @param attributes A variable number of attribute-value pairs to filter the DTO objects.
-     *                  Attributes should be defined as static fields in the __ class.
+     *                   Attributes should be defined as static fields in the __ class.
      * @return A list of DTO objects that match the specified attributes and their values.
-     *
-     * @example
-     * Here's an example of how to use the `findBy` method to retrieve a list of customers are members and are female:
+     * @example Here's an example of how to use the `findBy` method to retrieve a list of customers are members and are female:
      * <pre>
      * CustomerBLL customerBLL = new CustomerBLL();
      * List&lt;Customer&gt; customers = customerBLL.findBy(
@@ -73,9 +71,7 @@ public abstract class BaseBLL<DTO extends BaseDTO, ID extends Serializable> {
      * @param criteria A variable number of criteria to filter the DTO objects.
      *                 Attributes should be defined as static fields in the DTO class.
      * @return A list of DTO objects that match the specified criteria.
-     *
-     * @example
-     * Here's an example of how to use the `findByCriteria` method to retrieve a list of customers whose signed up date is between 01/01/2020 and today,
+     * @example Here's an example of how to use the `findByCriteria` method to retrieve a list of customers whose signed up date is between 01/01/2020 and today,
      * also their name contains "NGUYỄN". Then order them ascending by their birthdate:
      * <pre>
      * CustomerBLL customerBLL = new CustomerBLL();
@@ -98,11 +94,9 @@ public abstract class BaseBLL<DTO extends BaseDTO, ID extends Serializable> {
      * Searches for DTO objects in the database which are in the specific page of the pagination.
      *
      * @param pageNumber A specific page index.
-     * @param pageSize A number of DTO objects per page.
+     * @param pageSize   A number of DTO objects per page.
      * @return A list of DTO objects that are in a specific page of the pagination.
-     *
-     * @example
-     * Here's an example of how to use the `findByPage` method to retrieve a list of customers in the third page with the page size of 50 DTO objects:
+     * @example Here's an example of how to use the `findByPage` method to retrieve a list of customers in the third page with the page size of 50 DTO objects:
      * <pre>
      * CustomerBLL customerBLL = new CustomerBLL();
      * List&lt;Customer&gt; customers = customerBLL.findByPage(3, 50);
@@ -116,8 +110,6 @@ public abstract class BaseBLL<DTO extends BaseDTO, ID extends Serializable> {
      * Get all the DTO objects in the database
      *
      * @return A list of DTO objects
-     *
-     *
      */
     public List<DTO> findAll() {
         return DAL.getAll();
@@ -133,9 +125,7 @@ public abstract class BaseBLL<DTO extends BaseDTO, ID extends Serializable> {
      * @param columns    A variable number of column names to select from each DTO object.
      *                   If not provided, all available columns are selected.
      * @return A two-dimensional array representing the selected data from the DTO objects.
-     *
-     * @example
-     * Here's an example of how to use the `getData` method to retrieve specific columns
+     * @example Here's an example of how to use the `getData` method to retrieve specific columns
      * from a list of accounts:
      * <pre>
      * AccountBLL accountBLL = new AccountBLL();
@@ -184,9 +174,7 @@ public abstract class BaseBLL<DTO extends BaseDTO, ID extends Serializable> {
      * @param <R>  The type of the result returned by the function.
      * @return The result of executing the provided function on the DTO object.
      * @throws HibernateException If there is an issue with the Hibernate session.
-     *
-     * @example
-     * Here's an example of how to use the `doSomethingOn` method
+     * @example Here's an example of how to use the `doSomethingOn` method
      * to get all the products of Coca-Cola brand:
      * <pre>
      * BrandBLL brandBLL = new BrandBLL();

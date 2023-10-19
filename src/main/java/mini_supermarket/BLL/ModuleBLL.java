@@ -18,7 +18,7 @@ public class ModuleBLL extends EntityBLL<Module> {
         List<Module> modules;
         modules = findBy(__.MODULE.ID, module.getId());
         if (!modules.isEmpty()) {
-            String message = I18n.getString("module.exists");
+            String message = I18n.get("messages", "module.exists");
             return new Pair<>(true, message);
         }
 
@@ -26,11 +26,11 @@ public class ModuleBLL extends EntityBLL<Module> {
             __.MODULE.NAME, module.getName(),
             __.MODULE.DELETED, false);
         if (!modules.isEmpty()) {
-            String message = I18n.getString("module.exists.name", module.getName());
+            String message = I18n.get("messages", "module.exists.name", module.getName());
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("module.exists.not");
+        String message = I18n.get("messages", "module.exists.not");
         return new Pair<>(false, message);
     }
 }

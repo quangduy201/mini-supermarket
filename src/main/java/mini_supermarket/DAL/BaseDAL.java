@@ -23,6 +23,13 @@ public class BaseDAL<DTO extends BaseDTO, ID extends Serializable> {
     protected HibernateCriteriaBuilder builder;
     protected JpaCriteriaQuery<DTO> criteriaQuery;
 
+    public BaseDAL(Class<DTO> type, List<String> columnNames) {
+        this.type = type;
+        this.columnNames = columnNames;
+        this.session = null;
+        this.builder = HibernateUtil.getSessionFactory().getCriteriaBuilder();
+    }
+
     public Class<DTO> getType() {
         return type;
     }
@@ -37,13 +44,6 @@ public class BaseDAL<DTO extends BaseDTO, ID extends Serializable> {
 
     public void setCriteriaQuery(JpaCriteriaQuery<DTO> criteriaQuery) {
         this.criteriaQuery = criteriaQuery;
-    }
-
-    public BaseDAL(Class<DTO> type, List<String> columnNames) {
-        this.type = type;
-        this.columnNames = columnNames;
-        this.session = null;
-        this.builder = HibernateUtil.getSessionFactory().getCriteriaBuilder();
     }
 
     public List<String> getColumnNames() {

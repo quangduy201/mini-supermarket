@@ -18,11 +18,11 @@ public class ExportNoteBLL extends EntityBLL<ExportNote> {
         List<ExportNote> exportNotes;
         exportNotes = findBy(__.EXPORT_NOTE.ID, exportNote.getInvoiceDate());
         if (!exportNotes.isEmpty()) {
-            String message = I18n.getString("export_note.exists");
+            String message = I18n.get("messages", "export_note.exists");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("export_note.exists.not");
+        String message = I18n.get("messages", "export_note.exists.not");
         return new Pair<>(false, message);
     }
 }

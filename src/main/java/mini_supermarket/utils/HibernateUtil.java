@@ -88,10 +88,14 @@ public class HibernateUtil {
 
         }
         if (SwingUtilities.isEventDispatchThread()) {
-            JOptionPane.showMessageDialog(MiniSupermarket.login, "Không thể kết nối đến cơ sở dữ liệu.\nVui lòng khởi động lại chương trình", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(MiniSupermarket.login,
+                I18n.get("frame", "error.database.restart"),
+                I18n.get("dialog", "title.error"), JOptionPane.ERROR_MESSAGE);
             MiniSupermarket.exit(1);
         }
-        JOptionPane.showMessageDialog(MiniSupermarket.splashScreen, "Không thể kết nối đến cơ sở dữ liệu.\nVui lòng cấu hình lại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(MiniSupermarket.splashScreen,
+            I18n.get("frame", "error.database"),
+            I18n.get("dialog", "title.error"), JOptionPane.ERROR_MESSAGE);
         Properties properties = Resource.loadProperties(Settings.DATABASE_FILE, false);
         if (properties == null) {
             Resource.copyResource(Settings.DATABASE_FILE, Settings.DATABASE_FILE, true);

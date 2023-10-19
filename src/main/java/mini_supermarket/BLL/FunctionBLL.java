@@ -18,7 +18,7 @@ public class FunctionBLL extends EntityBLL<Function> {
         List<Function> functions;
         functions = findBy(__.FUNCTION.ID, function.getId());
         if (!functions.isEmpty()) {
-            String message = I18n.getString("function.exists");
+            String message = I18n.get("messages", "function.exists");
             return new Pair<>(true, message);
         }
 
@@ -26,11 +26,11 @@ public class FunctionBLL extends EntityBLL<Function> {
             __.FUNCTION.NAME, function.getName(),
             __.FUNCTION.DELETED, false);
         if (!functions.isEmpty()) {
-            String message = I18n.getString("function.exists.name", function.getName());
+            String message = I18n.get("messages", "function.exists.name", function.getName());
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("function.exists.not");
+        String message = I18n.get("messages", "function.exists.not");
         return new Pair<>(false, message);
     }
 }

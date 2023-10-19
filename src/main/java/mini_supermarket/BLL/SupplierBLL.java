@@ -18,7 +18,7 @@ public class SupplierBLL extends EntityBLL<Supplier> {
         List<Supplier> suppliers;
         suppliers = findBy(__.SUPPLIER.ID, supplier.getId());
         if (!suppliers.isEmpty()) {
-            String message = I18n.getString("supplier.exists");
+            String message = I18n.get("messages", "supplier.exists");
             return new Pair<>(true, message);
         }
 
@@ -26,7 +26,7 @@ public class SupplierBLL extends EntityBLL<Supplier> {
             __.SUPPLIER.NAME, supplier.getName(),
             __.SUPPLIER.DELETED, false);
         if (!suppliers.isEmpty()) {
-            String message = I18n.getString("supplier.exists.name");
+            String message = I18n.get("messages", "supplier.exists.name");
             return new Pair<>(true, message);
         }
 
@@ -34,11 +34,11 @@ public class SupplierBLL extends EntityBLL<Supplier> {
             __.SUPPLIER.PHONE, supplier.getPhone(),
             __.SUPPLIER.DELETED, false);
         if (!suppliers.isEmpty()) {
-            String message = I18n.getString("supplier.exists.phone");
+            String message = I18n.get("messages", "supplier.exists.phone");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("supplier.exists.not");
+        String message = I18n.get("messages", "supplier.exists.not");
         return new Pair<>(false, message);
     }
 }

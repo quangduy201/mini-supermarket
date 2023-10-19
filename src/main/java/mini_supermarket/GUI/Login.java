@@ -1,17 +1,16 @@
 package mini_supermarket.GUI;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-
 import mini_supermarket.BLL.AccountBLL;
 import mini_supermarket.main.MiniSupermarket;
 import mini_supermarket.utils.DateTime;
+import mini_supermarket.utils.I18n;
+import mini_supermarket.utils.Resource;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDateTime;
-
 
 public class Login extends JFrame {
     private JPanel contentPane;
@@ -26,6 +25,7 @@ public class Login extends JFrame {
     private JTextField jTextFieldUserName;
     private JPasswordField jTextFieldPassword;
     private JButton btLogin;
+
     public Login() {
         initComponents();
     }
@@ -38,7 +38,7 @@ public class Login extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                cancel();
+                exit();
             }
         });
 
@@ -54,12 +54,11 @@ public class Login extends JFrame {
         contentPane.add(header, BorderLayout.NORTH);
 
         lbBanner_Header = new JLabel();
-        lbBanner_Header.setSize(new Dimension(700, 100));
-        lbBanner_Header.setIcon(new FlatSVGIcon("img/banner_header.svg"));
+        lbBanner_Header.setIcon(Resource.loadSVGIcon("img/logo_full.svg", 650));
         lbBanner_Header.setHorizontalAlignment(SwingConstants.CENTER);
         header.add(lbBanner_Header, BorderLayout.CENTER);
 
-        lbLogin = new JLabel("Đăng Nhập", SwingConstants.CENTER);
+        lbLogin = new JLabel(I18n.get("frame", "login.form"), SwingConstants.CENTER);
         lbLogin.setBackground(new Color(0xF0F0F0FF));
         lbLogin.setForeground(new Color(0x028948));
         lbLogin.setFont(new Font("Lexend", Font.BOLD, 30));
@@ -73,26 +72,17 @@ public class Login extends JFrame {
         formLogin.setPreferredSize(new Dimension(500, 270));
         login.add(formLogin);
 
-        lbUsername = new JLabel("Tài khoản:", JLabel.LEFT);
+        lbUsername = new JLabel(I18n.get("frame", "login.username"), JLabel.LEFT);
         lbUsername.setForeground(new Color(0x018847));
         lbUsername.setPreferredSize(new Dimension(150, 50));
         lbUsername.setFont(new Font("Lexend", Font.BOLD, 15));
         formLogin.add(lbUsername);
 
         jTextFieldUserName = new JTextField();
-        jTextFieldUserName.setBackground(new Color(211,211,211));
+        jTextFieldUserName.setBackground(new Color(211, 211, 211));
         jTextFieldUserName.setPreferredSize(new Dimension(350, 40));
         jTextFieldUserName.setFont(new Font("open sans", Font.PLAIN, 15));
-        jTextFieldUserName.setText("Nhập tài khoản");
-        jTextFieldUserName.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent ignoredEvt) {
-                jTextFieldUserNameFocusGained(ignoredEvt);
-            }
-
-            public void focusLost(FocusEvent ignoredEvt) {
-                jTextFieldUserNameFocusLost(ignoredEvt);
-            }
-        });
+        jTextFieldUserName.putClientProperty("JTextField.placeholderText", I18n.get("frame", "login.username.placeholder"));
         jTextFieldUserName.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent keyEvent) {
                 if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER)
@@ -101,25 +91,16 @@ public class Login extends JFrame {
         });
         formLogin.add(jTextFieldUserName, "wrap,growx");
 
-        lbPassword = new JLabel("Mật khẩu:", JLabel.LEFT);
+        lbPassword = new JLabel(I18n.get("frame", "login.password"), JLabel.LEFT);
         lbPassword.setForeground(new Color(0x018847));
         lbPassword.setPreferredSize(new Dimension(150, 50));
         lbPassword.setFont(new Font("Lexend", Font.BOLD, 15));
         formLogin.add(lbPassword);
 
         jTextFieldPassword = new JPasswordField();
-        jTextFieldPassword.setBackground(new Color(211,211,211));
+        jTextFieldPassword.setBackground(new Color(211, 211, 211));
         jTextFieldPassword.setPreferredSize(new Dimension(350, 40));
-        jTextFieldPassword.setText("Password");
-        jTextFieldPassword.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent ignoredEvt) {
-                jTextFieldPasswordFocusGained(ignoredEvt);
-            }
-
-            public void focusLost(FocusEvent ignoredEvt) {
-                jTextFieldPasswordFocusLost(ignoredEvt);
-            }
-        });
+        jTextFieldPassword.putClientProperty("JTextField.placeholderText", I18n.get("frame", "login.password.placeholder"));
         jTextFieldPassword.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent keyEvent) {
                 if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER)
@@ -128,7 +109,7 @@ public class Login extends JFrame {
         });
         formLogin.add(jTextFieldPassword, "wrap,growx");
 
-        lbForgetPasswd = new JLabel("Quên mật khẩu?");
+        lbForgetPasswd = new JLabel(I18n.get("frame", "login.forgotten_password"));
         lbForgetPasswd.setFont(new Font("Lexend", Font.PLAIN, 12));
         lbForgetPasswd.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         lbForgetPasswd.addMouseListener(new MouseAdapter() {
@@ -141,14 +122,15 @@ public class Login extends JFrame {
             public void mouseExited(MouseEvent e) {
                 lbForgetPasswd.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
             }
+
             public void mousePressed(MouseEvent e) {
                 forgotPassword();
             }
         });
         formLogin.add(lbForgetPasswd, "span, right, wrap");
 
-        btLogin = new JButton("Đăng nhập");
-        btLogin.setBackground(new Color(0x018847));;
+        btLogin = new JButton(I18n.get("frame", "login.form"));
+        btLogin.setBackground(new Color(0x018847));
         btLogin.setForeground(new Color(0xFFFFFF));
         btLogin.setFont(new Font("Lexend", Font.BOLD, 15));
         btLogin.setPreferredSize(new Dimension(80, 50));
@@ -170,32 +152,6 @@ public class Login extends JFrame {
 
     private void forgotPassword() {
         new OTP();
-    }
-
-    private void jTextFieldUserNameFocusLost(FocusEvent ignoredEvt) {
-        if (jTextFieldUserName.getText().isEmpty()) {
-            jTextFieldUserName.setText("Nhập tài khoản");
-        }
-    }
-
-    private void jTextFieldUserNameFocusGained(FocusEvent ignoredEvt) {
-        if (jTextFieldUserName.getText().equals("Nhập tài khoản")) {
-            jTextFieldUserName.setText("");
-        }
-    }
-
-    private void jTextFieldPasswordFocusGained(FocusEvent ignoredEvt) {
-        String password = new String(jTextFieldPassword.getPassword());
-        if (password.equals("Password")) {
-            jTextFieldPassword.setText("");
-        }
-    }
-
-    private void jTextFieldPasswordFocusLost(FocusEvent ignoredEvt) {
-        String password = new String(jTextFieldPassword.getPassword());
-        if (password.isEmpty()) {
-            jTextFieldPassword.setText("Password");
-        }
     }
 
     public void login() {
@@ -220,7 +176,9 @@ public class Login extends JFrame {
             throw new RuntimeException(e);
         }
 
-        JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this,
+            I18n.get("frame", "login.success"),
+            I18n.get("dialog", "info"), JOptionPane.INFORMATION_MESSAGE);
 //        try {
 //            Thread thread = new Thread(() -> MiniSupermarket.homeGUI.setAccount(account));
 //            thread.start();
@@ -229,13 +187,17 @@ public class Login extends JFrame {
 //
 //        }
         dispose();
-
     }
 
-    private void cancel() {
-        String[] options = new String[]{"Huỷ", "Thoát chương trình"};
-        int choice = JOptionPane.showOptionDialog(null, "Bạn có muốn thoát chương trình?",
-            "Lỗi", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+    private void exit() {
+        String message = I18n.get("frame", "exit");
+        String title = I18n.get("dialog", "title.exit");
+        String[] options = new String[]{
+            I18n.get("dialog", "cancel"),
+            I18n.get("dialog", "exit")
+        };
+        int choice = JOptionPane.showOptionDialog(this, message, title,
+            JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1)
             MiniSupermarket.exit(1);
     }

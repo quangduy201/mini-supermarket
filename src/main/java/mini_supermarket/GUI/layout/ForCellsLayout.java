@@ -8,6 +8,46 @@ public class ForCellsLayout extends RoundPanel {
     private RoundPanel panel1;
     private RoundPanel panel2;
     private RoundPanel panel3;
+    private RoundPanel panel4;
+    private int sized = 10;
+
+    public ForCellsLayout(int radius) {
+        super();
+        this.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        panel1 = new RoundPanel(radius);
+        panel2 = new RoundPanel(radius);
+        panel3 = new RoundPanel(radius);
+        panel4 = new RoundPanel(radius);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(sized, sized, sized, sized);
+        gbc.weightx = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weighty = 1;
+        panel1.setBackground(new Color(215, 215, 215));
+        this.add(panel1, gbc);
+
+        gbc.insets = new Insets(sized, 0, sized, sized);
+        gbc.gridx = 1;
+        panel2.setBackground(new Color(215, 215, 215));
+        this.add(panel2, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.insets = new Insets(0, sized, sized, sized);
+        panel3.setBackground(new Color(215, 215, 215));
+        this.add(panel3, gbc);
+
+        gbc.insets = new Insets(0, 0, sized, sized);
+        gbc.gridx = 1;
+        panel4.setBackground(new Color(215, 215, 215));
+        this.add(panel4, gbc);
+    }
+
+    public ForCellsLayout() {
+        this(15);
+    }
 
     public RoundPanel getPanel1() {
         return panel1;
@@ -41,53 +81,12 @@ public class ForCellsLayout extends RoundPanel {
         this.panel4 = panel4;
     }
 
-    private RoundPanel panel4;
-    private int sized = 10;
-
     public int getSized() {
         return sized;
     }
 
     public void setSized(int sized) {
         this.sized = sized;
-    }
-
-    public ForCellsLayout(int radius) {
-        super();
-        this.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        panel1 = new RoundPanel(radius);
-        panel2 = new RoundPanel(radius);
-        panel3 = new RoundPanel(radius);
-        panel4 = new RoundPanel(radius);
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(sized,sized,sized,sized);
-        gbc.weightx = 1.0;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weighty = 1;
-        panel1.setBackground(new Color(215,215,215));
-        this.add(panel1, gbc);
-
-        gbc.insets = new Insets(sized,0,sized,sized);
-        gbc.gridx = 1;
-        panel2.setBackground(new Color(215,215,215));
-        this.add(panel2, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.insets = new Insets(0,sized,sized,sized);
-        panel3.setBackground(new Color(215,215,215));
-        this.add(panel3, gbc);
-
-        gbc.insets = new Insets(0,0,sized,sized);
-        gbc.gridx = 1;
-        panel4.setBackground(new Color(215,215,215));
-        this.add(panel4, gbc);
-    }
-
-    public ForCellsLayout() {
-        this( 15);
     }
 
 }

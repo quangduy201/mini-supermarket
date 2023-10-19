@@ -18,11 +18,11 @@ public class ImportNoteBLL extends EntityBLL<ImportNote> {
         List<ImportNote> importNotes;
         importNotes = findBy(__.IMPORT_NOTE.IMPORT_NOTE, importNote.getId());
         if (!importNotes.isEmpty()) {
-            String message = I18n.getString("import_note.exists");
+            String message = I18n.get("messages", "import_note.exists");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("import_note.exists.not");
+        String message = I18n.get("messages", "import_note.exists.not");
         return new Pair<>(false, message);
     }
 }

@@ -18,11 +18,11 @@ public class DiscountBLL extends EntityBLL<Discount> {
         List<Discount> discounts;
         discounts = findBy(__.DISCOUNT.ID, discount.getId());
         if (!discounts.isEmpty()) {
-            String message = I18n.getString("discount.exists");
+            String message = I18n.get("messages", "discount.exists");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("discount.exists.not");
+        String message = I18n.get("messages", "discount.exists.not");
         return new Pair<>(false, message);
     }
 }

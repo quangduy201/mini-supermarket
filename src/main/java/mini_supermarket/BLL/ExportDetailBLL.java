@@ -21,11 +21,11 @@ public class ExportDetailBLL extends RelationshipBLL<ExportDetail, ExportDetailI
             __.EXPORT_DETAIL.EXPORT_NOTE, exportDetail.getId().getExportNote(),
             __.EXPORT_DETAIL.SHIPMENT, exportDetail.getId().getShipment());
         if (!exportDetails.isEmpty()) {
-            String message = I18n.getString("export_detail.exists");
+            String message = I18n.get("messages", "export_detail.exists");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("export_detail.exists.not");
+        String message = I18n.get("messages", "export_detail.exists.not");
         return new Pair<>(false, message);
     }
 }

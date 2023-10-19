@@ -8,13 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CategoryGUI extends JPanel {
-    private ControlLayout mainCategory;
-
+    private final ControlLayout mainCategory;
+    private final RoundPanel panelFunction;
+    private final RoundPanel panelData;
     private LeftRightLayout layoutFormAndData;
-
-
-    private RoundPanel panelFunction;
-    private RoundPanel panelData;
 
     public CategoryGUI() {
         this.setLayout(new BorderLayout());

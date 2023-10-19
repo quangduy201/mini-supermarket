@@ -6,8 +6,8 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 
 class CustomSplitPaneDivider extends BasicSplitPaneDivider {
-    private Color dividerColor;
-    private int customDividerSize;
+    private final Color dividerColor;
+    private final int customDividerSize;
 
     public CustomSplitPaneDivider(BasicSplitPaneUI ui) {
         super(ui);

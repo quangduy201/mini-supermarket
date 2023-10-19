@@ -13,13 +13,13 @@ public class SmoothIcon extends ImageIcon {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2d = (Graphics2D)g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
 
         AffineTransform at = g2d.getTransform();
-        int scaleX = (int)(x * at.getScaleX());
-        int scaleY = (int)(y * at.getScaleY());
-        int offsetX = (int)(icon.getIconWidth() * (at.getScaleX() - 1) / 2);
-        int offsetY = (int)(icon.getIconHeight() * (at.getScaleY() - 1) / 2);
+        int scaleX = (int) (x * at.getScaleX());
+        int scaleY = (int) (y * at.getScaleY());
+        int offsetX = (int) (icon.getIconWidth() * (at.getScaleX() - 1) / 2);
+        int offsetY = (int) (icon.getIconHeight() * (at.getScaleY() - 1) / 2);
         int locationX = scaleX + offsetX;
         int locationY = scaleY + offsetY;
 

@@ -18,7 +18,7 @@ public class BrandBLL extends EntityBLL<Brand> {
         List<Brand> brands;
         brands = findBy(__.BRAND.ID, brand.getId());
         if (!brands.isEmpty()) {
-            String message = I18n.getString("brand.exists");
+            String message = I18n.get("messages", "brand.exists");
             return new Pair<>(true, message);
         }
 
@@ -26,11 +26,11 @@ public class BrandBLL extends EntityBLL<Brand> {
             __.BRAND.NAME, brand.getName(),
             __.BRAND.DELETED, false);
         if (!brands.isEmpty()) {
-            String message = I18n.getString("brand.exists.name", brand.getName());
+            String message = I18n.get("messages", "brand.exists.name", brand.getName());
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("brand.exists.not");
+        String message = I18n.get("messages", "brand.exists.not");
         return new Pair<>(false, message);
     }
 }

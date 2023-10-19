@@ -21,11 +21,11 @@ public class PromotionGiftBLL extends RelationshipBLL<PromotionGift, PromotionDe
             __.PROMOTION_GIFT.PROMOTION, promotionGift.getId().getPromotion(),
             __.PROMOTION_GIFT.PRODUCT, promotionGift.getId().getProduct());
         if (!promotionGifts.isEmpty()) {
-            String message = I18n.getString("promotion_gift.exists");
+            String message = I18n.get("messages", "promotion_gift.exists");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("promotion_gift.exists.not");
+        String message = I18n.get("messages", "promotion_gift.exists.not");
         return new Pair<>(false, message);
     }
 }

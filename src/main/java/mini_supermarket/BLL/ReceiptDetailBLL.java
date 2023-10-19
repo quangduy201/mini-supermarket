@@ -21,11 +21,11 @@ public class ReceiptDetailBLL extends RelationshipBLL<ReceiptDetail, ReceiptDeta
             __.RECEIPT_DETAIL.RECEIPT, receiptDetail.getId().getReceipt(),
             __.RECEIPT_DETAIL.PRODUCT, receiptDetail.getId().getProduct());
         if (!receiptDetails.isEmpty()) {
-            String message = I18n.getString("receipt_detail.exists");
+            String message = I18n.get("messages", "receipt_detail.exists");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("receipt_detail.exists.not");
+        String message = I18n.get("messages", "receipt_detail.exists.not");
         return new Pair<>(false, message);
     }
 }

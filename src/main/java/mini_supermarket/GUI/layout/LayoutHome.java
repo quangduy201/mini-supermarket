@@ -1,6 +1,5 @@
 package mini_supermarket.GUI.layout;
 
-import mini_supermarket.DTO.Statistic;
 import mini_supermarket.GUI.component.Button;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.module.*;
@@ -11,21 +10,22 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class LayoutHome extends BottomTopLayout {
-    private RoundPanel topPanel;
-    private RoundPanel bottomPanel;
-    private RoundPanel panelLogOut;
-    private RoundPanel panelListFunc;
-    private RoundPanel ListFunc;
-    private Button[] btnListFunc;
-    private JScrollPane scrollListFunc;
+    private final RoundPanel topPanel;
+    private final RoundPanel bottomPanel;
+    private final RoundPanel panelLogOut;
+    private final RoundPanel panelListFunc;
+    private final RoundPanel ListFunc;
+    private final Button[] btnListFunc;
+    private final JScrollPane scrollListFunc;
 
-    private RoundPanel rightHome;
+    private final RoundPanel rightHome;
 
-    private Button btnLogOut;
+    private final Button btnLogOut;
+
     public LayoutHome(RoundPanel rightHome) {
-        super(150,true,20,5);
+        super(150, true, 20, 5);
         this.rightHome = rightHome;
-        setBackground(new Color(240,240,240));
+        setBackground(new Color(240, 240, 240));
         topPanel = this.getTopPanel();
         bottomPanel = this.getBottomPanel();
         bottomPanel.setLayout(new GridBagLayout());
@@ -36,24 +36,24 @@ public class LayoutHome extends BottomTopLayout {
         gbc.weighty = 1.0;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        BottomTopLayout layoutFunction = new BottomTopLayout(50,false,20,5);
-        layoutFunction.layoutBackground(new Color(215,215,215));
+        BottomTopLayout layoutFunction = new BottomTopLayout(50, false, 20, 5);
+        layoutFunction.layoutBackground(new Color(215, 215, 215));
         bottomPanel.add(layoutFunction, gbc);
-        gbc.insets = new Insets(5,5,5,5);
+        gbc.insets = new Insets(5, 5, 5, 5);
         panelListFunc = layoutFunction.getTopPanel();
         panelLogOut = layoutFunction.getBottomPanel();
-        panelLogOut.setLayout(new FlowLayout(FlowLayout.CENTER,5,0));
+        panelLogOut.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
         panelListFunc.setLayout(new GridBagLayout());
         int y = 16; // số lượng chức năng'
 
         btnListFunc = new Button[y];
         ListFunc = new RoundPanel(20);
         ListFunc.setPreferredSize(new Dimension(210, (50 * y) + 10));
-        ListFunc.setLayout(new FlowLayout(FlowLayout.CENTER,0,5));
-        ListFunc.setBackground(new Color(215,215,215));
+        ListFunc.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
+        ListFunc.setBackground(new Color(215, 215, 215));
         scrollListFunc = new JScrollPane(ListFunc);
         scrollListFunc.setBorder(null);
-        scrollListFunc.getViewport().setBackground(new Color(215,215,215));
+        scrollListFunc.getViewport().setBackground(new Color(215, 215, 215));
         scrollListFunc.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollListFunc.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         for (int i = 0; i < y; i++) {
@@ -63,7 +63,7 @@ public class LayoutHome extends BottomTopLayout {
             btnListFunc[i].setColorClick(new Color(0xB0ADAD));
             btnListFunc[i].setRadius(20);
             btnListFunc[i].setBorderColor(new Color(0xF0F0F0));
-            btnListFunc[i].setPreferredSize(new Dimension(235,45));
+            btnListFunc[i].setPreferredSize(new Dimension(235, 45));
             int index = i;
             btnListFunc[i].addMouseListener(new MouseAdapter() {
                 @Override
@@ -76,9 +76,9 @@ public class LayoutHome extends BottomTopLayout {
         panelListFunc.add(scrollListFunc, gbc);
         btnLogOut = new Button();
         btnLogOut.setColor(new Color(0xFFFFFF));
-        btnLogOut.setColorOver(new Color(240,240,240));
+        btnLogOut.setColorOver(new Color(240, 240, 240));
         btnLogOut.setRadius(20);
-        btnLogOut.setPreferredSize(new Dimension(230,45));
+        btnLogOut.setPreferredSize(new Dimension(230, 45));
         btnLogOut.setBorderColor(new Color(0xF0F0F0));
         panelLogOut.add(btnLogOut);
         rightHome.add(new HomeGUI());

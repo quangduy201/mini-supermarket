@@ -31,8 +31,9 @@ public class BottomTopLayout extends RoundPanel {
         gbc.gridy = 1;
         this.add(bottomPanel, gbc);
     }
+
     public BottomTopLayout(double topRows, double bottomRows, int radius, int size) {
-        this(topRows,bottomRows,radius,size,size);
+        this(topRows, bottomRows, radius, size, size);
     }
 
     public BottomTopLayout(double topRows, double bottomRows) {

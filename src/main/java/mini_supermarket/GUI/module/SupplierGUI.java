@@ -8,13 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SupplierGUI extends JPanel {
-    private ControlLayout mainSupplier;
-
+    private final ControlLayout mainSupplier;
+    private final RoundPanel panelFunction;
+    private final RoundPanel panelData;
     private LeftRightLayout layoutFormAndData;
-
-
-    private RoundPanel panelFunction;
-    private RoundPanel panelData;
 
     public SupplierGUI() {
         this.setLayout(new BorderLayout());

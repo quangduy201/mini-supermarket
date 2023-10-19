@@ -6,7 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class WarehouseGUI extends JPanel {
-    private ControlLayout mainWarehouse;
+    private final ControlLayout mainWarehouse;
+
     public WarehouseGUI() {
         this.setLayout(new BorderLayout());
         mainWarehouse = new ControlLayout();

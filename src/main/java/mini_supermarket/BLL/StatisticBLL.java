@@ -18,7 +18,7 @@ public class StatisticBLL extends EntityBLL<Statistic> {
         List<Statistic> statistics;
         statistics = findBy(__.STATISTIC.ID, statistic.getId());
         if (!statistics.isEmpty()) {
-            String message = I18n.getString("statistic.exists");
+            String message = I18n.get("messages", "statistic.exists");
             return new Pair<>(true, message);
         }
 
@@ -26,11 +26,11 @@ public class StatisticBLL extends EntityBLL<Statistic> {
             __.STATISTIC.DATE, statistic.getDate(),
             __.STATISTIC.DELETED, false);
         if (!statistics.isEmpty()) {
-            String message = I18n.getString("statistic.exists.date");
+            String message = I18n.get("messages", "statistic.exists.date");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("statistic.exists.not");
+        String message = I18n.get("messages", "statistic.exists.not");
         return new Pair<>(false, message);
     }
 }

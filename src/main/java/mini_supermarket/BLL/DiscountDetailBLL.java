@@ -21,11 +21,11 @@ public class DiscountDetailBLL extends RelationshipBLL<DiscountDetail, DiscountD
             __.DISCOUNT_DETAIL.DISCOUNT, discountDetail.getId().getDiscount(),
             __.DISCOUNT_DETAIL.PRODUCT, discountDetail.getId().getProduct());
         if (!discountDetails.isEmpty()) {
-            String message = I18n.getString("discount_detail.exists");
+            String message = I18n.get("messages", "discount_detail.exists");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("discount_detail.exists.not");
+        String message = I18n.get("messages", "discount_detail.exists.not");
         return new Pair<>(false, message);
     }
 }

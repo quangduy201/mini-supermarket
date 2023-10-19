@@ -58,7 +58,8 @@ public class Password {
             byte[] encryptedData = cipher.doFinal(inputData);
 
             return Base64.getEncoder().encodeToString(encryptedData);
-        } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
+        } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException |
+                 IllegalBlockSizeException | NoSuchPaddingException e) {
             Log.error(Password.class, e.toString());
             return null;
         }
@@ -87,7 +88,8 @@ public class Password {
             byte[] decryptedDataBytes = cipher.doFinal(encryptedDataBytes);
 
             return new String(decryptedDataBytes, StandardCharsets.UTF_8);
-        } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
+        } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException |
+                 IllegalBlockSizeException | NoSuchPaddingException e) {
             Log.error(Password.class, e.toString());
             return null;
         }

@@ -18,7 +18,7 @@ public class StaffBLL extends EntityBLL<Staff> {
         List<Staff> staffs;
         staffs = findBy(__.STAFF.ID, staff.getId());
         if (!staffs.isEmpty()) {
-            String message = I18n.getString("staff.exists");
+            String message = I18n.get("messages", "staff.exists");
             return new Pair<>(true, message);
         }
 
@@ -26,11 +26,11 @@ public class StaffBLL extends EntityBLL<Staff> {
             __.STAFF.PHONE, staff.getPhone(),
             __.STAFF.DELETED, false);
         if (!staffs.isEmpty()) {
-            String message = I18n.getString("staff.exists.phone", staff.getPhone());
+            String message = I18n.get("messages", "staff.exists.phone", staff.getPhone());
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("staff.exists.not");
+        String message = I18n.get("messages", "staff.exists.not");
         return new Pair<>(false, message);
     }
 }

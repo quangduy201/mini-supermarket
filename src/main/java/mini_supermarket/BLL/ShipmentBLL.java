@@ -18,11 +18,11 @@ public class ShipmentBLL extends EntityBLL<Shipment> {
         List<Shipment> shipments;
         shipments = findBy(__.SHIPMENT.ID, shipment.getId());
         if (!shipments.isEmpty()) {
-            String message = I18n.getString("shipment.exists");
+            String message = I18n.get("messages", "shipment.exists");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("shipment.exists.not");
+        String message = I18n.get("messages", "shipment.exists.not");
         return new Pair<>(false, message);
     }
 }

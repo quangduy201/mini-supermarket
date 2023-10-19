@@ -18,7 +18,7 @@ public class ProductBLL extends EntityBLL<Product> {
         List<Product> products;
         products = findBy(__.PRODUCT.ID, product.getId());
         if (!products.isEmpty()) {
-            String message = I18n.getString("product.exists");
+            String message = I18n.get("messages", "product.exists");
             return new Pair<>(true, message);
         }
 
@@ -26,11 +26,11 @@ public class ProductBLL extends EntityBLL<Product> {
             __.PRODUCT.NAME, product.getName(),
             __.PRODUCT.DELETED, false);
         if (!products.isEmpty()) {
-            String message = I18n.getString("product.exists.name", product.getName());
+            String message = I18n.get("messages", "product.exists.name", product.getName());
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("product.exists.not");
+        String message = I18n.get("messages", "product.exists.not");
         return new Pair<>(false, message);
     }
 }

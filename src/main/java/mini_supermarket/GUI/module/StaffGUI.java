@@ -8,13 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class StaffGUI extends JPanel {
-    private ControlLayout mainStaff;
-
+    private final ControlLayout mainStaff;
+    private final RoundPanel panelFunction;
+    private final RoundPanel panelData;
     private LeftRightLayout layoutFormAndData;
-
-
-    private RoundPanel panelFunction;
-    private RoundPanel panelData;
 
     public StaffGUI() {
         this.setLayout(new BorderLayout());

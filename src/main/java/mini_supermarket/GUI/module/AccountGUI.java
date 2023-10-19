@@ -8,13 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AccountGUI extends JPanel {
-    private ControlLayout mainAccount;
-
+    private final ControlLayout mainAccount;
+    private final RoundPanel panelFunction;
+    private final RoundPanel panelData;
     private LeftRightLayout layoutFormAndData;
-
-
-    private RoundPanel panelFunction;
-    private RoundPanel panelData;
 
     public AccountGUI() {
         this.setLayout(new BorderLayout());

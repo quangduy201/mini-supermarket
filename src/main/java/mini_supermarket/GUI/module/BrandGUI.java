@@ -8,13 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BrandGUI extends JPanel {
-    private ControlLayout mainBrand;
-
+    private final ControlLayout mainBrand;
+    private final RoundPanel panelFunction;
+    private final RoundPanel panelData;
     private LeftRightLayout layoutFormAndData;
-
-
-    private RoundPanel panelFunction;
-    private RoundPanel panelData;
 
     public BrandGUI() {
         this.setLayout(new BorderLayout());

@@ -18,7 +18,7 @@ public class AccountBLL extends EntityBLL<Account> {
         List<Account> accounts;
         accounts = findBy(__.ACCOUNT.ID, account.getId());
         if (!accounts.isEmpty()) {
-            String message = I18n.getString("account.exists");
+            String message = I18n.get("messages", "account.exists");
             return new Pair<>(true, message);
         }
 
@@ -26,7 +26,7 @@ public class AccountBLL extends EntityBLL<Account> {
             __.ACCOUNT.USERNAME, account.getUsername(),
             __.ACCOUNT.DELETED, false);
         if (!accounts.isEmpty()) {
-            String message = I18n.getString("account.exists.username", account.getUsername());
+            String message = I18n.get("messages", "account.exists.username", account.getUsername());
             return new Pair<>(true, message);
         }
 
@@ -34,11 +34,11 @@ public class AccountBLL extends EntityBLL<Account> {
             __.ACCOUNT.STAFF, account.getStaff(),
             __.ACCOUNT.DELETED, false);
         if (!accounts.isEmpty()) {
-            String message = I18n.getString("account.exists.staff", account.getStaff().getName());
+            String message = I18n.get("messages", "account.exists.staff", account.getStaff().getName());
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("account.exists.not");
+        String message = I18n.get("messages", "account.exists.not");
         return new Pair<>(false, message);
     }
 }

@@ -10,7 +10,7 @@ public class LeftRightLayout extends RoundPanel {
     private RoundPanel leftContainer;
     private RoundPanel rightContainer;
 
-     public LeftRightLayout(double leftColumns, double rightColumns, int radius, int vgap, int size) {
+    public LeftRightLayout(double leftColumns, double rightColumns, int radius, int vgap, int size) {
         super(radius);
         this.setLayout(new GridLayout(1, 1, 0, 0));
         this.setLayout(new GridBagLayout());
@@ -29,8 +29,9 @@ public class LeftRightLayout extends RoundPanel {
         gbc.weightx = rightColumns;
         this.add(rightPanel, gbc);
     }
+
     public LeftRightLayout(double leftColumns, double rightColumns, int radius, int size) {
-       this(leftColumns, rightColumns,radius,size,size);
+        this(leftColumns, rightColumns, radius, size, size);
     }
 
     public LeftRightLayout(double leftColumns, double rightColumns) {

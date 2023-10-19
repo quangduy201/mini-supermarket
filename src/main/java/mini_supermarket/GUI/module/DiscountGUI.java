@@ -9,16 +9,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class DiscountGUI extends JPanel {
-    private ControlLayout mainDiscount;
+    private final ControlLayout mainDiscount;
 
-    private BottomTopLayout layoutDataDiscount;
-    private LeftRightLayout layoutFormAndData;
+    private final BottomTopLayout layoutDataDiscount;
+    private final LeftRightLayout layoutFormAndData;
 
 
-    private RoundPanel panelFunction;
-    private RoundPanel panelData;
-    private RoundPanel panelForm;
-    private RoundPanel panelDetailData;
+    private final RoundPanel panelFunction;
+    private final RoundPanel panelData;
+    private final RoundPanel panelForm;
+    private final RoundPanel panelDetailData;
 
     public DiscountGUI() {
         this.setLayout(new BorderLayout());
@@ -29,14 +29,14 @@ public class DiscountGUI extends JPanel {
         panelData = mainDiscount.getBottomPanel();
 
         panelData.setLayout(new BorderLayout());
-        layoutFormAndData = new LeftRightLayout(3,1 ,20,5,0);
+        layoutFormAndData = new LeftRightLayout(3, 1, 20, 5, 0);
         panelData.add(layoutFormAndData, BorderLayout.CENTER);
 
         panelDetailData = layoutFormAndData.getLeftPanel();
         panelForm = layoutFormAndData.getRightPanel();
 
         panelDetailData.setLayout(new BorderLayout());
-        layoutDataDiscount = new BottomTopLayout(1,1,20,5,0);
+        layoutDataDiscount = new BottomTopLayout(1, 1, 20, 5, 0);
         panelDetailData.add(layoutDataDiscount, BorderLayout.CENTER);
 
     }

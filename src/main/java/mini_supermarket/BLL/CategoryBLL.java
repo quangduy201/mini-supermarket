@@ -18,7 +18,7 @@ public class CategoryBLL extends EntityBLL<Category> {
         List<Category> categories;
         categories = findBy(__.CATEGORY.ID, category.getId());
         if (!categories.isEmpty()) {
-            String message = I18n.getString("category.exists");
+            String message = I18n.get("messages", "category.exists");
             return new Pair<>(true, message);
         }
 
@@ -26,11 +26,11 @@ public class CategoryBLL extends EntityBLL<Category> {
             __.CATEGORY.NAME, category.getName(),
             __.CATEGORY.DELETED, false);
         if (!categories.isEmpty()) {
-            String message = I18n.getString("category.exists.name", category.getName());
+            String message = I18n.get("messages", "category.exists.name", category.getName());
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("category.exists.not");
+        String message = I18n.get("messages", "category.exists.not");
         return new Pair<>(false, message);
     }
 }

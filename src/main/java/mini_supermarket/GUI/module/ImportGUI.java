@@ -8,13 +8,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ImportGUI extends JPanel {
-    private ControlLayout mainImport;
+    private final ControlLayout mainImport;
 
-    private LeftRightLayout layoutFormAndData;
+    private final LeftRightLayout layoutFormAndData;
 
 
-    private RoundPanel panelFunction;
-    private RoundPanel panelData;
+    private final RoundPanel panelFunction;
+    private final RoundPanel panelData;
     private RoundPanel panelForm;
     private RoundPanel panelDetailData;
 
@@ -27,7 +27,7 @@ public class ImportGUI extends JPanel {
         panelData = mainImport.getBottomPanel();
 
         panelData.setLayout(new BorderLayout());
-        layoutFormAndData = new LeftRightLayout(1,3 ,20,5,0);
+        layoutFormAndData = new LeftRightLayout(1, 3, 20, 5, 0);
         panelData.add(layoutFormAndData, BorderLayout.CENTER);
     }
 }

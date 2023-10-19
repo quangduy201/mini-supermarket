@@ -18,7 +18,7 @@ public class RoleBLL extends EntityBLL<Role> {
         List<Role> roles;
         roles = findBy(__.ROLE.ID, role.getId());
         if (!roles.isEmpty()) {
-            String message = I18n.getString("role.exists");
+            String message = I18n.get("messages", "role.exists");
             return new Pair<>(true, message);
         }
 
@@ -26,11 +26,11 @@ public class RoleBLL extends EntityBLL<Role> {
             __.ROLE.NAME, role.getName(),
             __.ROLE.DELETED, false);
         if (!roles.isEmpty()) {
-            String message = I18n.getString("role.exists.name");
+            String message = I18n.get("messages", "role.exists.name");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("role.exists.not");
+        String message = I18n.get("messages", "role.exists.not");
         return new Pair<>(false, message);
     }
 }

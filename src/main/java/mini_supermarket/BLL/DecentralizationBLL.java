@@ -22,11 +22,11 @@ public class DecentralizationBLL extends RelationshipBLL<Decentralization, Decen
             __.DECENTRALIZATION.MODULE, decentralization.getId().getModule(),
             __.DECENTRALIZATION.FUNCTION, decentralization.getId().getFunction());
         if (!decentralizations.isEmpty()) {
-            String message = I18n.getString("decentralization.exists");
+            String message = I18n.get("messages", "decentralization.exists");
             return new Pair<>(true, message);
         }
 
-        String message = I18n.getString("decentralization.exists.not");
+        String message = I18n.get("messages", "decentralization.exists.not");
         return new Pair<>(false, message);
     }
 }

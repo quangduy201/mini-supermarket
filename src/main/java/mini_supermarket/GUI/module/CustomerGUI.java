@@ -8,13 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CustomerGUI extends JPanel {
-    private ControlLayout mainCustomer;
-
+    private final ControlLayout mainCustomer;
+    private final RoundPanel panelFunction;
+    private final RoundPanel panelData;
     private LeftRightLayout layoutFormAndData;
-
-
-    private RoundPanel panelFunction;
-    private RoundPanel panelData;
 
     public CustomerGUI() {
         this.setLayout(new BorderLayout());

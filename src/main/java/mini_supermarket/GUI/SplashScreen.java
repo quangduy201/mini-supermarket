@@ -6,9 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SplashScreen extends JFrame {
-    private JPanel panel;
-    private JLabel image;
-    private JProgressBar progressBar;
+    private final JPanel panel;
+    private final JLabel image;
+    private final JProgressBar progressBar;
 
     public SplashScreen() {
         panel = new JPanel();
@@ -18,7 +18,7 @@ public class SplashScreen extends JFrame {
         panel.setLayout(new BorderLayout());
         panel.setBackground(new Color(0x008848));
 
-        image.setIcon(Resource.loadSmoothIcon("img/logo.png", 400));
+        image.setIcon(Resource.loadSVGIcon("img/logo.svg"));
         panel.add(image, BorderLayout.CENTER);
 
         progressBar.setIndeterminate(true);

@@ -5,10 +5,13 @@ import mini_supermarket.GUI.Main;
 import mini_supermarket.GUI.SplashScreen;
 import mini_supermarket.utils.*;
 
+import java.time.format.DateTimeFormatter;
+
 public class MiniSupermarket {
     public static SplashScreen splashScreen;
     public static Login login;
     public static Main main;
+    public static Thread threadTime;
 
     public static void main(String[] args) {
         start();
@@ -16,13 +19,14 @@ public class MiniSupermarket {
 
     public static void start() {
         try {
+            Log.initialize();
+            UI.initialize();
+
             Thread initSettings = new Thread(() -> {
                 Settings.initialize();
+                I18n.initialize();
                 HibernateUtil.initialize();
             });
-            Log.initialize();
-            I18n.initialize();
-            UI.initialize();
             initSettings.start();
             MiniSupermarket.initialize();
             initSettings.join();
@@ -31,13 +35,21 @@ public class MiniSupermarket {
         }
         splashScreen.dispose();
         login.setVisible(true);
-        main.setVisible(true);
     }
 
     public static void initialize() {
         splashScreen = new SplashScreen();
         login = new Login();
         main = new Main();
+        threadTime = new Thread(() -> {
+            while (true) {
+                if (main == null)
+                    return;
+                DateTime now = DateTime.now();
+                main.setTime(now.dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss a")));
+            }
+        });
+        threadTime.start();
     }
 
     public static void exit(int status) {

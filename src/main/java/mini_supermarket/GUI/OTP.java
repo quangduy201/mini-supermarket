@@ -3,6 +3,7 @@ package mini_supermarket.GUI;
 import mini_supermarket.DTO.Account;
 import mini_supermarket.main.MiniSupermarket;
 import mini_supermarket.utils.DateTime;
+import mini_supermarket.utils.I18n;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -12,25 +13,22 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.time.LocalDateTime;
 
 public class OTP extends JDialog {
     private static final int OTP_LENGTH = 6;
-    private Account account;
-    private String email;
-    private JPanel otpEnterEmail;
-    private JPanel otpConfirmPanel;
-    private JPanel otpChangePassword;
+    private final Account account;
+    private final String email;
+    private final JPanel otpEnterEmail;
+    private final JPanel otpConfirmPanel;
+    private final JPanel otpChangePassword;
+    private final long seconds = 180;
     private int step;
-    private long seconds = 180;
     private Thread currentCountDownThread;
 
     public OTP() {
-        super((Frame) null, "Quên mật khẩu", true);
+        super((Frame) null, I18n.get("frame", "forgotten_password"), true);
 
         otpEnterEmail = new JPanel(new MigLayout());
         otpEnterEmail.setPreferredSize(new Dimension(500, 300));
@@ -51,7 +49,7 @@ public class OTP extends JDialog {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                cancel();
+                exit();
             }
         });
         setVisible(true);
@@ -60,9 +58,9 @@ public class OTP extends JDialog {
     private void showEnterEmail() {
         otpEnterEmail.removeAll();
 
-        JLabel lbEnterEmail = new JLabel("Nhập email của bạn",  SwingConstants.CENTER);
+        JLabel lbEnterEmail = new JLabel(I18n.get("frame", "forgotten_password.email"), SwingConstants.CENTER);
         lbEnterEmail.setFont(new Font("Arial", Font.BOLD, 20));
-        lbEnterEmail.setPreferredSize( new Dimension(500, 50));
+        lbEnterEmail.setPreferredSize(new Dimension(500, 50));
         otpEnterEmail.add(lbEnterEmail, "span, center");
 
         JTextField txtEnterEmail = new JTextField();
@@ -70,18 +68,18 @@ public class OTP extends JDialog {
         otpEnterEmail.add(txtEnterEmail, "span, center, wrap");
 
         JPanel panel = new JPanel(new FlowLayout());
-        panel.setBorder(new EmptyBorder(15,0,0,0));
+        panel.setBorder(new EmptyBorder(15, 0, 0, 0));
         otpEnterEmail.add(panel, "wrap,center");
 
         JButton[] buttons = new JButton[2];
-        buttons[0] = new JButton("Huỷ");
+        buttons[0] = new JButton(I18n.get("dialog", "cancel"));
         buttons[0].setBackground(new Color(0x018847));
         buttons[0].setForeground(new Color(0xFFFFFF));
         buttons[0].setFont(new Font("Arial", Font.BOLD, 12));
         buttons[0].addActionListener(e -> dispose());
         panel.add(buttons[0]);
 
-        buttons[1] = new JButton("Tiếp tục");
+        buttons[1] = new JButton(I18n.get("dialog", "next"));
         buttons[1].setBackground(new Color(0x018847));
         buttons[1].setForeground(new Color(0xFFFFFF));
         buttons[1].setFont(new Font("Arial", Font.BOLD, 12));
@@ -97,7 +95,7 @@ public class OTP extends JDialog {
         username.setPreferredSize(new Dimension(500, 32));
         otpConfirmPanel.add(username, "span,center");
 
-        JLabel label2 = new JLabel("Vui lòng nhập mã vào ô bên dưới.", SwingConstants.CENTER);
+        JLabel label2 = new JLabel(I18n.get("frame", "forgotten_password.otp"), SwingConstants.CENTER);
         label2.setFont(new Font("Arial", Font.BOLD, 14));
         label2.setPreferredSize(new Dimension(500, 32));
         otpConfirmPanel.add(label2, "span,center,wrap");
@@ -133,12 +131,12 @@ public class OTP extends JDialog {
         otpConfirmPanel.add(nothing, "wrap,center");
 
         JPanel panel = new JPanel(new FlowLayout());
-        panel.setBorder(new EmptyBorder(15,0,0,0));
+        panel.setBorder(new EmptyBorder(15, 0, 0, 0));
         otpConfirmPanel.add(panel, "wrap,center");
 
         JButton[] buttons = new JButton[3];
         buttons[0] = new JButton();
-        buttons[0].setText("Gửi lại");
+        buttons[0].setText(I18n.get("dialog", "resend"));
         buttons[0].setFont(new Font("Arial", Font.PLAIN, 12));
         buttons[0].setBackground(new Color(0x018847));
         buttons[0].setForeground(new Color(0xFFFFFF));
@@ -148,7 +146,7 @@ public class OTP extends JDialog {
         panel.add(buttons[0]);
 
         buttons[1] = new JButton();
-        buttons[1].setText("Quay lại");
+        buttons[1].setText(I18n.get("dialog", "back"));
         buttons[1].setFont(new Font("Arial", Font.PLAIN, 12));
         buttons[1].setBackground(new Color(0x018847));
         buttons[1].setForeground(new Color(0xFFFFFF));
@@ -156,7 +154,7 @@ public class OTP extends JDialog {
         panel.add(buttons[1]);
 
         buttons[2] = new JButton();
-        buttons[2].setText("Hủy");
+        buttons[2].setText(I18n.get("dialog", "cancel"));
         buttons[2].setFont(new Font("Arial", Font.PLAIN, 12));
         buttons[2].setBackground(new Color(0x018847));
         buttons[2].setForeground(new Color(0xFFFFFF));
@@ -167,12 +165,12 @@ public class OTP extends JDialog {
     }
 
     private void showChangePassword() {
-        JLabel title = new JLabel("Vui lòng đổi lại mật khẩu", SwingConstants.CENTER);
+        JLabel title = new JLabel(I18n.get("frame", "forgotten_password.change_password"), SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 20));
         title.setPreferredSize(new Dimension(500, 50));
         otpChangePassword.add(title, "span,center");
 
-        JLabel label1 = new JLabel("Nhập mật khẩu mới", SwingConstants.CENTER);
+        JLabel label1 = new JLabel(I18n.get("frame", "forgotten_password.new_password"), SwingConstants.CENTER);
         label1.setFont(new Font("Arial", Font.BOLD, 14));
         label1.setPreferredSize(new Dimension(200, 32));
         otpChangePassword.add(label1, "span,center,wrap");
@@ -189,7 +187,7 @@ public class OTP extends JDialog {
         });
         otpChangePassword.add(passwordField1, "span,center,wrap");
 
-        JLabel label2 = new JLabel("Nhập lại mật khẩu", SwingConstants.CENTER);
+        JLabel label2 = new JLabel(I18n.get("frame", "forgotten_password.reenter"), SwingConstants.CENTER);
         label2.setFont(new Font("Arial", Font.BOLD, 14));
         label2.setPreferredSize(new Dimension(200, 32));
         otpChangePassword.add(label2, "span,center,wrap");
@@ -204,12 +202,12 @@ public class OTP extends JDialog {
         otpChangePassword.add(passwordField2, "span,center,wrap");
 
         JPanel panel = new JPanel(new FlowLayout());
-        panel.setBorder(new EmptyBorder(15,0,0,0));
+        panel.setBorder(new EmptyBorder(15, 0, 0, 0));
         otpChangePassword.add(panel, "span,center,wrap");
 
         JButton[] buttons = new JButton[2];
         buttons[0] = new JButton();
-        buttons[0].setText("Xác nhận");
+        buttons[0].setText(I18n.get("dialog", "confirm"));
         buttons[0].setFont(new Font("Arial", Font.PLAIN, 12));
         buttons[0].setBackground(new Color(0x018847));
         buttons[0].setForeground(new Color(0xFFFFFF));
@@ -221,7 +219,7 @@ public class OTP extends JDialog {
         panel.add(buttons[0]);
 
         buttons[1] = new JButton();
-        buttons[1].setText("Hủy");
+        buttons[1].setText(I18n.get("dialog", "cancel"));
         buttons[1].setFont(new Font("Arial", Font.PLAIN, 12));
         buttons[1].setBackground(new Color(0x018847));
         buttons[1].setForeground(new Color(0xFFFFFF));
@@ -229,21 +227,34 @@ public class OTP extends JDialog {
         panel.add(buttons[1]);
     }
 
-
-    private void cancel() {
-        String[] options = new String[]{"Huỷ", "Thoát chương trình"};
-        int choice = JOptionPane.showOptionDialog(null, "Bạn có muốn thoát chương trình?",
-            "Lỗi", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+    private void exit() {
+        String message = I18n.get("frame", "exit.forgotten_password");
+        String title = I18n.get("dialog", "title.warning");
+        String[] options = new String[]{
+            I18n.get("dialog", "back"),
+            I18n.get("dialog", "exit")
+        };
+        int choice = JOptionPane.showOptionDialog(null, message, title,
+            JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
         if (choice == 1)
-            MiniSupermarket.exit(1);
+            dispose();
     }
 
-    private void toStep(int step){
+    private void toStep(int step) {
         JPanel panel = new JPanel();
         switch (step) {
-            case 1 -> { showEnterEmail(); panel = otpEnterEmail; }
-            case 2 -> { showConfirmPanel(); panel = otpConfirmPanel; }
-            case 3 -> { showChangePassword(); panel = otpChangePassword; }
+            case 1 -> {
+                showEnterEmail();
+                panel = otpEnterEmail;
+            }
+            case 2 -> {
+                showConfirmPanel();
+                panel = otpConfirmPanel;
+            }
+            case 3 -> {
+                showChangePassword();
+                panel = otpChangePassword;
+            }
         }
         setContentPane(panel);
         repaint();
@@ -255,7 +266,7 @@ public class OTP extends JDialog {
             currentCountDownThread.interrupt();
         currentCountDownThread = new Thread(() -> {
 //            activeOtp = Email.getOTP();
-            nothing.setText("Hệ thống đang gửi mã OTP...");
+            nothing.setText(I18n.get("frame", "forgotten_password.sending_otp"));
 //            Email.sendOTP(email, "Đặt lại mật khẩu Bách Hoá Xanh", activeOtp);
             DateTime start = new DateTime();
             long temp = 0;
@@ -264,11 +275,10 @@ public class OTP extends JDialog {
                 nothing.setText("(" + (seconds - temp) + "s)");
             }
 //            activeOtp = "";
-            nothing.setText("Mã OTP đã hết thời gian hiệu lực vui lòng chọn gửi lại.");
+            nothing.setText(I18n.get("frame", "forgotten_password.expired"));
         });
         currentCountDownThread.start();
     }
-
 
     private void validateStep1(String text) {
         toStep(++step);
@@ -280,10 +290,5 @@ public class OTP extends JDialog {
 
     private void validateStep3(String password, String confirm) {
         this.dispose();
-    }
-    public static void main(String[] args) {
-//        System.out.println(LocalDateTime.now());
-//        System.out.println(DateTime.calculateTime(new DateTime(2023, 10, 14, 19, 51, 10, 0), DateTime.now()));
-        System.out.println(DateTime.parse("2023-10-15 00:33:53.947789"));
     }
 }
