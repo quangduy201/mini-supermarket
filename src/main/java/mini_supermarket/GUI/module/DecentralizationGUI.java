@@ -1,11 +1,13 @@
 package mini_supermarket.GUI.module;
 
+import mini_supermarket.DTO.Function;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.ControlLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class DecentralizationGUI extends JPanel {
     private final ControlLayout mainDecentralization;
@@ -18,9 +20,9 @@ public class DecentralizationGUI extends JPanel {
     private RoundPanel panelForm;
     private RoundPanel panelDetailData;
 
-    public DecentralizationGUI() {
+    public DecentralizationGUI(List<Function> functions) {
         this.setLayout(new BorderLayout());
-        mainDecentralization = new ControlLayout();
+        mainDecentralization = new ControlLayout(functions);
         this.add(mainDecentralization, BorderLayout.CENTER);
 
         panelFunction = mainDecentralization.getTopPanel();

@@ -1,14 +1,16 @@
 package mini_supermarket.GUI.module;
 
+import mini_supermarket.DTO.Function;
 import mini_supermarket.GUI.component.RoundPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class HomeGUI extends JPanel {
     private final RoundPanel home;
 
-    public HomeGUI() {
+    public HomeGUI(List<Function> functions) {
         this.setLayout(new GridBagLayout());
         home = new RoundPanel(20);
         home.setBackground(new Color(215, 215, 215));

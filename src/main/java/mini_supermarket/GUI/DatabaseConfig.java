@@ -117,7 +117,7 @@ public class DatabaseConfig extends JDialog {
             properties.setProperty("db.username", textFields[2].getText());
             String encryptedPassword = Password.encrypt(textFields[3].getText(), textFields[1].getText());
             properties.setProperty("db.password", encryptedPassword);
-            properties.store(outputStream, I18n.get("frame", "database_config"));
+            properties.store(outputStream, "Database configurations");
             Resource.setReadOnly(path, true);
             setEnabled(false);
             dispose();

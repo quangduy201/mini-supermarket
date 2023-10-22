@@ -1,14 +1,16 @@
 package mini_supermarket.GUI.module;
 
+import mini_supermarket.DTO.Function;
 import mini_supermarket.GUI.component.RoundPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class StatisticGUI extends JPanel {
     private final RoundPanel mainStatistic;
 
-    public StatisticGUI() {
+    public StatisticGUI(List<Function> functions) {
         this.setLayout(new GridBagLayout());
         mainStatistic = new RoundPanel(20);
         mainStatistic.setBackground(new Color(215, 215, 215));

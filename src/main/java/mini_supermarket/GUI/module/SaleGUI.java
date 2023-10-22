@@ -1,11 +1,13 @@
 package mini_supermarket.GUI.module;
 
+import mini_supermarket.DTO.Function;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.BottomTopLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class SaleGUI extends JPanel {
     private final LeftRightLayout layoutMainSale;
@@ -19,7 +21,7 @@ public class SaleGUI extends JPanel {
     private RoundPanel panelSearch;
     private RoundPanel panelDetail;
 
-    public SaleGUI() {
+    public SaleGUI(List<Function> functions) {
         this.setLayout(new BorderLayout());
         layoutMainSale = new LeftRightLayout(3, 1, 20, 5, 5);
         this.add(layoutMainSale, BorderLayout.CENTER);
@@ -37,7 +39,5 @@ public class SaleGUI extends JPanel {
         panelDetailProduct.setLayout(new BorderLayout());
         layoutInformation = new LeftRightLayout(1, 1, 20, 5, 0);
         panelDetailProduct.add(layoutInformation, BorderLayout.CENTER);
-
-
     }
 }

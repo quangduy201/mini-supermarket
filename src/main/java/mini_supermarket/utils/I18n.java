@@ -80,5 +80,10 @@ public class I18n {
         public Locale getLocale() {
             return locale;
         }
+
+        @Override
+        public String toString() {
+            return locale.getLanguage();
+        }
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 02, 2023 at 03:38 PM
+-- Generation Time: Oct 22, 2023 at 11:50 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -42,7 +42,16 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`id`, `username`, `password`, `role_id`, `staff_id`, `last_signed_in`, `deleted`) VALUES
-(1, 'admin', 'Admin123', 1, 1, '1000-01-01 00:00:00.000000', b'0');
+(1, 'admin', '$2a$12$s4TMkIcc10CTHaIwgfiQo.1VcQJt6dt0QnLfdlfspIpWJB8u.hkLu', 1, 1, '1000-01-01 00:00:00.000000', b'0'),
+(2, 'dungboi', '$2a$12$rBbvwRj7q1dtvEvD0tJvCuqlhk/J1gSaBsabbv.dXd4c5G8ZFY3Ze', 2, 2, '1000-01-01 00:00:00.000000', b'0'),
+(3, 'quangduy', '$2a$12$/odLRxEA.cA/TMTEejMlFeHTIIVw9YKocn4VQnt4H1oKVbDOXFEsa', 2, 3, '1000-01-01 00:00:00.000000', b'0'),
+(4, 'longbott', '$2a$12$Ullzt8ORJVZ3gsBuO/T0OuAuqGZQZmCGea9qXwA/OVUFjACGUP24m', 2, 4, '1000-01-01 00:00:00.000000', b'0'),
+(5, 'hoangminh', '$2a$12$JphZRAF58LOd/7K3jB.TM.3lCSweMY.JmPzB9nOF48UEhM4pUt.cy', 2, 5, '1000-01-01 00:00:00.000000', b'0'),
+(6, 'phuocsang', '$2a$12$/XftwDJ4LBTxO03ZEhyUOeD7v90LkjfyHf7RfuLn0HH3zF9umdc5y', 2, 6, '1000-01-01 00:00:00.000000', b'0'),
+(7, 'xuanmai', '$2a$12$rbUiS15k4wRYcH3DEzGg0uRf4KC/CdgRpammGZ6qKP0u8kXeLW6wO', 3, 7, '1000-01-01 00:00:00.000000', b'0'),
+(8, 'legiang', '$2a$12$9lo.GzVz7m4PMv3EXp5Wle/3Ei0hFVytw.hjZkM5lnSNUJ2lqN.UW', 3, 8, '1000-01-01 00:00:00.000000', b'0'),
+(9, 'vanlam', '$2a$12$/xxTbESg0iUyyGN9GNZCjOXXyZ0i.NjYSHdD0WvFJjycvGKRCJmz6', 4, 9, '1000-01-01 00:00:00.000000', b'0'),
+(10, 'xuanphuc', '$2a$12$zWUvS25bGEvEFCPPzlrADekPNg.garXS1IxasgmPWxPV2tcezl4uG', 4, 10, '1000-01-01 00:00:00.000000', b'0');
 
 -- --------------------------------------------------------
 
@@ -159,46 +168,74 @@ CREATE TABLE `decentralization` (
 
 INSERT INTO `decentralization` (`role_id`, `module_id`, `function_id`) VALUES
 (1, 1, 1),
+(1, 1, 2),
+(1, 1, 3),
+(1, 1, 4),
 (1, 2, 1),
 (1, 3, 1),
+(1, 3, 5),
 (1, 4, 1),
-(1, 4, 2),
-(1, 4, 3),
-(1, 4, 4),
 (1, 5, 1),
 (1, 5, 2),
 (1, 5, 3),
-(1, 5, 4),
 (1, 6, 1),
 (1, 6, 2),
+(1, 6, 3),
 (1, 7, 1),
-(1, 7, 2),
+(1, 7, 5),
+(1, 7, 6),
+(1, 7, 7),
 (1, 8, 1),
 (1, 8, 2),
+(1, 8, 5),
+(1, 8, 6),
+(1, 8, 7),
 (1, 9, 1),
 (1, 9, 2),
-(1, 9, 3),
-(1, 9, 4),
+(1, 9, 5),
+(1, 9, 6),
+(1, 9, 7),
 (1, 10, 1),
 (1, 10, 2),
 (1, 10, 3),
 (1, 10, 4),
+(1, 10, 5),
+(1, 10, 6),
+(1, 10, 7),
 (1, 11, 1),
 (1, 11, 2),
 (1, 11, 3),
 (1, 11, 4),
+(1, 11, 5),
+(1, 11, 6),
+(1, 11, 7),
 (1, 12, 1),
 (1, 12, 2),
 (1, 12, 3),
 (1, 12, 4),
+(1, 12, 5),
+(1, 12, 6),
+(1, 12, 7),
 (1, 13, 1),
 (1, 13, 2),
 (1, 13, 3),
 (1, 13, 4),
+(1, 13, 5),
+(1, 13, 6),
+(1, 13, 7),
 (1, 14, 1),
 (1, 14, 2),
 (1, 14, 3),
-(1, 14, 4);
+(1, 14, 4),
+(1, 14, 5),
+(1, 14, 6),
+(1, 14, 7),
+(1, 15, 1),
+(1, 15, 2),
+(1, 15, 3),
+(1, 15, 4),
+(1, 15, 6),
+(1, 15, 7);
 
 -- --------------------------------------------------------
 
@@ -230,6 +267,19 @@ CREATE TABLE `discount_detail` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `export_detail`
+--
+
+CREATE TABLE `export_detail` (
+  `export_note_id` bigint(20) NOT NULL,
+  `shipment_id` bigint(20) NOT NULL,
+  `quantity` double DEFAULT NULL,
+  `total` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `export_note`
 --
 
@@ -240,19 +290,6 @@ CREATE TABLE `export_note` (
   `total` double DEFAULT NULL,
   `reason` varchar(255) DEFAULT NULL,
   `deleted` bit(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `export_detail`
---
-
-CREATE TABLE `export_detail` (
-  `export_note_id` bigint(20) NOT NULL,
-  `shipment_id` bigint(20) NOT NULL,
-  `quantity` double DEFAULT NULL,
-  `total` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -272,10 +309,13 @@ CREATE TABLE `function` (
 --
 
 INSERT INTO `function` (`id`, `name`, `deleted`) VALUES
-(1, 'Xem', b'0'),
-(2, 'Thêm', b'0'),
-(3, 'Sửa', b'0'),
-(4, 'Xóa', b'0');
+(1, 'view', b'0'),
+(2, 'add', b'0'),
+(3, 'edit', b'0'),
+(4, 'remove', b'0'),
+(5, 'detail', b'0'),
+(6, 'excel', b'0'),
+(7, 'pdf', b'0');
 
 -- --------------------------------------------------------
 
@@ -309,20 +349,21 @@ CREATE TABLE `module` (
 --
 
 INSERT INTO `module` (`id`, `name`, `deleted`) VALUES
-(1, 'Quản lý bán hàng', b'0'),
-(2, 'Quản lý kho', b'0'),
-(3, 'Quản lý thống kê', b'0'),
-(4, 'Quản lý giảm giá', b'0'),
-(5, 'Quản lý khuyến mãi', b'0'),
-(6, 'Quản lý hóa đơn', b'0'),
-(7, 'Quản lý phiếu xuất', b'0'),
-(8, 'Quản lý phiếu nhập', b'0'),
-(9, 'Quản lý sản phẩm', b'0'),
-(10, 'Quản lý nhà cung cấp', b'0'),
-(11, 'Quản lý khách hàng', b'0'),
-(12, 'Quản lý nhân viên', b'0'),
-(13, 'Quản lý tài khoản', b'0'),
-(14, 'Quản lý phân quyền', b'0');
+(1, 'homepage', b'0'),
+(2, 'sale', b'0'),
+(3, 'warehouse', b'0'),
+(4, 'statistics', b'0'),
+(5, 'discounts', b'0'),
+(6, 'promotions', b'0'),
+(7, 'receipts', b'0'),
+(8, 'export_notes', b'0'),
+(9, 'import_notes', b'0'),
+(10, 'products', b'0'),
+(11, 'suppliers', b'0'),
+(12, 'customers', b'0'),
+(13, 'staffs', b'0'),
+(14, 'accounts', b'0'),
+(15, 'decentralization', b'0');
 
 -- --------------------------------------------------------
 
@@ -625,18 +666,18 @@ ALTER TABLE `discount_detail`
   ADD KEY `FK_PRODUCT` (`product_id`);
 
 --
--- Indexes for table `export_note`
---
-ALTER TABLE `export_note`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_STAFF1` (`staff_id`);
-
---
 -- Indexes for table `export_detail`
 --
 ALTER TABLE `export_detail`
   ADD PRIMARY KEY (`export_note_id`,`shipment_id`),
   ADD KEY `FK_SHIPMENT` (`shipment_id`);
+
+--
+-- Indexes for table `export_note`
+--
+ALTER TABLE `export_note`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_STAFF1` (`staff_id`);
 
 --
 -- Indexes for table `function`
@@ -741,7 +782,7 @@ ALTER TABLE `supplier`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `brand`
@@ -777,7 +818,7 @@ ALTER TABLE `export_note`
 -- AUTO_INCREMENT for table `function`
 --
 ALTER TABLE `function`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `import_note`
@@ -789,7 +830,7 @@ ALTER TABLE `import_note`
 -- AUTO_INCREMENT for table `module`
 --
 ALTER TABLE `module`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -872,17 +913,17 @@ ALTER TABLE `discount_detail`
   ADD CONSTRAINT `FK_PRODUCT` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`);
 
 --
--- Constraints for table `export_note`
---
-ALTER TABLE `export_note`
-  ADD CONSTRAINT `FK_STAFF1` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`);
-
---
 -- Constraints for table `export_detail`
 --
 ALTER TABLE `export_detail`
   ADD CONSTRAINT `FK_EXPORT_NOTE` FOREIGN KEY (`export_note_id`) REFERENCES `export_note` (`id`),
   ADD CONSTRAINT `FK_SHIPMENT` FOREIGN KEY (`shipment_id`) REFERENCES `shipment` (`id`);
+
+--
+-- Constraints for table `export_note`
+--
+ALTER TABLE `export_note`
+  ADD CONSTRAINT `FK_STAFF1` FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`);
 
 --
 -- Constraints for table `import_note`

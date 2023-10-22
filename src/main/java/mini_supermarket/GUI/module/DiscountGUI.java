@@ -1,5 +1,6 @@
 package mini_supermarket.GUI.module;
 
+import mini_supermarket.DTO.Function;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.BottomTopLayout;
 import mini_supermarket.GUI.layout.ControlLayout;
@@ -7,6 +8,7 @@ import mini_supermarket.GUI.layout.LeftRightLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class DiscountGUI extends JPanel {
     private final ControlLayout mainDiscount;
@@ -20,9 +22,9 @@ public class DiscountGUI extends JPanel {
     private final RoundPanel panelForm;
     private final RoundPanel panelDetailData;
 
-    public DiscountGUI() {
+    public DiscountGUI(List<Function> functions) {
         this.setLayout(new BorderLayout());
-        mainDiscount = new ControlLayout();
+        mainDiscount = new ControlLayout(functions);
         this.add(mainDiscount, BorderLayout.CENTER);
 
         panelFunction = mainDiscount.getTopPanel();

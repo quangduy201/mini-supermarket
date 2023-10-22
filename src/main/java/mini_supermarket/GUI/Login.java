@@ -1,29 +1,28 @@
 package mini_supermarket.GUI;
 
 import mini_supermarket.BLL.AccountBLL;
+import mini_supermarket.DTO.Account;
 import mini_supermarket.main.MiniSupermarket;
-import mini_supermarket.utils.DateTime;
-import mini_supermarket.utils.I18n;
-import mini_supermarket.utils.Resource;
+import mini_supermarket.utils.*;
 import net.miginfocom.swing.MigLayout;
 
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.time.LocalDateTime;
 
 public class Login extends JFrame {
     private JPanel contentPane;
     private JPanel header;
     private JPanel login;
     private JPanel formLogin;
-    private JLabel lbBanner_Header;
+    private JLabel lbFullLogo;
     private JLabel lbLogin;
     private JLabel lbUsername;
     private JLabel lbPassword;
     private JLabel lbForgetPasswd;
-    private JTextField jTextFieldUserName;
-    private JPasswordField jTextFieldPassword;
+    private JTextField txtUsername;
+    private JPasswordField txtPassword;
     private JButton btLogin;
 
     public Login() {
@@ -43,7 +42,6 @@ public class Login extends JFrame {
         });
 
         contentPane = new JPanel(new BorderLayout());
-//        contentPane.setBackground(new Color(0x02723A));
         setContentPane(contentPane);
 
         header = new JPanel(new BorderLayout());
@@ -53,13 +51,12 @@ public class Login extends JFrame {
         header.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentPane.add(header, BorderLayout.NORTH);
 
-        lbBanner_Header = new JLabel();
-        lbBanner_Header.setIcon(Resource.loadSVGIcon("img/logo_full.svg", 650));
-        lbBanner_Header.setHorizontalAlignment(SwingConstants.CENTER);
-        header.add(lbBanner_Header, BorderLayout.CENTER);
+        lbFullLogo = new JLabel();
+        lbFullLogo.setIcon(Resource.loadSVGIcon("img/logo_full.svg", 650));
+        lbFullLogo.setHorizontalAlignment(SwingConstants.CENTER);
+        header.add(lbFullLogo, BorderLayout.CENTER);
 
         lbLogin = new JLabel(I18n.get("frame", "login.form"), SwingConstants.CENTER);
-        lbLogin.setBackground(new Color(0xF0F0F0FF));
         lbLogin.setForeground(new Color(0x028948));
         lbLogin.setFont(new Font("Lexend", Font.BOLD, 30));
         lbLogin.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, new Color(0x028948)));
@@ -78,18 +75,12 @@ public class Login extends JFrame {
         lbUsername.setFont(new Font("Lexend", Font.BOLD, 15));
         formLogin.add(lbUsername);
 
-        jTextFieldUserName = new JTextField();
-        jTextFieldUserName.setBackground(new Color(211, 211, 211));
-        jTextFieldUserName.setPreferredSize(new Dimension(350, 40));
-        jTextFieldUserName.setFont(new Font("open sans", Font.PLAIN, 15));
-        jTextFieldUserName.putClientProperty("JTextField.placeholderText", I18n.get("frame", "login.username.placeholder"));
-        jTextFieldUserName.addKeyListener(new KeyAdapter() {
-            public void keyPressed(KeyEvent keyEvent) {
-                if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER)
-                    login();
-            }
-        });
-        formLogin.add(jTextFieldUserName, "wrap,growx");
+        txtUsername = new JTextField();
+        txtUsername.setPreferredSize(new Dimension(350, 40));
+        txtUsername.setFont(new Font("open sans", Font.PLAIN, 15));
+        txtUsername.putClientProperty("JTextField.placeholderText", I18n.get("frame", "login.username.placeholder"));
+        txtUsername.addActionListener(e -> login());
+        formLogin.add(txtUsername, "wrap,growx");
 
         lbPassword = new JLabel(I18n.get("frame", "login.password"), JLabel.LEFT);
         lbPassword.setForeground(new Color(0x018847));
@@ -97,17 +88,12 @@ public class Login extends JFrame {
         lbPassword.setFont(new Font("Lexend", Font.BOLD, 15));
         formLogin.add(lbPassword);
 
-        jTextFieldPassword = new JPasswordField();
-        jTextFieldPassword.setBackground(new Color(211, 211, 211));
-        jTextFieldPassword.setPreferredSize(new Dimension(350, 40));
-        jTextFieldPassword.putClientProperty("JTextField.placeholderText", I18n.get("frame", "login.password.placeholder"));
-        jTextFieldPassword.addKeyListener(new KeyAdapter() {
-            public void keyPressed(KeyEvent keyEvent) {
-                if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER)
-                    login();
-            }
-        });
-        formLogin.add(jTextFieldPassword, "wrap,growx");
+        txtPassword = new JPasswordField();
+        txtPassword.setPreferredSize(new Dimension(350, 40));
+        txtPassword.setFont(new Font("open sans", Font.PLAIN, 15));
+        txtPassword.putClientProperty("JTextField.placeholderText", I18n.get("frame", "login.password.placeholder"));
+        txtPassword.addActionListener(e -> login());
+        formLogin.add(txtPassword, "wrap,growx");
 
         lbForgetPasswd = new JLabel(I18n.get("frame", "login.forgotten_password"));
         lbForgetPasswd.setFont(new Font("Lexend", Font.PLAIN, 12));
@@ -134,19 +120,7 @@ public class Login extends JFrame {
         btLogin.setForeground(new Color(0xFFFFFF));
         btLogin.setFont(new Font("Lexend", Font.BOLD, 15));
         btLogin.setPreferredSize(new Dimension(80, 50));
-        btLogin.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                login();
-            }
-        });
-        btLogin.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER)
-                    login();
-            }
-        });
+        btLogin.addActionListener(e -> login());
         formLogin.add(btLogin, "span, center, wrap");
     }
 
@@ -154,39 +128,47 @@ public class Login extends JFrame {
         new OTP();
     }
 
-    public void login() {
-        String userName, passWord;
-        userName = jTextFieldUserName.getText();
-        passWord = new String(jTextFieldPassword.getPassword());
-        AccountBLL accountBLL = new AccountBLL();
-//        List<Account> accountList = accountBLL.findAccounts("username", userName);
-//        if (accountList.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Tài khoản không tồn tại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//            return;
-//        }
-//        if (!accountList.get(0).getPassword().equals(passWord)) {
-//            JOptionPane.showMessageDialog(this, "Mật khẩu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//            return;
-//        }
-//        Account account = accountList.get(0);
-        try {
-            DateTime now = new DateTime(LocalDateTime.now());
-            //updateAccountLast_signed_in
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public Pair<Account, String> validateLogin(String username, String password) {
+        Pair<Boolean, String> result;
+        result = AccountBLL.validate(__.ACCOUNT.USERNAME, username);
+        if (!result.getFirst())
+            return new Pair<>(null, I18n.get("frame", "login.failed.username"));
 
-        JOptionPane.showMessageDialog(this,
-            I18n.get("frame", "login.success"),
-            I18n.get("dialog", "info"), JOptionPane.INFORMATION_MESSAGE);
-//        try {
-//            Thread thread = new Thread(() -> MiniSupermarket.homeGUI.setAccount(account));
-//            thread.start();
-//            thread.join();
-//        } catch (Exception ignored) {
-//
-//        }
+        result = AccountBLL.validate(__.ACCOUNT.PASSWORD, password);
+        if (!result.getFirst())
+            return new Pair<>(null, I18n.get("frame", "login.failed.password"));
+
+        AccountBLL accountBLL = new AccountBLL();
+        List<Account> accountList = accountBLL.findBy(__.ACCOUNT.USERNAME, username);
+        if (accountList.isEmpty())
+            return new Pair<>(null, I18n.get("frame", "login.failed.username"));
+
+        Account account = accountList.get(0);
+        if (!Password.verifyPassword(password, account.getPassword()))
+            return new Pair<>(null, I18n.get("frame", "login.failed.password"));
+
+        return new Pair<>(account, I18n.get("frame", "login.success"));
+    }
+
+    public void login() {
+        String username = txtUsername.getText();
+        String password = new String(txtPassword.getPassword());
+        Pair<Account, String> result = validateLogin(username, password);
+        Account account = result.getFirst();
+        String message = result.getSecond();
+        if (result.getFirst() == null) {
+            String title = I18n.get("dialog", "title.error");
+            JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        account.setLastSignedIn(DateTime.now());
+        new AccountBLL().update(account);
+
+        String title = I18n.get("dialog", "title.info");
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
         dispose();
+        MiniSupermarket.main = new Main(account);
+        MiniSupermarket.main.setVisible(true);
     }
 
     private void exit() {

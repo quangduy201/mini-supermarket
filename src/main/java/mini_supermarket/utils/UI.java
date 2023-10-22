@@ -1,21 +1,24 @@
 package mini_supermarket.utils;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Enumeration;
+import java.util.*;
 import java.util.List;
 
 public class UI {
+    private static Theme theme;
+
     public static void initialize() {
-        FlatRobotoFont.install();
-        FlatLaf.setPreferredFontFamily(FlatRobotoFont.FAMILY);
-        FlatIntelliJLaf.setup();
+        UIManager.put("TitlePane.iconSize", new Dimension(25, 25));
+        UIManager.put("TitlePane.iconMargins", new Insets(3, 5, 0, 20));
+        UIManager.put("TitlePane.titleMargins", new Insets(3, 0, 0, 0));
+        UIManager.put("TitlePane.buttonSize", new Dimension(45, 35));
+        UIManager.put("MenuBar.selectionEmbeddedInsets", new Insets(20, 0, 0, 0));
         UIManager.put("Button.textIconGap", 10);
         UIManager.put("ScrollBar.thumbArc", 999);
         UIManager.put("ScrollBar.thumbInsets", new Insets(2, 2, 2, 2));
@@ -24,6 +27,53 @@ public class UI {
         UIManager.put("Table.showVerticalLines", false);
         UIManager.put("Table.showHorizontalLines", true);
         UIManager.put("TextComponent.arc", 5);
+        FlatRobotoFont.install();
+        FlatLaf.setPreferredFontFamily(FlatRobotoFont.FAMILY);
+        Properties properties = Resource.loadProperties(Settings.CONFIG_FILE, false);
+        if (properties == null) {
+            setCurrentTheme(Theme.LIGHT);
+            return;
+        }
+        String theme = properties.getProperty("theme");
+        if (theme == null || theme.equalsIgnoreCase("light"))
+            setCurrentTheme(Theme.LIGHT);
+        else
+            setCurrentTheme(Theme.DARK);
+    }
+
+    public static Theme getCurrentTheme() {
+        return theme;
+    }
+
+    public static void setCurrentTheme(Theme theme) {
+        UI.theme = theme;
+        FlatLaf.setup(theme.theme);
+    }
+
+    public enum Theme {
+        LIGHT(new FlatIntelliJLaf(), "light"),
+        DARK(new FlatDarculaLaf(), "dark");
+
+        private final FlatLaf theme;
+        private final String name;
+
+        Theme(FlatLaf theme, String name) {
+            this.theme = theme;
+            this.name = name;
+        }
+
+        public FlatLaf getTheme() {
+            return theme;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
     public static void main(String[] args) {

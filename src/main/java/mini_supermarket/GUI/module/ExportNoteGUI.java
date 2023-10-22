@@ -1,14 +1,16 @@
 package mini_supermarket.GUI.module;
 
+import mini_supermarket.DTO.Function;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.ControlLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
-public class BillGUI extends JPanel {
-    private final ControlLayout mainBill;
+public class ExportNoteGUI extends JPanel {
+    private final ControlLayout mainExport;
 
     private final LeftRightLayout layoutFormAndData;
 
@@ -18,13 +20,13 @@ public class BillGUI extends JPanel {
     private RoundPanel panelForm;
     private RoundPanel panelDetailData;
 
-    public BillGUI() {
+    public ExportNoteGUI(List<Function> functions) {
         this.setLayout(new BorderLayout());
-        mainBill = new ControlLayout();
-        this.add(mainBill, BorderLayout.CENTER);
+        mainExport = new ControlLayout(functions);
+        this.add(mainExport, BorderLayout.CENTER);
 
-        panelFunction = mainBill.getTopPanel();
-        panelData = mainBill.getBottomPanel();
+        panelFunction = mainExport.getTopPanel();
+        panelData = mainExport.getBottomPanel();
 
         panelData.setLayout(new BorderLayout());
         layoutFormAndData = new LeftRightLayout(1, 3, 20, 5, 0);
