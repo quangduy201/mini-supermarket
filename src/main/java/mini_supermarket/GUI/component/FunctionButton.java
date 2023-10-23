@@ -13,6 +13,7 @@ public class FunctionButton extends RoundPanel {
     public FunctionButton(String functionName) {
         super(20);
         setBackground(new Color(215, 215, 215));
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         setPreferredSize(new Dimension(80, 80));
         setLayout(new FlowLayout(FlowLayout.CENTER));
 

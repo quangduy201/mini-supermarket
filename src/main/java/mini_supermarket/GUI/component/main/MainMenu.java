@@ -1,8 +1,8 @@
 package mini_supermarket.GUI.component.main;
 
 import mini_supermarket.BLL.DecentralizationBLL;
-import mini_supermarket.DTO.*;
 import mini_supermarket.DTO.Module;
+import mini_supermarket.DTO.*;
 import mini_supermarket.GUI.component.Button;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.BottomTopLayout;
@@ -14,8 +14,6 @@ import mini_supermarket.utils.__;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +47,7 @@ public class MainMenu extends BottomTopLayout {
         btnLogout = new Button();
 
         getTopPanel().add(mainUserInfo);
+        getTopPanel().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
@@ -79,6 +78,7 @@ public class MainMenu extends BottomTopLayout {
             btnModules[i].setColor(new Color(243, 240, 240));
             btnModules[i].setColorOver(new Color(255, 255, 255));
             btnModules[i].setColorClick(new Color(0xB0ADAD));
+            btnModules[i].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             btnModules[i].setRadius(20);
             btnModules[i].setBorderColor(new Color(0xF0F0F0));
             btnModules[i].setPreferredSize(new Dimension(ITEM_WIDTH, ITEM_HEIGHT));
@@ -93,15 +93,11 @@ public class MainMenu extends BottomTopLayout {
         btnLogout.setText(I18n.get("frame", "main.logout"));
         btnLogout.setColor(new Color(0xFFFFFF));
         btnLogout.setColorOver(new Color(240, 240, 240));
+        btnLogout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnLogout.setRadius(20);
-        btnLogout.setPreferredSize(new Dimension(230, ITEM_HEIGHT));
         btnLogout.setBorderColor(new Color(0xF0F0F0));
-        btnLogout.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                MiniSupermarket.main.logout();
-            }
-        });
+        btnLogout.setPreferredSize(new Dimension(230, ITEM_HEIGHT));
+        btnLogout.addActionListener(e -> MiniSupermarket.main.logout());
         menuLayout.getBottomPanel().add(btnLogout);
     }
 
@@ -150,5 +146,6 @@ public class MainMenu extends BottomTopLayout {
         mainRightPanel.add(module);
         mainRightPanel.repaint();
         mainRightPanel.revalidate();
+        System.gc();
     }
 }

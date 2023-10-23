@@ -28,7 +28,8 @@ public class Promotion extends EntityDTO implements Serializable {
     public Promotion() {
     }
 
-    public Promotion(Date startDate, Date endDate, Boolean status) {
+    public Promotion(Long id, Date startDate, Date endDate, Boolean status) {
+        super(id);
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;

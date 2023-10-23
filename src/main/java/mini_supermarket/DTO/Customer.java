@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = __.CUSTOMER.CUSTOMER)
-public class Customer extends EntityDTO implements Serializable {
+public class Customer extends SafeEntityDTO implements Serializable {
     @Column(name = __.CUSTOMER.NAME)
     private String name;
     @Column(name = __.CUSTOMER.GENDER)
@@ -34,7 +34,8 @@ public class Customer extends EntityDTO implements Serializable {
     public Customer() {
     }
 
-    public Customer(String name, Boolean gender, Date birthdate, String phone, Boolean membership, Date signedUpDate, Integer point) {
+    public Customer(Long id, String name, Boolean gender, Date birthdate, String phone, Boolean membership, Date signedUpDate, Integer point) {
+        super(id);
         this.name = name;
         this.gender = gender;
         this.birthdate = birthdate;

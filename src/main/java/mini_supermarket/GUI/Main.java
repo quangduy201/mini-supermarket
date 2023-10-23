@@ -1,12 +1,14 @@
 package mini_supermarket.GUI;
 
-import mini_supermarket.DTO.*;
+import mini_supermarket.DTO.Account;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.component.main.MainMenu;
-import mini_supermarket.GUI.layout.BottomTopLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 import mini_supermarket.main.MiniSupermarket;
-import mini_supermarket.utils.*;
+import mini_supermarket.utils.DateTime;
+import mini_supermarket.utils.I18n;
+import mini_supermarket.utils.Resource;
+import mini_supermarket.utils.Settings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,11 +16,15 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Main extends JFrame {
     private JMenuBar menuBar;
     private JLabel lbTime;
+    private boolean running;
+    private Thread time;
     private LeftRightLayout mainLayout;
     private MainMenu mainMenu;
     private Account account;
@@ -60,6 +66,13 @@ public class Main extends JFrame {
         menuBar.add(lbTime);
         setJMenuBar(menuBar);
 
+        running = true;
+        time = new Thread(() -> {
+            while (running)
+                updateTimeLabel();
+        });
+        time.start();
+
         mainLayout = new LeftRightLayout(280, true, 20, 0);
         mainLayout.setBackground(new Color(240, 240, 240));
         this.add(mainLayout);
@@ -91,15 +104,28 @@ public class Main extends JFrame {
         });
     }
 
-    public void setTime(String time) {
-        lbTime.setText(time);
+    private void updateTimeLabel() {
+        try {
+            DateTime nextSecond = DateTime.now().plusSeconds(1);
+            nextSecond.setNano(0);
+            long sleepTime = DateTime.calculateTime(DateTime.now(), nextSecond, TimeUnit.MILLISECONDS);
+            if (sleepTime > 0)
+                Thread.sleep(sleepTime);
+            String time = nextSecond.dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss a"));
+            lbTime.setText(time);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void logout() {
+        running = false;
         setAccount(null);
-        dispose();
         MiniSupermarket.login = new Login();
+        dispose();
         MiniSupermarket.login.setVisible(true);
+        MiniSupermarket.main = null;
+        System.gc();
     }
 
     public void exit() {
@@ -116,6 +142,7 @@ public class Main extends JFrame {
         int choice = JOptionPane.showOptionDialog(this, panel, title,
             JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (choice == 1) {
+            running = false;
             if (checkBox.isSelected())
                 setAccount(null);
             MiniSupermarket.exit(1);

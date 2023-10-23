@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = __.ROLE.ROLE)
-public class Role extends EntityDTO implements Serializable {
+public class Role extends SafeEntityDTO implements Serializable {
     @Column(name = __.ROLE.NAME)
     private String name;
     @OneToMany(mappedBy = __.ACCOUNT.ROLE, cascade = CascadeType.ALL)
@@ -20,7 +20,8 @@ public class Role extends EntityDTO implements Serializable {
     public Role() {
     }
 
-    public Role(String name) {
+    public Role(Long id, String name) {
+        super(id);
         this.name = name;
     }
 

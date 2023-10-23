@@ -6,10 +6,13 @@ import mini_supermarket.main.MiniSupermarket;
 import mini_supermarket.utils.*;
 import net.miginfocom.swing.MigLayout;
 
-import java.util.List;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.List;
 
 public class Login extends JFrame {
     private JPanel contentPane;
@@ -166,9 +169,11 @@ public class Login extends JFrame {
 
         String title = I18n.get("dialog", "title.info");
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
-        dispose();
         MiniSupermarket.main = new Main(account);
+        dispose();
         MiniSupermarket.main.setVisible(true);
+        MiniSupermarket.login = null;
+        System.gc();
     }
 
     private void exit() {

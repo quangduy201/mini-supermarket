@@ -5,7 +5,7 @@ import mini_supermarket.utils.__;
 
 import java.util.List;
 
-public class RoleDAL extends EntityDAL<Role> {
+public class RoleDAL extends SafeEntityDAL<Role> {
     public RoleDAL() {
         super(Role.class, List.of(
             __.ROLE.COLUMN.ID,

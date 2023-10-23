@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2023 at 11:50 AM
+-- Generation Time: Oct 23, 2023 at 10:00 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -248,8 +248,7 @@ CREATE TABLE `discount` (
   `percent` double DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
-  `status` bit(1) DEFAULT NULL,
-  `deleted` bit(1) DEFAULT NULL
+  `status` bit(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -288,8 +287,7 @@ CREATE TABLE `export_note` (
   `staff_id` bigint(20) DEFAULT NULL,
   `invoice_date` datetime(6) DEFAULT NULL,
   `total` double DEFAULT NULL,
-  `reason` varchar(255) DEFAULT NULL,
-  `deleted` bit(1) DEFAULT NULL
+  `reason` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -300,22 +298,21 @@ CREATE TABLE `export_note` (
 
 CREATE TABLE `function` (
   `id` bigint(20) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `deleted` bit(1) DEFAULT NULL
+  `name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `function`
 --
 
-INSERT INTO `function` (`id`, `name`, `deleted`) VALUES
-(1, 'view', b'0'),
-(2, 'add', b'0'),
-(3, 'edit', b'0'),
-(4, 'remove', b'0'),
-(5, 'detail', b'0'),
-(6, 'excel', b'0'),
-(7, 'pdf', b'0');
+INSERT INTO `function` (`id`, `name`) VALUES
+(1, 'view'),
+(2, 'add'),
+(3, 'edit'),
+(4, 'remove'),
+(5, 'detail'),
+(6, 'excel'),
+(7, 'pdf');
 
 -- --------------------------------------------------------
 
@@ -328,8 +325,7 @@ CREATE TABLE `import_note` (
   `staff_id` bigint(20) DEFAULT NULL,
   `received_date` datetime(6) DEFAULT NULL,
   `total` double DEFAULT NULL,
-  `supplier_id` bigint(20) DEFAULT NULL,
-  `deleted` bit(1) DEFAULT NULL
+  `supplier_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -340,30 +336,29 @@ CREATE TABLE `import_note` (
 
 CREATE TABLE `module` (
   `id` bigint(20) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `deleted` bit(1) DEFAULT NULL
+  `name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `module`
 --
 
-INSERT INTO `module` (`id`, `name`, `deleted`) VALUES
-(1, 'homepage', b'0'),
-(2, 'sale', b'0'),
-(3, 'warehouse', b'0'),
-(4, 'statistics', b'0'),
-(5, 'discounts', b'0'),
-(6, 'promotions', b'0'),
-(7, 'receipts', b'0'),
-(8, 'export_notes', b'0'),
-(9, 'import_notes', b'0'),
-(10, 'products', b'0'),
-(11, 'suppliers', b'0'),
-(12, 'customers', b'0'),
-(13, 'staffs', b'0'),
-(14, 'accounts', b'0'),
-(15, 'decentralization', b'0');
+INSERT INTO `module` (`id`, `name`) VALUES
+(1, 'homepage'),
+(2, 'sale'),
+(3, 'warehouse'),
+(4, 'statistics'),
+(5, 'discounts'),
+(6, 'promotions'),
+(7, 'receipts'),
+(8, 'export_notes'),
+(9, 'import_notes'),
+(10, 'products'),
+(11, 'suppliers'),
+(12, 'customers'),
+(13, 'staffs'),
+(14, 'accounts'),
+(15, 'decentralization');
 
 -- --------------------------------------------------------
 
@@ -440,8 +435,7 @@ CREATE TABLE `promotion` (
   `id` bigint(20) NOT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
-  `status` bit(1) DEFAULT NULL,
-  `deleted` bit(1) DEFAULT NULL
+  `status` bit(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -481,8 +475,7 @@ CREATE TABLE `receipt` (
   `invoice_date` datetime(6) DEFAULT NULL,
   `total` double DEFAULT NULL,
   `received` double DEFAULT NULL,
-  `excess` double DEFAULT NULL,
-  `deleted` bit(1) DEFAULT NULL
+  `excess` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -536,8 +529,7 @@ CREATE TABLE `shipment` (
   `mfg` date DEFAULT NULL,
   `exp` date DEFAULT NULL,
   `sku` varchar(255) DEFAULT NULL,
-  `import_note_id` bigint(20) DEFAULT NULL,
-  `deleted` bit(1) DEFAULT NULL
+  `import_note_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -584,8 +576,7 @@ CREATE TABLE `statistic` (
   `id` bigint(20) NOT NULL,
   `date` date DEFAULT NULL,
   `amount` double DEFAULT NULL,
-  `expenses` double DEFAULT NULL,
-  `deleted` bit(1) DEFAULT NULL
+  `expenses` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

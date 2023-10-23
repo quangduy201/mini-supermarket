@@ -18,7 +18,8 @@ public class Module extends EntityDTO implements Serializable {
     public Module() {
     }
 
-    public Module(String name) {
+    public Module(Long id, String name) {
+        super(id);
         this.name = name;
     }
 

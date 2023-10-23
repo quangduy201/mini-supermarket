@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = __.SUPPLIER.SUPPLIER)
-public class Supplier extends EntityDTO implements Serializable {
+public class Supplier extends SafeEntityDTO implements Serializable {
     @Column(name = __.SUPPLIER.NAME)
     private String name;
     @Column(name = __.SUPPLIER.PHONE)
@@ -26,7 +26,8 @@ public class Supplier extends EntityDTO implements Serializable {
     public Supplier() {
     }
 
-    public Supplier(String name, String phone, String address, String email) {
+    public Supplier(Long id, String name, String phone, String address, String email) {
+        super(id);
         this.name = name;
         this.phone = phone;
         this.address = address;

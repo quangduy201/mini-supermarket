@@ -3,7 +3,6 @@ package mini_supermarket.utils;
 import mini_supermarket.BLL.AccountBLL;
 import mini_supermarket.DTO.Account;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
