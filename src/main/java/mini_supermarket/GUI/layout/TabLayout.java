@@ -1,10 +1,17 @@
 package mini_supermarket.GUI.layout;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class TabLayout {
     public static void main(String[] args) {
+        FlatRobotoFont.install();
+        FlatLaf.setPreferredFontFamily(FlatRobotoFont.FAMILY);
+        FlatIntelliJLaf.setup();
         JFrame frame = new JFrame("Example JTabbedPane");
         JTabbedPane tabbedPane = new JTabbedPane();
         UIManager.put("TabbedPane.selectedBackground", Color.white);
@@ -12,6 +19,15 @@ public class TabLayout {
         UIManager.put("TabbedPane.tabInsets", new Insets(20, 20, 20, 20));
         UIManager.put("TabbedPane.selected", Color.RED);
         UIManager.put("TabbedPane.contentAreaColor", Color.GRAY);
+
+        UIManager.put("Button.textIconGap", 10);
+        UIManager.put("ScrollBar.thumbArc", 999);
+        UIManager.put("ScrollBar.thumbInsets", new Insets(2, 2, 2, 2));
+        UIManager.put("PasswordField.showRevealButton", true);
+        UIManager.put("ProgressBar.cycleTime", 6000);
+        UIManager.put("Table.showVerticalLines", false);
+        UIManager.put("Table.showHorizontalLines", true);
+        UIManager.put("TextComponent.arc", 5);
         tabbedPane.setUI(new CustomTabbedPaneUI());
         tabbedPane.setOpaque(false);
         JPanel panel1 = new JPanel();

@@ -48,6 +48,7 @@ public class Main extends JFrame {
         });
 
         menuBar = new JMenuBar();
+        getRootPane().setBackground(new Color(215,215,215));
         lbTime = new JLabel("Hello");
 
         lbTime.setFont(new Font("Roboto", Font.PLAIN, 16));

@@ -34,7 +34,7 @@ public class MiniSupermarket {
             Log.error("Cannot initialize the application.");
         }
         splashScreen.dispose();
-        login.setVisible(true);
+        main.setVisible(true);
     }
 
     public static void initialize() {

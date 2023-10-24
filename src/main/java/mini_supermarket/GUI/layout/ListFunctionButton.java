@@ -47,6 +47,8 @@ public class ListFunctionButton extends RoundPanel {
         mainFunction.add(panelFunction, BorderLayout.CENTER);
         mainFunction.add(btnLeftArrow, BorderLayout.WEST);
         mainFunction.add(btnRightArrow, BorderLayout.EAST);
+        btnLeftArrow.setVisible(false);
+        btnRightArrow.setVisible(false);
         mainFunction.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
