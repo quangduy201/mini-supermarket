@@ -51,7 +51,7 @@ public class SaleGUI extends JPanel {
 
         panelProduct = layoutInformation.getLeftPanel();
         panelProduct.setLayout(new BorderLayout());
-        layoutSearchProduct = new BottomTopLayout(100, true, 20, 0);
+        layoutSearchProduct = new BottomTopLayout(50, true, 20, 0);
         layoutSearchProduct.layoutBackground(new Color(215,215,215));
         panelProduct.add(layoutSearchProduct, BorderLayout.CENTER);
 
@@ -71,12 +71,19 @@ public class SaleGUI extends JPanel {
         gbc.weighty = 1.0;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(5,0,0,0);
+        gbc.insets = new Insets(0,0,5,0);
         int y = 16; // số lượng sản phẩm'
         product = new RoundPanel[y];
         listProduct = new RoundPanel(20);
-        listProduct.setPreferredSize(new Dimension(210, (50 * y) + 10));
-        listProduct.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
+        GridBagConstraints gbcPanel = new GridBagConstraints();
+        gbcPanel.fill = GridBagConstraints.HORIZONTAL;
+        gbcPanel.weightx = 1.0;
+        gbcPanel.weighty = 1.0;
+        gbcPanel.gridx = 0;
+        gbcPanel.gridy = 0;
+        gbcPanel.insets = new Insets(0,0,5,0);
+        listProduct.setPreferredSize(new Dimension(400, (50 * y) + 10));
+        listProduct.setLayout(new GridBagLayout());
         listProduct.setBackground(new Color(215, 215, 215));
         scrollListProduct = new JScrollPane(listProduct);
         scrollListProduct.setBorder(null);
@@ -86,13 +93,13 @@ public class SaleGUI extends JPanel {
         for (int i = 0; i < y; i++) {
             product[i] = new RoundPanel(20);
             product[i].setRadius(20);
-//            product[i].setPreferredSize(new Dimension(200, 45));
-            listProduct.add(product[i]);
+            product[i].setPreferredSize(new Dimension(400, 45));
+            listProduct.add(product[i], gbcPanel);
+            gbcPanel.gridy++;
         }
 //        RoundPanel roundPanel = new RoundPanel(20);
 //        roundPanel.setLayout(new BorderLayout());
-//        roundPanel.add(scrollListProduct, BorderLayout.CENTER);
-//
+//        roundPanel.add(scrollListProduct, BorderLayout.CENTER)
         panelProduct.add(scrollListProduct, gbc);
     }
 }
