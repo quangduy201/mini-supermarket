@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends JFrame {
-    private static int FRAME_WIDTH = 1400;
-    private static int FRAME_HEIGHT = 810;
+    private static int frameWidth = 1400;
+    private static int frameHeight = 810;
     private JMenuBar menuBar;
     private JLabel lbTime;
     private boolean running;
@@ -35,19 +35,19 @@ public class Main extends JFrame {
     }
 
     public static int getFrameWidth() {
-        return FRAME_WIDTH;
+        return frameWidth;
     }
 
     public static void setFrameWidth(int frameWidth) {
-        FRAME_WIDTH = frameWidth;
+        frameWidth = frameWidth;
     }
 
     public static int getFrameHeight() {
-        return FRAME_HEIGHT;
+        return frameHeight;
     }
 
     public static void setFrameHeight(int frameHeight) {
-        FRAME_HEIGHT = frameHeight;
+        frameHeight = frameHeight;
     }
 
     public void setAccount(Account account) {
@@ -56,7 +56,7 @@ public class Main extends JFrame {
     }
 
     private void initComponents() {
-        setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        setSize(frameWidth, frameHeight);
         setTitle(I18n.get("frame", "main"));
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -92,6 +92,7 @@ public class Main extends JFrame {
         time.start();
 
         mainLayout = new LeftRightLayout(280, true, 0, 0);
+        mainLayout.layoutBackground(null);
         getContentPane().setBackground(new Color(255, 255, 255));
         getContentPane().add(mainLayout);
 
@@ -118,8 +119,8 @@ public class Main extends JFrame {
                 if (d.height < minD.height)
                     d.height = minD.height;
                 MiniSupermarket.main.setSize(d);
-                FRAME_WIDTH = d.width;
-                FRAME_HEIGHT = d.height;
+                frameWidth = d.width;
+                frameHeight = d.height;
             }
         });
     }

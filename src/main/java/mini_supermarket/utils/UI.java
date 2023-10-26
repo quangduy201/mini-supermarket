@@ -22,6 +22,7 @@ public class UI {
         UIManager.put("Button.textIconGap", 10);
         UIManager.put("ScrollBar.thumbArc", 999);
         UIManager.put("ScrollBar.thumbInsets", new Insets(2, 2, 2, 2));
+        UIManager.put("ScrollPane.smoothScrolling", true);
         UIManager.put("PasswordField.showRevealButton", true);
         UIManager.put("ProgressBar.cycleTime", 6000);
         UIManager.put("Table.showVerticalLines", false);
@@ -48,6 +49,11 @@ public class UI {
     public static void setCurrentTheme(Theme theme) {
         UI.theme = theme;
         FlatLaf.setup(theme.theme);
+        if (theme.theme.isDark()) {
+            UIManager.put("Panel.background", new Color(60, 63, 65));
+        } else {
+            UIManager.put("Panel.background", new Color(215, 215, 215));
+        }
     }
 
     public enum Theme {

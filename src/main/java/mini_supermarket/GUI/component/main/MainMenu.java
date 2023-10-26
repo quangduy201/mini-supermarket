@@ -31,9 +31,7 @@ public class MainMenu extends BottomTopLayout {
 
     public MainMenu(Account account) {
         super(120, true, 20, 5);
-        setBackground(new Color(240, 240, 240));
         getBottomPanel().setLayout(new GridBagLayout());
-        getBottomPanel().setBackground(new Color(0xF0F0F0));
 
         Pair<List<Module>, List<List<Function>>> result = getModulesAndFunctionsFromRole(account.getRole());
         List<Module> modules = result.getFirst();
@@ -55,14 +53,16 @@ public class MainMenu extends BottomTopLayout {
         gbc.weighty = 1.0;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        menuLayout.layoutBackground(new Color(215, 215, 215));
+//        menuLayout.layoutBackground(Color.BLUE, new Color(255, 0, 0));
         menuLayout.getBottomPanel().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
         menuLayout.getTopPanel().setLayout(new GridBagLayout());
         getBottomPanel().add(menuLayout, gbc);
 
         gbc.insets = new Insets(5, 5, 5, 5);
         scrollPane.setBorder(null);
-        scrollPane.getViewport().setBackground(new Color(215, 215, 215));
+        scrollPane.setBackground(null);
+        scrollPane.getViewport().setBackground(null);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(10);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         menuLayout.getTopPanel().add(scrollPane, gbc);
@@ -70,17 +70,16 @@ public class MainMenu extends BottomTopLayout {
         int height = ((ITEM_HEIGHT + VERTICAL_GAP) * (modules.size())) + 2 * VERTICAL_GAP;
         panelModules.setPreferredSize(new Dimension(WIDTH, height));
         panelModules.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 5));
-        panelModules.setBackground(new Color(215, 215, 215));
+        panelModules.setBackground(null);
         scrollPane.getViewport().add(panelModules);
 
         for (int i = 0; i < modules.size(); i++) {
             btnModules[i] = new Button();
             btnModules[i].setColor(new Color(243, 240, 240));
             btnModules[i].setColorOver(new Color(255, 255, 255));
-            btnModules[i].setColorClick(new Color(0xB0ADAD));
+            btnModules[i].setColorClick(new Color(176, 173, 173));
             btnModules[i].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             btnModules[i].setRadius(20);
-            btnModules[i].setBorderColor(new Color(0xF0F0F0));
             btnModules[i].setPreferredSize(new Dimension(ITEM_WIDTH, ITEM_HEIGHT));
             Module module = modules.get(i);
             List<Function> functions = function2D.get(i);
@@ -91,11 +90,10 @@ public class MainMenu extends BottomTopLayout {
         }
 
         btnLogout.setText(I18n.get("frame", "main.logout"));
-        btnLogout.setColor(new Color(0xFFFFFF));
-        btnLogout.setColorOver(new Color(240, 240, 240));
+        btnLogout.setColor(new Color(240, 240, 240));
+        btnLogout.setColorOver(new Color(150, 150, 150));
         btnLogout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnLogout.setRadius(20);
-        btnLogout.setBorderColor(new Color(0xF0F0F0));
         btnLogout.setPreferredSize(new Dimension(230, ITEM_HEIGHT));
         btnLogout.addActionListener(e -> MiniSupermarket.main.logout());
         menuLayout.getBottomPanel().add(btnLogout);

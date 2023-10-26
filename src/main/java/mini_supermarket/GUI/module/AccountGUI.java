@@ -5,23 +5,17 @@ import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.ControlLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
-public class AccountGUI extends JPanel {
-    private final ControlLayout mainAccount;
+public class AccountGUI extends ControlLayout {
     private final RoundPanel panelFunction;
     private final RoundPanel panelData;
     private LeftRightLayout layoutFormAndData;
 
     public AccountGUI(List<Function> functions) {
-        this.setLayout(new BorderLayout());
-        mainAccount = new ControlLayout(functions);
-        this.add(mainAccount, BorderLayout.CENTER);
+        super(functions);
+        panelFunction = getTopPanel();
 
-        panelFunction = mainAccount.getTopPanel();
-        panelData = mainAccount.getBottomPanel();
-
+        panelData = getBottomPanel();
     }
 }

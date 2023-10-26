@@ -2,6 +2,7 @@ package mini_supermarket.utils;
 
 import mini_supermarket.BLL.AccountBLL;
 import mini_supermarket.DTO.Account;
+import mini_supermarket.GUI.Main;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -51,6 +52,12 @@ public class Settings {
     public static void setTheme(UI.Theme theme) {
         UI.setCurrentTheme(theme);
         setConfiguration("theme", theme.toString());
+    }
+
+    public static void setFrameSize(int width, int height) {
+        Main.setFrameWidth(width);
+        Main.setFrameHeight(height);
+        setConfiguration("size", width + "," + height);
     }
 
     public static void setLanguage(I18n.Language language) {

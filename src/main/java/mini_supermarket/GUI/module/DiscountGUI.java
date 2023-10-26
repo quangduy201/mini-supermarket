@@ -7,17 +7,14 @@ import mini_supermarket.GUI.layout.BottomTopLayout;
 import mini_supermarket.GUI.layout.ControlLayout;
 import mini_supermarket.GUI.layout.LayoutForm;
 import mini_supermarket.GUI.layout.LeftRightLayout;
-import mini_supermarket.main.MiniSupermarket;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.List;
 
-public class DiscountGUI extends JPanel {
-    private final ControlLayout mainDiscount;
-
+public class DiscountGUI extends ControlLayout {
     private final BottomTopLayout layoutDataDiscount;
     private final LeftRightLayout layoutFormAndData;
 
@@ -29,25 +26,19 @@ public class DiscountGUI extends JPanel {
     private int totalHeightPanel = 0;
 
     public DiscountGUI(List<Function> functions) {
+        super(functions);
+        panelFunction = getTopPanel();
 
-        this.setLayout(new BorderLayout());
-        mainDiscount = new ControlLayout(functions);
-        this.add(mainDiscount, BorderLayout.CENTER);
-
-        panelFunction = mainDiscount.getTopPanel();
-        panelData = mainDiscount.getBottomPanel();
-
+        panelData = getBottomPanel();
+        panelData.setBackground(null);
         panelData.setLayout(new BorderLayout());
+
         layoutFormAndData = new LeftRightLayout(3, 1.2, 20, 5, 0);
         panelData.add(layoutFormAndData, BorderLayout.CENTER);
 
         panelDetailData = layoutFormAndData.getLeftPanel();
-        panelForm = layoutFormAndData.getRightPanel();
-//        panelForm.setBackground(new Color(1));
-//        panelForm.setLayout(new FlowLayout(FlowLayout.LEFT,0,0));
-//        panelForm.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
-
         panelDetailData.setLayout(new BorderLayout());
+
         layoutDataDiscount = new BottomTopLayout(1, 1, 20, 5, 0);
         panelDetailData.add(layoutDataDiscount, BorderLayout.CENTER);
 
@@ -76,7 +67,7 @@ public class DiscountGUI extends JPanel {
         layoutForm.add("Con meo:", jTextField8);
         layoutForm.add("Con meo:", jTextField9);
         totalHeightPanel = (layoutForm.getNumberAttribute() * layoutForm.getHeightFuncAndText());
-        int sizeHeight = Main.getFrameHeight() - 170;
+        int sizeHeight = Main.getFrameHeight() - 165;
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weighty = 1.0;
@@ -85,6 +76,7 @@ public class DiscountGUI extends JPanel {
         gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, sizeHeight -  totalHeightPanel, 5);
         gbc.anchor = GridBagConstraints.PAGE_START;
+        panelForm = layoutFormAndData.getRightPanel();
         panelForm.setLayout(new GridBagLayout());
         panelForm.add(layoutForm, gbc);
 
@@ -93,19 +85,14 @@ public class DiscountGUI extends JPanel {
             public void componentResized(ComponentEvent e) {
                 int sizeHeight = Main.getFrameHeight() - 165;
                 int distancePanel = sizeHeight - totalHeightPanel;
-                System.out.println(sizeHeight);
-                System.out.println(totalHeightPanel);
-                if (sizeHeight >= totalHeightPanel && totalHeightPanel != 0) {
-                    gbc.insets = new Insets(5, 5, sizeHeight - totalHeightPanel, 5);
-                    panelForm.add(layoutForm, gbc);
-                    panelForm.revalidate();
-                    panelForm.repaint();
+                if (distancePanel >= 0 && totalHeightPanel != 0) {
+                    gbc.insets = new Insets(5, 5, distancePanel, 5);
                 } else {
                     gbc.insets = new Insets(5, 5, 5, 5);
-                    panelForm.add(layoutForm, gbc);
-                    panelForm.revalidate();
-                    panelForm.repaint();
                 }
+                panelForm.add(layoutForm, gbc);
+                panelForm.revalidate();
+                panelForm.repaint();
             }
         });
     }
