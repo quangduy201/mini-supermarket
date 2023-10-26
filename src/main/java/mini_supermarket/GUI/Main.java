@@ -1,41 +1,62 @@
 package mini_supermarket.GUI;
 
+import mini_supermarket.DTO.Account;
 import mini_supermarket.GUI.component.RoundPanel;
-import mini_supermarket.GUI.layout.LayoutHome;
+import mini_supermarket.GUI.component.main.MainMenu;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 import mini_supermarket.main.MiniSupermarket;
-import mini_supermarket.utils.DateTime;
-import mini_supermarket.utils.I18n;
-import mini_supermarket.utils.Log;
+import mini_supermarket.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Main extends JFrame {
+    private static int frameWidth = 1400;
+    private static int frameHeight = 810;
     private JMenuBar menuBar;
     private JLabel lbTime;
-    private LeftRightLayout home;
-    private RoundPanel leftHome;
-    private RoundPanel rightHome;
+    private boolean running;
+    private Thread time;
+    private LeftRightLayout mainLayout;
+    private MainMenu mainMenu;
+    private Account account;
 
-    public Main() {
+    public Main(Account account) {
+        setAccount(account);
         initComponents();
     }
 
-    public RoundPanel getRightHome() {
-        return rightHome;
+    public LeftRightLayout getMainLayout() {
+        return mainLayout;
     }
 
-    public void setRightHome(RoundPanel rightHome) {
-        this.rightHome = rightHome;
+    public static int getFrameWidth() {
+        return frameWidth;
+    }
+
+    public static void setFrameWidth(int frameWidth) {
+        frameWidth = frameWidth;
+    }
+
+    public static int getFrameHeight() {
+        return frameHeight;
+    }
+
+    public static void setFrameHeight(int frameHeight) {
+        frameHeight = frameHeight;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+        Settings.setLastAccount(account);
     }
 
     private void initComponents() {
-        setSize(1400, 810);
+        setSize(frameWidth, frameHeight);
         setTitle(I18n.get("frame", "main"));
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -46,28 +67,46 @@ public class Main extends JFrame {
                 exit();
             }
         });
+        setIconImage(Resource.loadSVGIcon("img/logo.svg").getImage());
 
         menuBar = new JMenuBar();
-        getRootPane().setBackground(new Color(215,215,215));
-        lbTime = new JLabel("Hello");
+        menuBar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                switchTheme();
+            }
+        });
+        getRootPane().setBackground(new Color(215, 215, 215));
 
+        lbTime = new JLabel();
         lbTime.setFont(new Font("Roboto", Font.PLAIN, 16));
         lbTime.setHorizontalAlignment(SwingConstants.CENTER);
         menuBar.add(lbTime);
         setJMenuBar(menuBar);
 
-        home = new LeftRightLayout(280, true, 20, 0);
-        home.setBackground(new Color(240, 240, 240));
-        this.add(home);
-        leftHome = home.getLeftPanel();
-        leftHome.setLayout(new BorderLayout());
-        rightHome = home.getRightPanel();
-        rightHome.setLayout(new BorderLayout());
+        running = true;
+        time = new Thread(() -> {
+            while (running)
+                updateTimeLabel();
+        });
+        time.start();
 
-//        ControlLayout splitPane = new ControlLayout(rightHome);
-        LayoutHome home = new LayoutHome(rightHome);
-//        rightHome.add(splitPane,BorderLayout.CENTER);
-        leftHome.add(home, BorderLayout.CENTER);
+        mainLayout = new LeftRightLayout(280, true, 0, 0);
+        mainLayout.layoutBackground(null);
+        getContentPane().setBackground(new Color(255, 255, 255));
+        getContentPane().add(mainLayout);
+
+        RoundPanel leftPanel = mainLayout.getLeftPanel();
+        leftPanel.setLayout(new BorderLayout());
+
+        mainMenu = new MainMenu(account);
+        leftPanel.add(mainMenu, BorderLayout.CENTER);
+
+        RoundPanel rightPanel = mainLayout.getRightPanel();
+        rightPanel.setLayout(new BorderLayout());
+
+        JPanel panelModule = mainMenu.getPanelModule(1L, List.of());
+        rightPanel.add(panelModule);
 
         this.addComponentListener(new ComponentAdapter() {
             @Override
@@ -80,24 +119,61 @@ public class Main extends JFrame {
                 if (d.height < minD.height)
                     d.height = minD.height;
                 MiniSupermarket.main.setSize(d);
+                frameWidth = d.width;
+                frameHeight = d.height;
             }
         });
     }
 
-    public void setTime(String time) {
-        lbTime.setText(time);
+    private void updateTimeLabel() {
+        try {
+            DateTime nextSecond = DateTime.now().plusSeconds(1);
+            nextSecond.setNano(0);
+            long sleepTime = DateTime.calculateTime(DateTime.now(), nextSecond, TimeUnit.MILLISECONDS);
+            if (sleepTime > 0)
+                Thread.sleep(sleepTime);
+            String time = nextSecond.dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss a"));
+            lbTime.setText(time);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void exit() {
-        String message = I18n.get("frame", "exit");
+    public void switchTheme() {
+        if (UI.getCurrentTheme() == UI.Theme.DARK)
+            Settings.setTheme(UI.Theme.LIGHT);
+        else
+            Settings.setTheme(UI.Theme.DARK);
+    }
+
+    public void logout() {
+        running = false;
+        setAccount(null);
+        MiniSupermarket.login = new Login();
+        dispose();
+        MiniSupermarket.login.setVisible(true);
+        MiniSupermarket.main = null;
+        System.gc();
+    }
+
+    public void exit() {
+        JPanel panel = new JPanel(new BorderLayout());
+        JLabel label = new JLabel(I18n.get("frame", "exit"));
+        JCheckBox checkBox = new JCheckBox(I18n.get("frame", "logout.checkbox"));
+        panel.add(label, BorderLayout.CENTER);
+        panel.add(checkBox, BorderLayout.SOUTH);
         String title = I18n.get("dialog", "title.exit");
         String[] options = new String[]{
             I18n.get("dialog", "cancel"),
             I18n.get("dialog", "exit")
         };
-        int choice = JOptionPane.showOptionDialog(this, message, title,
+        int choice = JOptionPane.showOptionDialog(this, panel, title,
             JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-        if (choice == 1)
+        if (choice == 1) {
+            running = false;
+            if (checkBox.isSelected())
+                setAccount(null);
             MiniSupermarket.exit(1);
+        }
     }
 }

@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = __.CATEGORY.CATEGORY)
-public class Category extends EntityDTO implements Serializable {
+public class Category extends SafeEntityDTO implements Serializable {
     @Column(name = __.CATEGORY.NAME)
     private String name;
     @Column(name = __.CATEGORY.QUANTITY)
@@ -20,7 +20,8 @@ public class Category extends EntityDTO implements Serializable {
     public Category() {
     }
 
-    public Category(String name, Integer quantity) {
+    public Category(Long id, String name, Integer quantity) {
+        super(id);
         this.name = name;
         this.quantity = quantity;
     }

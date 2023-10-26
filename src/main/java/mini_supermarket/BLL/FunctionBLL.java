@@ -22,9 +22,7 @@ public class FunctionBLL extends EntityBLL<Function> {
             return new Pair<>(true, message);
         }
 
-        functions = findBy(
-            __.FUNCTION.NAME, function.getName(),
-            __.FUNCTION.DELETED, false);
+        functions = findBy(__.FUNCTION.NAME, function.getName(), false);
         if (!functions.isEmpty()) {
             String message = I18n.get("messages", "function.exists.name", function.getName());
             return new Pair<>(true, message);

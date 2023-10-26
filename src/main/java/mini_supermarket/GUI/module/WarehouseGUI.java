@@ -1,16 +1,21 @@
 package mini_supermarket.GUI.module;
 
+import mini_supermarket.DTO.Function;
+import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.ControlLayout;
+import mini_supermarket.GUI.layout.LeftRightLayout;
 
-import javax.swing.*;
-import java.awt.*;
+import java.util.List;
 
-public class WarehouseGUI extends JPanel {
-    private final ControlLayout mainWarehouse;
+public class WarehouseGUI extends ControlLayout {
+    private final RoundPanel panelFunction;
+    private final RoundPanel panelData;
+    private LeftRightLayout layoutFormAndData;
 
-    public WarehouseGUI() {
-        this.setLayout(new BorderLayout());
-        mainWarehouse = new ControlLayout();
-        this.add(mainWarehouse, BorderLayout.CENTER);
+    public WarehouseGUI(List<Function> functions) {
+        super(functions);
+        panelFunction = getTopPanel();
+
+        panelData = getBottomPanel();
     }
 }

@@ -38,7 +38,8 @@ public class Shipment extends EntityDTO implements Serializable {
     public Shipment() {
     }
 
-    public Shipment(Product product, Double unitPrice, Double quantity, Double remain, Date mfg, Date exp, String sku, ImportNote importNote) {
+    public Shipment(Long id, Product product, Double unitPrice, Double quantity, Double remain, Date mfg, Date exp, String sku, ImportNote importNote) {
+        super(id);
         this.product = product;
         this.unitPrice = unitPrice;
         this.quantity = quantity;

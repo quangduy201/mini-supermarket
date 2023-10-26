@@ -72,4 +72,32 @@ public class VNString {
         }
         return snakeCase.toString();
     }
+
+    public static boolean containsUnicode(String str) {
+        return str.chars().anyMatch(c -> c >= 128);
+    }
+
+    public static boolean containsUpperCase(String str) {
+        return str.chars().anyMatch(Character::isUpperCase);
+    }
+
+    public static boolean containsLowerCase(String str) {
+        return str.chars().anyMatch(Character::isLowerCase);
+    }
+
+    public static boolean containsAlphabet(String str) {
+        return str.chars().anyMatch(Character::isAlphabetic);
+    }
+
+    public static boolean containsNumber(String str) {
+        return str.chars().anyMatch(Character::isDigit);
+    }
+
+    public static boolean containsAlphaNumber(String str) {
+        return str.matches(".*[a-zA-Z].*") && str.matches(".*\\d.*");
+    }
+
+    public static boolean containsSpecial(String str) {
+        return str.chars().anyMatch(c -> !Character.isLetterOrDigit(c));
+    }
 }

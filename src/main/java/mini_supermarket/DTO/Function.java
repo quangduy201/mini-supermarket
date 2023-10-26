@@ -18,7 +18,8 @@ public class Function extends EntityDTO implements Serializable {
     public Function() {
     }
 
-    public Function(String name) {
+    public Function(Long id, String name) {
+        super(id);
         this.name = name;
     }
 

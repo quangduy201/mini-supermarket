@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = __.STAFF.STAFF)
-public class Staff extends EntityDTO implements Serializable {
+public class Staff extends SafeEntityDTO implements Serializable {
     @Column(name = __.STAFF.NAME)
     private String name;
     @Column(name = __.STAFF.GENDER)
@@ -40,7 +40,8 @@ public class Staff extends EntityDTO implements Serializable {
     public Staff() {
     }
 
-    public Staff(String name, Boolean gender, Date birthdate, String phone, String address, String email, Date entryDate) {
+    public Staff(Long id, String name, Boolean gender, Date birthdate, String phone, String address, String email, Date entryDate) {
+        super(id);
         this.name = name;
         this.gender = gender;
         this.birthdate = birthdate;
