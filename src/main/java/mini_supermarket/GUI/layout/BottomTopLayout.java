@@ -45,6 +45,8 @@ public class BottomTopLayout extends RoundPanel {
         this.setBackground(new Color(215, 215, 215));
         topContainer = new RoundPanel(radius); // TODO: set radius later
         bottomContainer = new RoundPanel(radius);
+//        topContainer.setBackground(new Color(215, 215, 215));
+//        bottomContainer.setBackground(new Color(215, 215, 215));
         init(topContainer, bottomContainer, radius, size);
         if (isTopPanel) {
             topContainer.setPreferredSize(new Dimension(this.getWidth(), panelHeight));

@@ -24,7 +24,7 @@ public class FunctionButtonList extends RoundPanel {
         btnRightArrow = new Button();
         panelCenter = new RoundPanel(20);
         scrollListFunc = new JScrollPane();
-        panelFunctions = new RoundPanel();
+        panelFunctions = new RoundPanel(20);
         buttons = new FunctionButton[functionNames.size()];
 
         mainFunction.setBackground(new Color(215, 215, 215));
@@ -33,8 +33,8 @@ public class FunctionButtonList extends RoundPanel {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-                int width = getSized();
-                if (width < 550) {
+                int width = FunctionButtonList.super.getWidth();
+                if (width < (80 + 5) * 6 + 5) {
                     btnLeftArrow.setVisible(true);
                     btnRightArrow.setVisible(true);
                 } else {
@@ -49,11 +49,11 @@ public class FunctionButtonList extends RoundPanel {
         btnLeftArrow.setColor(new Color(0x737070));
         btnLeftArrow.setColorOver(new Color(0x737070));
         btnLeftArrow.setColorClick(new Color(0xB0ADAD));
-        btnLeftArrow.setPreferredSize(new Dimension(30, 100));
+        btnLeftArrow.setPreferredSize(new Dimension(20, 100));
         btnLeftArrow.addActionListener(e -> {
             JScrollBar horizontalScrollBar = scrollListFunc.getHorizontalScrollBar();
             int currentValue = horizontalScrollBar.getValue();
-            horizontalScrollBar.setValue(currentValue - 50);
+            horizontalScrollBar.setValue(currentValue - 85);
         });
         mainFunction.add(btnLeftArrow, BorderLayout.WEST);
 
@@ -61,11 +61,11 @@ public class FunctionButtonList extends RoundPanel {
         btnRightArrow.setColor(new Color(0x737070));
         btnRightArrow.setColorOver(new Color(0x737070));
         btnRightArrow.setColorClick(new Color(0xB0ADAD));
-        btnRightArrow.setPreferredSize(new Dimension(30, 100));
+        btnRightArrow.setPreferredSize(new Dimension(20, 100));
         btnRightArrow.addActionListener(e -> {
             JScrollBar horizontalScrollBar = scrollListFunc.getHorizontalScrollBar();
             int currentValue = horizontalScrollBar.getValue();
-            horizontalScrollBar.setValue(currentValue + 50);
+            horizontalScrollBar.setValue(currentValue + 85);
         });
         mainFunction.add(btnRightArrow, BorderLayout.EAST);
 
@@ -79,10 +79,10 @@ public class FunctionButtonList extends RoundPanel {
         gbc.weighty = 1.0;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(3, 3, 2, 2);
+//        gbc.insets = new Insets(3, 3, 2, 2);
 
         scrollListFunc.setBorder(null);
-        scrollListFunc.getViewport().setBackground(new Color(215, 215, 215));
+//        scrollListFunc.getViewport().setBackground(new Color(215, 215, 215));
         scrollListFunc.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         scrollListFunc.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         panelCenter.add(scrollListFunc, gbc);
