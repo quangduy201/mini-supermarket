@@ -1,9 +1,11 @@
 package mini_supermarket.GUI;
 
+import mini_supermarket.BLL.AccountBLL;
+import mini_supermarket.BLL.StaffBLL;
 import mini_supermarket.DTO.Account;
+import mini_supermarket.DTO.Staff;
 import mini_supermarket.main.MiniSupermarket;
-import mini_supermarket.utils.DateTime;
-import mini_supermarket.utils.I18n;
+import mini_supermarket.utils.*;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -15,11 +17,12 @@ import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
+import java.util.Map;
 
-public class OTP extends JDialog {
-    private static final int OTP_LENGTH = 6;
-    private final Account account;
-    private final String email;
+public class ForgottenPassword extends JDialog {
+    private Account account;
+    private String email;
     private final JPanel otpEnterEmail;
     private final JPanel otpConfirmPanel;
     private final JPanel otpChangePassword;
@@ -27,7 +30,7 @@ public class OTP extends JDialog {
     private int step;
     private Thread currentCountDownThread;
 
-    public OTP() {
+    public ForgottenPassword() {
         super((Frame) null, I18n.get("frame", "forgotten_password"), true);
 
         otpEnterEmail = new JPanel(new MigLayout());
@@ -119,7 +122,7 @@ public class OTP extends JDialog {
 
                 if (currentText.matches("\\d{0,6}")) { // Only allow 0 to 6 digits
                     super.replace(fb, offset, length, text, attrs);
-                    if (currentText.length() == 6)
+                    if (currentText.length() == OTP.OTP_LENGTH)
                         validateStep2(currentText);
                 }
             }
@@ -142,6 +145,7 @@ public class OTP extends JDialog {
         buttons[0].setForeground(new Color(0xFFFFFF));
         buttons[0].addActionListener(e -> {
             sendOTP(nothing);
+            toStep(step);
         });
         panel.add(buttons[0]);
 
@@ -265,30 +269,106 @@ public class OTP extends JDialog {
         if (currentCountDownThread != null)
             currentCountDownThread.interrupt();
         currentCountDownThread = new Thread(() -> {
-//            activeOtp = Email.getOTP();
             nothing.setText(I18n.get("frame", "forgotten_password.sending_otp"));
-//            Email.sendOTP(email, "Đặt lại mật khẩu Bách Hoá Xanh", activeOtp);
+            String activeOtp = OTP.generateNumericOTP();
+            OTP.sendOTP(email, activeOtp);
+            int minute = 3;
+            int time = minute * 60 * 1000;
+            new Thread(() -> OTP.countdown(activeOtp, time)).start();
+            OTP.setOTP(account, activeOtp);
             DateTime start = new DateTime();
             long temp = 0;
             while (seconds - temp > 0 && !Thread.currentThread().isInterrupted()) {
                 temp = DateTime.calculateTime(start, new DateTime());
                 nothing.setText("(" + (seconds - temp) + "s)");
             }
-//            activeOtp = "";
             nothing.setText(I18n.get("frame", "forgotten_password.expired"));
         });
         currentCountDownThread.start();
     }
 
-    private void validateStep1(String text) {
+    private void validateStep1(String email) {
+        if (email.isEmpty()) {
+            String title = I18n.get("dialog", "title.error");
+            JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.email_not_empty"), title, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        StaffBLL staffBLL = new StaffBLL();
+        List<Staff> foundStaffs = staffBLL.findBy(__.STAFF.EMAIL, email);
+        if (foundStaffs.isEmpty()) {
+            String title = I18n.get("dialog", "title.error");
+            JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.email.exist.not"), title, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        AccountBLL accountBLL = new AccountBLL();
+        List<Account> foundAccounts = accountBLL.findBy(__.ACCOUNT.STAFF, foundStaffs.get(0));
+        if (foundAccounts.isEmpty()) {
+            String title = I18n.get("dialog", "title.error");
+            JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.account.exist.not"), title, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        account = foundAccounts.get(0);
+        this.email = email;
         toStep(++step);
     }
 
-    private void validateStep2(String currentText) {
+    private void validateStep2(String otp) {
+        if (otp.isEmpty()) {
+            String title = I18n.get("dialog", "title.error");
+            JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.otp"), title, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (otp.length() != OTP.OTP_LENGTH) {
+            String title = I18n.get("dialog", "title.error");
+            JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.otp.length"), title, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int index = OTP.getIndexOTP(account);
+        if (index == -1) {
+            String title = I18n.get("dialog", "title.error");
+            JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.expired"), title, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String activeOTP = OTP.activeOTPs.get(index).getSecond();
+        if (!activeOTP.equals(otp)) {
+            String title = I18n.get("dialog", "title.error");
+            JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.otp.not"), title, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        OTP.removeOTP(account);
         toStep(++step);
     }
 
     private void validateStep3(String password, String confirm) {
+        if (password.isEmpty()) {
+            String title = I18n.get("dialog", "title.error");
+            JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.new_password_not_empty"), title, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (confirm.isEmpty()) {
+            String title = I18n.get("dialog", "title.error");
+            JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.reenter.not.empty"), title, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!password.equals(confirm)) {
+            String title = I18n.get("dialog", "title.error");
+            JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.reenter.not"), title, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Pair<Boolean, String> result;
+        result = AccountBLL.validate(__.ACCOUNT.PASSWORD, password);
+        if (!result.getFirst()) {
+            String title = I18n.get("dialog", "title.error");
+            JOptionPane.showMessageDialog(this, I18n.get("messages", result.getSecond()), title, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String hashedPassword = Password.hashPassword(password);
+        account.setPassword(hashedPassword);
+        if (!new AccountBLL().update(account)) {
+            return;
+        }
+        String title = I18n.get("dialog", "title.info");
+        JOptionPane.showMessageDialog(this, I18n.get("messages", "forgotten_password.success"), title, JOptionPane.INFORMATION_MESSAGE);
         this.dispose();
     }
 }
