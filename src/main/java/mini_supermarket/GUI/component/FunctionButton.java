@@ -7,14 +7,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FunctionButton extends RoundPanel {
+    public static final int BUTTON_WIDTH = 80;
+    public static final int BUTTON_HEIGHT = 80;
     private final JLabel icon;
     private final JLabel name;
 
     public FunctionButton(String functionName) {
         super(20);
-        setBackground(new Color(215, 215, 215));
+        setBackground(null);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        setPreferredSize(new Dimension(80, 80));
+        setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
         setLayout(new FlowLayout(FlowLayout.CENTER));
 
         icon = new JLabel();

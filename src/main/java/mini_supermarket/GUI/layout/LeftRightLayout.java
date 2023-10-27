@@ -10,87 +10,100 @@ public class LeftRightLayout extends RoundPanel {
     private RoundPanel leftContainer;
     private RoundPanel rightContainer;
 
-    public LeftRightLayout(double leftColumns, double rightColumns, int radius, int vgap, int size) {
+    public LeftRightLayout(double leftColumns, double rightColumns, int radius, int hgap, Insets insets) {
         super(radius);
-        this.setLayout(new GridLayout(1, 1, 0, 0));
+        this.setBackground(null);
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(insets.top, insets.left, insets.bottom, hgap);
         gbc.weighty = 1.0;
-        gbc.insets = new Insets(size, size, size, vgap);
-        gbc.ipady = 10;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         leftPanel = new RoundPanel(radius); // TODO: set radius later
         rightPanel = new RoundPanel(radius);
-        leftPanel.setBackground(new Color(215, 215, 215));
+//        leftPanel.setBackground(new Color(215, 215, 215));
         gbc.weightx = leftColumns;
         this.add(leftPanel, gbc);
-        gbc.insets = new Insets(size, 0, size, size);
-        rightPanel.setBackground(new Color(215, 215, 215));
+        gbc.insets = new Insets(insets.top, hgap, insets.bottom, insets.right);
+//        rightPanel.setBackground(new Color(215, 215, 215));
         gbc.weightx = rightColumns;
+        gbc.gridx = 1;
         this.add(rightPanel, gbc);
     }
 
+    public LeftRightLayout(double leftColumns, double rightColumns, int radius, int vgap, int size) {
+        this(leftColumns, rightColumns, radius, vgap, new Insets(size, size, size, size));
+    }
+
     public LeftRightLayout(double leftColumns, double rightColumns, int radius, int size) {
-        this(leftColumns, rightColumns, radius, size, size);
+        this(leftColumns, rightColumns, radius, size, new Insets(size, size, size, size));
     }
 
     public LeftRightLayout(double leftColumns, double rightColumns) {
         this(leftColumns, rightColumns, 20, 10);
     }
 
-    public LeftRightLayout(int panelSize, boolean standStillPanel, int radius, int size) {
+    public LeftRightLayout(int panelWidth, boolean isLeftPanel, int radius, Insets insets) {
         super(radius);
-        this.setBackground(new Color(215, 215, 215));
-        leftContainer = new RoundPanel(radius);
-        rightContainer = new RoundPanel(radius);
-        if (standStillPanel) {
-            init(leftContainer, rightContainer, radius, size);
-            leftContainer.setPreferredSize(new Dimension(panelSize, this.getHeight()));
+        this.setBackground(null);
+        this.setLayout(new BorderLayout());
+        init(radius, insets);
+        if (isLeftPanel) {
+            leftContainer.setPreferredSize(new Dimension(panelWidth, this.getHeight()));
             this.add(leftContainer, BorderLayout.WEST);
             this.add(rightContainer, BorderLayout.CENTER);
         } else {
-            init(leftContainer, rightContainer, radius, size);
-            rightContainer.setPreferredSize(new Dimension(panelSize, this.getHeight()));
+            rightContainer.setPreferredSize(new Dimension(panelWidth, this.getHeight()));
             this.add(leftContainer, BorderLayout.CENTER);
             this.add(rightContainer, BorderLayout.EAST);
         }
     }
 
+    public LeftRightLayout(int panelSize, boolean isLeftPanel, int radius, int size) {
+        this(panelSize, isLeftPanel, radius, new Insets(size, size, size, size));
+    }
+
     public LeftRightLayout(int panelSize, boolean isLeftPanel) {
-        this(panelSize, isLeftPanel, 15, 10);
+        this(panelSize, isLeftPanel, 20, new Insets(10, 10, 10, 10));
     }
 
-    public LeftRightLayout(int sizedPanel, int radius, int hgap, int vgap, boolean standStillPanel) {
-        super(20);
-    }
+    public void init(int radius, Insets insets) {
+        leftContainer = new RoundPanel(radius);
+        rightContainer = new RoundPanel(radius);
+        leftContainer.setBackground(null);
+        rightContainer.setBackground(null);
 
-
-    public void init(RoundPanel leftContainer, RoundPanel rightContainer, int radius, int size) {
-        this.setLayout(new BorderLayout());
-        leftPanel = new RoundPanel(radius);
+        leftPanel = new RoundPanel(radius); // TODO: set radius later
         rightPanel = new RoundPanel(radius);
-        leftPanel.setBackground(new Color(215, 215, 215));
-        rightPanel.setBackground(new Color(215, 215, 215));
+//        leftPanel.setBackground(new Color(215, 215, 215));
+//        rightPanel.setBackground(new Color(215, 215, 215));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(size, size, size, size);
+        gbc.insets = insets;
         leftContainer.setLayout(new GridBagLayout());
         rightContainer.setLayout(new GridBagLayout());
         leftContainer.add(leftPanel, gbc);
-        gbc.insets = new Insets(size, 0, size, size);
+        gbc.insets = new Insets(insets.top, 0, insets.bottom, insets.right);
         rightContainer.add(rightPanel, gbc);
     }
 
-    public void layoutBackground(Color panelColor, Color borderColor) {
+    public void layoutBackground(Color panelColor, Color containerBorder, Color borderColor) {
         this.setBackground(borderColor);
         leftPanel.setBackground(panelColor);
         rightPanel.setBackground(panelColor);
-        leftContainer.setBackground(panelColor);
-        rightContainer.setBackground(panelColor);
+        if (leftContainer != null) {
+            leftContainer.setBackground(containerBorder);
+            rightContainer.setBackground(containerBorder);
+        }
+    }
+
+    public void layoutBackground(Color panelColor, Color borderColor) {
+        layoutBackground(panelColor, panelColor, borderColor);
     }
 
     public void layoutBackground(Color panelColor) {
@@ -111,5 +124,21 @@ public class LeftRightLayout extends RoundPanel {
 
     public void setRightPanel(RoundPanel rightRoundPanel) {
         this.rightPanel = rightRoundPanel;
+    }
+
+    public RoundPanel getLeftContainer() {
+        return leftContainer;
+    }
+
+    public void setLeftContainer(RoundPanel leftContainer) {
+        this.leftContainer = leftContainer;
+    }
+
+    public RoundPanel getRightContainer() {
+        return rightContainer;
+    }
+
+    public void setRightContainer(RoundPanel rightContainer) {
+        this.rightContainer = rightContainer;
     }
 }

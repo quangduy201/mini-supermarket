@@ -5,22 +5,18 @@ import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.component.main.MainMenu;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 import mini_supermarket.main.MiniSupermarket;
-import mini_supermarket.utils.DateTime;
-import mini_supermarket.utils.I18n;
-import mini_supermarket.utils.Resource;
-import mini_supermarket.utils.Settings;
+import mini_supermarket.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends JFrame {
+    private static int frameWidth = 1400;
+    private static int frameHeight = 810;
     private JMenuBar menuBar;
     private JLabel lbTime;
     private boolean running;
@@ -38,13 +34,29 @@ public class Main extends JFrame {
         return mainLayout;
     }
 
+    public static int getFrameWidth() {
+        return frameWidth;
+    }
+
+    public static void setFrameWidth(int frameWidth) {
+        frameWidth = frameWidth;
+    }
+
+    public static int getFrameHeight() {
+        return frameHeight;
+    }
+
+    public static void setFrameHeight(int frameHeight) {
+        frameHeight = frameHeight;
+    }
+
     public void setAccount(Account account) {
         this.account = account;
         Settings.setLastAccount(account);
     }
 
     private void initComponents() {
-        setSize(1400, 810);
+        setSize(frameWidth, frameHeight);
         setTitle(I18n.get("frame", "main"));
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -58,6 +70,12 @@ public class Main extends JFrame {
         setIconImage(Resource.loadSVGIcon("img/logo.svg").getImage());
 
         menuBar = new JMenuBar();
+        menuBar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                switchTheme();
+            }
+        });
         getRootPane().setBackground(new Color(215, 215, 215));
 
         lbTime = new JLabel();
@@ -73,9 +91,10 @@ public class Main extends JFrame {
         });
         time.start();
 
-        mainLayout = new LeftRightLayout(280, true, 20, 0);
-        mainLayout.setBackground(new Color(240, 240, 240));
-        this.add(mainLayout);
+        mainLayout = new LeftRightLayout(280, true, 0, 0);
+        mainLayout.layoutBackground(null);
+        getContentPane().setBackground(new Color(255, 255, 255));
+        getContentPane().add(mainLayout);
 
         RoundPanel leftPanel = mainLayout.getLeftPanel();
         leftPanel.setLayout(new BorderLayout());
@@ -100,6 +119,8 @@ public class Main extends JFrame {
                 if (d.height < minD.height)
                     d.height = minD.height;
                 MiniSupermarket.main.setSize(d);
+                frameWidth = d.width;
+                frameHeight = d.height;
             }
         });
     }
@@ -116,6 +137,13 @@ public class Main extends JFrame {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void switchTheme() {
+        if (UI.getCurrentTheme() == UI.Theme.DARK)
+            Settings.setTheme(UI.Theme.LIGHT);
+        else
+            Settings.setTheme(UI.Theme.DARK);
     }
 
     public void logout() {

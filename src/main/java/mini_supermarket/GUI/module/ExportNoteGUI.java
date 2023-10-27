@@ -5,30 +5,24 @@ import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.ControlLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class ExportNoteGUI extends JPanel {
-    private final ControlLayout mainExport;
-
-    private final LeftRightLayout layoutFormAndData;
-
-
+public class ExportNoteGUI extends ControlLayout {
     private final RoundPanel panelFunction;
     private final RoundPanel panelData;
+    private final LeftRightLayout layoutFormAndData;
     private RoundPanel panelForm;
     private RoundPanel panelDetailData;
 
     public ExportNoteGUI(List<Function> functions) {
-        this.setLayout(new BorderLayout());
-        mainExport = new ControlLayout(functions);
-        this.add(mainExport, BorderLayout.CENTER);
+        super(functions);
+        panelFunction = getTopPanel();
 
-        panelFunction = mainExport.getTopPanel();
-        panelData = mainExport.getBottomPanel();
-
+        panelData = getBottomPanel();
+        panelData.setBackground(null);
         panelData.setLayout(new BorderLayout());
+
         layoutFormAndData = new LeftRightLayout(1, 3, 20, 5, 0);
         panelData.add(layoutFormAndData, BorderLayout.CENTER);
     }

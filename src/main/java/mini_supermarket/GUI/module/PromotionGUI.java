@@ -5,23 +5,17 @@ import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.ControlLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
-public class PromotionGUI extends JPanel {
-    private final ControlLayout mainPromotion;
+public class PromotionGUI extends ControlLayout {
     private final RoundPanel panelFunction;
     private final RoundPanel panelData;
     private LeftRightLayout layoutFormAndData;
 
     public PromotionGUI(List<Function> functions) {
-        this.setLayout(new BorderLayout());
-        mainPromotion = new ControlLayout(functions);
-        this.add(mainPromotion, BorderLayout.CENTER);
+        super(functions);
+        panelFunction = getTopPanel();
 
-        panelFunction = mainPromotion.getTopPanel();
-        panelData = mainPromotion.getBottomPanel();
-
+        panelData = getBottomPanel();
     }
 }
