@@ -121,16 +121,18 @@ public abstract class BaseBLL<DTO extends BaseDTO, ID extends Serializable> {
      * with rows corresponding to DTO objects and columns corresponding to the selected columns.
      * The order of the columns can be altered.
      *
-     * @param objectList A list of DTO objects from which to retrieve data.
-     * @param columns    A variable number of column names to select from each DTO object.
-     *                   If not provided, all available columns are selected.
+     * @param objectList          A list of DTO objects from which to retrieve data.
+     * @param addNumberingColumn  A boolean parameter indicating whether to add a numbering column
+     *                           to the resulting table.
+     * @param columns             A variable number of column names to select from each DTO object.
+     *                           If not provided, all available columns are selected.
      * @return A two-dimensional array representing the selected data from the DTO objects.
      * @example Here's an example of how to use the `getData` method to retrieve specific columns
      * from a list of accounts:
      * <pre>
      * AccountBLL accountBLL = new AccountBLL();
      * List&lt;Account&gt; accounts = accountBLL.findAll();
-     * Object[][] objects = accountBLL.getData(accounts,
+     * Object[][] objects = accountBLL.getData(accounts, true,
      *     __.ACCOUNT.COLUMN.ID,
      *     __.ACCOUNT.COLUMN.USERNAME,
      *     __.ROLE.COLUMN.NAME,
@@ -141,7 +143,7 @@ public abstract class BaseBLL<DTO extends BaseDTO, ID extends Serializable> {
      * as well as the "name" column from associated Role objects and the "name" column from associated Staff objects.
      * The resulting two-dimensional array contains the selected data for further processing or display.
      */
-    public Object[][] getData(List<DTO> objectList, String... columns) {
+    public Object[][] getData(List<DTO> objectList, boolean addNumberingColumn, String... columns) {
         List<String> fullColumns = DAL.getColumnNames();
         if (columns == null || columns.length == 0) {
             columns = fullColumns.toArray(new String[0]);
@@ -154,12 +156,84 @@ public abstract class BaseBLL<DTO extends BaseDTO, ID extends Serializable> {
                 indices.add(index); // Add the index of matching element in fullColumns
         }
 
-        String[][] table = new String[objectList.size()][indices.size()];
+        int numberOfColumns = addNumberingColumn ? indices.size() + 1 : indices.size();
+        Object[][] table = new Object[objectList.size()][numberOfColumns];
         for (int i = 0; i < table.length; i++) {
-            String[] data = objectList.get(i).toString().split(Pattern.quote(VNString.NULL));
-            for (int j = 0; j < table[0].length; j++) {
-                table[i][j] = data[indices.get(j)];
+            Object[] data = objectList.get(i).toString().split(Pattern.quote(VNString.NULL));
+            for (int j = 0; j < indices.size(); j++) {
+                table[i][j + (addNumberingColumn ? 1 : 0)] = data[indices.get(j)];
             }
+            if (addNumberingColumn)
+                table[i][0] = i + 1;
+        }
+        return table;
+    }
+
+    /**
+     * Retrieves data from a list of DTO objects and creates a table with the selected data. The table
+     * is represented as a two-dimensional array with rows corresponding to DTO objects and columns
+     * corresponding to the selected data or columns obtained from converters. A numbering column can
+     * be added as the first column if specified.
+     *
+     * @param objectList          A list of DTO objects from which to retrieve data.
+     * @param addNumberingColumn  A boolean parameter indicating whether to add a numbering column
+     *                           to the resulting table.
+     * @param converters          A list of pairs containing column names and conversion functions
+     *                           to transform the data from DTO objects.
+     * @return A two-dimensional array representing the selected or converted data from the DTO objects.
+     * @example Here's an example of how to use the `getData` method to retrieve and convert specific
+     * columns from a list of DTO objects with or without a numbering column:
+     * <pre>
+     * List<DTO> accounts = // Your list of DTO objects (e.g., Account objects)
+     * AccountBLL accountBLL = new AccountBLL();
+     *
+     * // Define a list of converters to specify how to transform the data.
+     * List<Pair<String, Function<String, ?>>> converters = List.of(
+     *     new Pair<>(__.ACCOUNT.COLUMN.USERNAME, String::toString),
+     *     new Pair<>(__.STAFF.COLUMN.NAME, String::toString),
+     *     new Pair<>(__.STAFF.COLUMN.GENDER, s -> Boolean.parseBoolean(s) ? "Nam" : "Nữ"),
+     *     new Pair<>(__.STAFF.COLUMN.BIRTHDATE, Date::parse),
+     *     new Pair<>(__.ROLE.COLUMN.NAME, String::toString),
+     *     new Pair<>(__.STAFF.COLUMN.EMAIL, String::toString)
+     * );
+     *
+     * // Retrieve and convert the data, including a numbering column.
+     * Object[][] data = accountBLL.getData(accounts, true, converters);
+     *
+     * // The resulting 'data' array contains the transformed data with a numbering column.
+     * // You can now use this data for further processing or display.
+     * System.out.println(Arrays.deepToString(data));
+     * </pre>
+     * In this example, the method retrieves and converts specific data from the list of accounts using
+     * the provided converters. It includes a numbering column in the resulting table for easy reference.
+     */
+    public Object[][] getData(List<DTO> objectList, boolean addNumberingColumn,
+                              List<Pair<String, Function<String, ?>>> converters) {
+        List<String> fullColumns = DAL.getColumnNames();
+        if (converters == null || converters.isEmpty()) {
+            converters = new ArrayList<>();
+            for (String fullColumn : fullColumns) {
+                converters.add(new Pair<>(fullColumn, s -> s));
+            }
+        }
+
+        List<Integer> indices = new ArrayList<>();
+        for (Pair<String, Function<String, ?>> converter : converters) {
+            int index = fullColumns.indexOf(converter.getFirst());
+            if (index != -1)
+                indices.add(index); // Add the index of matching element in fullColumns
+        }
+
+        int numberOfColumns = addNumberingColumn ? indices.size() + 1 : indices.size();
+        Object[][] table = new Object[objectList.size()][numberOfColumns];
+        for (int i = 0; i < table.length; i++) {
+            Object[] data = objectList.get(i).toString().split(Pattern.quote(VNString.NULL));
+            for (int j = 0; j < indices.size(); j++) {
+                Function<String, ?> converter = converters.get(j).getSecond();
+                table[i][j + (addNumberingColumn ? 1 : 0)] = converter.apply((String) data[indices.get(j)]);
+            }
+            if (addNumberingColumn)
+                table[i][0] = i + 1;
         }
         return table;
     }

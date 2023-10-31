@@ -18,4 +18,19 @@ public class PromotionGUI extends ControlLayout {
 
         panelData = getBottomPanel();
     }
+
+    @Override
+    public void add() {
+        // TODO
+    }
+
+    @Override
+    public void edit() {
+        // TODO
+    }
+
+    @Override
+    public void refresh() {
+        // TODO
+    }
 }

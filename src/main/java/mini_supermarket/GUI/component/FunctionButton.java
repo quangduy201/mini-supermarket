@@ -10,9 +10,9 @@ public class FunctionButton extends RoundPanel {
     public static final int BUTTON_WIDTH = 80;
     public static final int BUTTON_HEIGHT = 80;
     private final JLabel icon;
-    private final JLabel name;
+    private final JLabel functionName;
 
-    public FunctionButton(String functionName) {
+    public FunctionButton(String name) {
         super(20);
         setBackground(null);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -20,17 +20,25 @@ public class FunctionButton extends RoundPanel {
         setLayout(new FlowLayout(FlowLayout.CENTER));
 
         icon = new JLabel();
-        name = new JLabel();
+        functionName = new JLabel();
 
         icon.setPreferredSize(new Dimension(50, 50));
-        icon.setIcon(Resource.loadSVGIcon("img/icon/" + functionName + ".svg", 50));
+        icon.setIcon(Resource.loadSVGIcon("img/icon/" + name + ".svg", 50));
         this.add(icon);
 
-        name.setPreferredSize(new Dimension(80, 20));
-        name.setText(I18n.get("frame", "function." + functionName));
-        name.setForeground(new Color(0x000000));
-        name.setFont(new Font("Time new Romans", Font.BOLD, 18));
-        name.setHorizontalAlignment(SwingConstants.CENTER);
-        this.add(name);
+        functionName.setPreferredSize(new Dimension(80, 20));
+        functionName.setText(I18n.get("frame", "function." + name));
+        functionName.setForeground(new Color(0x000000));
+        functionName.setFont(new Font("Time new Romans", Font.BOLD, 18));
+        functionName.setHorizontalAlignment(SwingConstants.CENTER);
+        this.add(functionName);
+    }
+
+    public JLabel getIcon() {
+        return icon;
+    }
+
+    public JLabel getFunctionName() {
+        return functionName;
     }
 }

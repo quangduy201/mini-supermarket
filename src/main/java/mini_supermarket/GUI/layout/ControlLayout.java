@@ -7,6 +7,8 @@ import mini_supermarket.GUI.component.RoundPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class ControlLayout extends BottomTopLayout {
     public ControlLayout(List<Function> functions) {
         super(100, true, 20, 5);
         this.functions = functions;
+        functions.removeIf(f -> f.getName().equals("view"));
         init();
     }
 
@@ -30,7 +33,6 @@ public class ControlLayout extends BottomTopLayout {
         getTopPanel().setLayout(new BorderLayout());
 
         LeftRightLayout functionLayout = new LeftRightLayout(500, false, 20, 0);
-//        functionLayout.layoutBackground(new Color(215,215,215));
         getTopPanel().add(functionLayout, BorderLayout.CENTER);
 
         mainFunction = functionLayout.getLeftPanel();
@@ -62,9 +64,67 @@ public class ControlLayout extends BottomTopLayout {
 
         btnRefresh = new FunctionButton("refresh");
         resetPanel.add(btnRefresh, BorderLayout.CENTER);
+        addActionListenerToFunctionButtons();
     }
 
-    public FunctionButton[] getFunctionButtons() {
-        return listFunction.getButtons();
+    public void addActionListenerToFunctionButtons() {
+        List<FunctionButton> functionButtons = listFunction.getButtons();
+        for (int i = 0; i < functionButtons.size(); i++) {
+            final int index = i;
+            functionButtons.get(i).addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    String functionName = functions.get(index).getName();
+                    doFunction(functionName);
+                }
+            });
+        }
+        btnRefresh.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                doFunction("refresh");
+            }
+        });
+    }
+
+    public void doFunction(String functionName) {
+        switch (functionName) {
+            case "add" -> add();
+            case "edit" -> edit();
+            case "remove" -> remove();
+            case "detail" -> detail();
+            case "excel" -> excel();
+            case "pdf" -> pdf();
+            case "refresh" -> refresh();
+            default -> throw new UnsupportedOperationException("Unsupported operation: " + functionName);
+        };
+    }
+
+    public void add() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    public void edit() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    public void remove() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    public void detail() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    public void excel() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    public void pdf() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    public void refresh() {
+        throw new UnsupportedOperationException("Not supported.");
     }
 }

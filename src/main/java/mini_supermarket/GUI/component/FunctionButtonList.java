@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FunctionButtonList extends RoundPanel {
@@ -13,7 +14,7 @@ public class FunctionButtonList extends RoundPanel {
     private final RoundPanel panelCenter;
     private final JScrollPane scrollListFunc;
     private final RoundPanel panelFunctions;
-    private final FunctionButton[] buttons;
+    private final List<FunctionButton> buttons;
 
     public FunctionButtonList(List<String> functionNames) {
         super(20);
@@ -24,7 +25,7 @@ public class FunctionButtonList extends RoundPanel {
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
                 int width = FunctionButtonList.super.getWidth();
-                int minWidth = (FunctionButton.BUTTON_WIDTH + 5) * (functionNames.size() - 1) + 5;
+                int minWidth = (FunctionButton.BUTTON_WIDTH + 5) * functionNames.size() + 5;
                 if (width < minWidth) {
                     btnLeftArrow.setVisible(true);
                     btnRightArrow.setVisible(true);
@@ -42,7 +43,7 @@ public class FunctionButtonList extends RoundPanel {
         panelCenter = new RoundPanel(20);
         scrollListFunc = new JScrollPane();
         panelFunctions = new RoundPanel(20);
-        buttons = new FunctionButton[functionNames.size()];
+        buttons = new ArrayList<>();
 
         btnLeftArrow.setRadius(20);
         btnLeftArrow.setColor(new Color(0x737070));
@@ -93,16 +94,14 @@ public class FunctionButtonList extends RoundPanel {
         panelFunctions.setBackground(null);
         scrollListFunc.getViewport().add(panelFunctions);
 
-        for (int i = 0; i < functionNames.size(); i++) {
-            String functionName = functionNames.get(i);
-            if (functionName.equals("view"))
-                continue;
-            buttons[i] = new FunctionButton(functionName);
-            panelFunctions.add(buttons[i]);
+        for (String functionName : functionNames) {
+            FunctionButton functionButton = new FunctionButton(functionName);
+            buttons.add(functionButton);
+            panelFunctions.add(functionButton);
         }
     }
 
-    public FunctionButton[] getButtons() {
+    public List<FunctionButton> getButtons() {
         return buttons;
     }
 

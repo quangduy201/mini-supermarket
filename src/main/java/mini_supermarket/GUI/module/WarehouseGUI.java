@@ -18,4 +18,14 @@ public class WarehouseGUI extends ControlLayout {
 
         panelData = getBottomPanel();
     }
+
+    @Override
+    public void detail() {
+        // TODO
+    }
+
+    @Override
+    public void refresh() {
+        // TODO
+    }
 }
