@@ -128,7 +128,7 @@ public class Login extends JFrame {
     }
 
     private void forgotPassword() {
-        new OTP();
+        new ForgottenPassword();
     }
 
     public Pair<Account, String> validateLogin(String username, String password) {
