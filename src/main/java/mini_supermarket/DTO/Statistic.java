@@ -24,7 +24,8 @@ public class Statistic extends EntityDTO implements Serializable {
     public Statistic() {
     }
 
-    public Statistic(Date date, Double amount, Double expenses) {
+    public Statistic(Long id, Date date, Double amount, Double expenses) {
+        super(id);
         this.date = date;
         this.amount = amount;
         this.expenses = expenses;

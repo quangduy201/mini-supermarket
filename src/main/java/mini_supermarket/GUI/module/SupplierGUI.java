@@ -1,25 +1,56 @@
 package mini_supermarket.GUI.module;
 
+import mini_supermarket.DTO.Function;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.ControlLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 
-import javax.swing.*;
-import java.awt.*;
+import java.util.List;
 
-public class SupplierGUI extends JPanel {
-    private final ControlLayout mainSupplier;
+public class SupplierGUI extends ControlLayout {
     private final RoundPanel panelFunction;
     private final RoundPanel panelData;
     private LeftRightLayout layoutFormAndData;
 
-    public SupplierGUI() {
-        this.setLayout(new BorderLayout());
-        mainSupplier = new ControlLayout();
-        this.add(mainSupplier, BorderLayout.CENTER);
+    public SupplierGUI(List<Function> functions) {
+        super(functions);
+        panelFunction = getTopPanel();
 
-        panelFunction = mainSupplier.getTopPanel();
-        panelData = mainSupplier.getBottomPanel();
+        panelData = getBottomPanel();
+    }
 
+    @Override
+    public void add() {
+        // TODO
+    }
+
+    @Override
+    public void edit() {
+        // TODO
+    }
+
+    @Override
+    public void remove() {
+        // TODO
+    }
+
+    @Override
+    public void detail() {
+        // TODO
+    }
+
+    @Override
+    public void excel() {
+        // TODO
+    }
+
+    @Override
+    public void pdf() {
+        // TODO
+    }
+
+    @Override
+    public void refresh() {
+        // TODO
     }
 }

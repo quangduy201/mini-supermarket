@@ -28,7 +28,8 @@ public class ExportNote extends EntityDTO implements Serializable {
     public ExportNote() {
     }
 
-    public ExportNote(Staff staff, DateTime invoiceDate, Double total, String reason) {
+    public ExportNote(Long id, Staff staff, DateTime invoiceDate, Double total, String reason) {
+        super(id);
         this.staff = staff;
         this.invoiceDate = invoiceDate;
         this.total = total;

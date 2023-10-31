@@ -28,7 +28,8 @@ public class Discount extends EntityDTO implements Serializable {
     public Discount() {
     }
 
-    public Discount(Double percent, Date startDate, Date endDate, Boolean status) {
+    public Discount(Long id, Double percent, Date startDate, Date endDate, Boolean status) {
+        super(id);
         this.percent = percent;
         this.startDate = startDate;
         this.endDate = endDate;

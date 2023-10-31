@@ -92,7 +92,6 @@ public class __ {
         public static final String START_DATE = "start_date";
         public static final String END_DATE = "end_date";
         public static final String STATUS = "status";
-        public static final String DELETED = "deleted";
 
         public static class COLUMN {
             public static final String ID = "discount_id";
@@ -100,7 +99,6 @@ public class __ {
             public static final String START_DATE = "discount_start_date";
             public static final String END_DATE = "discount_end_date";
             public static final String STATUS = "discount_status";
-            public static final String DELETED = "discount_deleted";
         }
     }
 
@@ -135,14 +133,12 @@ public class __ {
         public static final String INVOICE_DATE = "invoice_date";
         public static final String TOTAL = "total";
         public static final String REASON = "reason";
-        public static final String DELETED = "deleted";
 
         public static class COLUMN {
             public static final String ID = "export_note_id";
             public static final String INVOICE_DATE = "export_note_invoice_date";
             public static final String TOTAL = "export_note_total";
             public static final String REASON = "export_note_reason";
-            public static final String DELETED = "export_note_deleted";
         }
     }
 
@@ -150,12 +146,10 @@ public class __ {
         public static final String FUNCTION = "function";
         public static final String ID = "id";
         public static final String NAME = "name";
-        public static final String DELETED = "deleted";
 
         public static class COLUMN {
             public static final String ID = "function_id";
             public static final String NAME = "function_name";
-            public static final String DELETED = "function_deleted";
         }
     }
 
@@ -166,13 +160,11 @@ public class __ {
         public static final String RECEIVED_DATE = "received_date";
         public static final String TOTAL = "total";
         public static final String SUPPLIER = "supplier";
-        public static final String DELETED = "deleted";
 
         public static class COLUMN {
             public static final String ID = "import_note_id";
             public static final String RECEIVED_DATE = "import_note_received_date";
             public static final String TOTAL = "import_note_total";
-            public static final String DELETED = "import_note_deleted";
         }
     }
 
@@ -180,12 +172,10 @@ public class __ {
         public static final String MODULE = "module";
         public static final String ID = "id";
         public static final String NAME = "name";
-        public static final String DELETED = "deleted";
 
         public static class COLUMN {
             public static final String ID = "module_id";
             public static final String NAME = "module_name";
-            public static final String DELETED = "module_deleted";
         }
     }
 
@@ -220,14 +210,12 @@ public class __ {
         public static final String START_DATE = "start_date";
         public static final String END_DATE = "end_date";
         public static final String STATUS = "status";
-        public static final String DELETED = "deleted";
 
         public static class COLUMN {
             public static final String ID = "promotion_id";
             public static final String START_DATE = "promotion_start_date";
             public static final String END_DATE = "promotion_end_date";
             public static final String STATUS = "promotion_status";
-            public static final String DELETED = "promotion_deleted";
         }
     }
 
@@ -262,7 +250,6 @@ public class __ {
         public static final String TOTAL = "total";
         public static final String RECEIVED = "received";
         public static final String EXCESS = "excess";
-        public static final String DELETED = "deleted";
 
         public static class COLUMN {
             public static final String ID = "receipt_id";
@@ -270,7 +257,6 @@ public class __ {
             public static final String TOTAL = "receipt_total";
             public static final String RECEIVED = "receipt_received";
             public static final String EXCESS = "receipt_excess";
-            public static final String DELETED = "receipt_deleted";
 
         }
     }
@@ -314,7 +300,6 @@ public class __ {
         public static final String EXP = "exp";
         public static final String SKU = "sku";
         public static final String IMPORT_NOTE = "importNote";
-        public static final String DELETED = "deleted";
 
         public static class COLUMN {
             public static final String ID = "shipment_id";
@@ -324,7 +309,6 @@ public class __ {
             public static final String MFG = "shipment_mfg";
             public static final String EXP = "shipment_exp";
             public static final String SKU = "shipment_sku";
-            public static final String DELETED = "shipment_deleted";
         }
     }
 
@@ -359,14 +343,12 @@ public class __ {
         public static final String DATE = "date";
         public static final String AMOUNT = "amount";
         public static final String EXPENSES = "expenses";
-        public static final String DELETED = "deleted";
 
         public static class COLUMN {
             public static final String ID = "statistic_id";
             public static final String DATE = "statistic_date";
             public static final String AMOUNT = "statistic_amount";
             public static final String EXPENSES = "statistic_expenses";
-            public static final String DELETED = "statistic_deleted";
         }
     }
 

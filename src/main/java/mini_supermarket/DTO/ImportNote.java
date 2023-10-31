@@ -29,7 +29,8 @@ public class ImportNote extends EntityDTO implements Serializable {
     public ImportNote() {
     }
 
-    public ImportNote(Staff staff, DateTime receivedDate, Double total, Supplier supplier) {
+    public ImportNote(Long id, Staff staff, DateTime receivedDate, Double total, Supplier supplier) {
+        super(id);
         this.staff = staff;
         this.receivedDate = receivedDate;
         this.total = total;

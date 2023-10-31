@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = __.BRAND.BRAND)
-public class Brand extends EntityDTO implements Serializable {
+public class Brand extends SafeEntityDTO implements Serializable {
     @Column(name = __.BRAND.NAME)
     private String name;
     @ManyToOne
@@ -21,7 +21,8 @@ public class Brand extends EntityDTO implements Serializable {
     public Brand() {
     }
 
-    public Brand(String name, Supplier supplier) {
+    public Brand(Long id, String name, Supplier supplier) {
+        super(id);
         this.name = name;
         this.supplier = supplier;
     }

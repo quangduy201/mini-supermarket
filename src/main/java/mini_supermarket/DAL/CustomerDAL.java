@@ -5,7 +5,7 @@ import mini_supermarket.utils.__;
 
 import java.util.List;
 
-public class CustomerDAL extends EntityDAL<Customer> {
+public class CustomerDAL extends SafeEntityDAL<Customer> {
     public CustomerDAL() {
         super(Customer.class, List.of(
             __.CUSTOMER.COLUMN.ID,

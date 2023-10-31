@@ -8,9 +8,4 @@ public abstract class EntityDAL<DTO extends EntityDTO> extends BaseDAL<DTO, Long
     public EntityDAL(Class<DTO> entityType, List<String> columnNames) {
         super(entityType, columnNames);
     }
-
-    public void softRemove(DTO entity) {
-        entity.setDeleted(true);
-        merge(entity);
-    }
 }

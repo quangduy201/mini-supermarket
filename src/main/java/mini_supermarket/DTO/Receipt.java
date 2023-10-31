@@ -33,7 +33,8 @@ public class Receipt extends EntityDTO implements Serializable {
     public Receipt() {
     }
 
-    public Receipt(Staff staff, Customer customer, DateTime invoiceDate, Double total, Double received, Double excess) {
+    public Receipt(Long id, Staff staff, Customer customer, DateTime invoiceDate, Double total, Double received, Double excess) {
+        super(id);
         this.staff = staff;
         this.customer = customer;
         this.invoiceDate = invoiceDate;

@@ -22,9 +22,7 @@ public class StatisticBLL extends EntityBLL<Statistic> {
             return new Pair<>(true, message);
         }
 
-        statistics = findBy(
-            __.STATISTIC.DATE, statistic.getDate(),
-            __.STATISTIC.DELETED, false);
+        statistics = findBy(__.STATISTIC.DATE, statistic.getDate(), false);
         if (!statistics.isEmpty()) {
             String message = I18n.get("messages", "statistic.exists.date");
             return new Pair<>(true, message);
