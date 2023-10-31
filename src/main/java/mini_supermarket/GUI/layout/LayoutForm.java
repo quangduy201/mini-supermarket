@@ -61,7 +61,7 @@ public class LayoutForm extends RoundPanel {
         jScrollPane = new JScrollPane();
         jScrollPane = new JScrollPane(mainForm);
         jScrollPane.setBorder(null);
-        jScrollPane.getViewport().setBackground(new Color(215,215, 215));
+        jScrollPane.getViewport().setBackground(null);
         jScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         jScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         setLayout(new GridBagLayout());
