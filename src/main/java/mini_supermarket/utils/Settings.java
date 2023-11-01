@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -78,5 +79,10 @@ public class Settings {
             setConfiguration("account", "");
         else
             setConfiguration("account", account.getUsername());
+    }
+
+    public static List<String> getBanners() {
+        String banners = configurations.getProperty("banners");
+        return Arrays.asList(banners.split(", ", -2));
     }
 }
