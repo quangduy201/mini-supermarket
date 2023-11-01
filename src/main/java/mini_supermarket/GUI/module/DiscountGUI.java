@@ -96,4 +96,19 @@ public class DiscountGUI extends ControlLayout {
             }
         });
     }
+
+    @Override
+    public void add() {
+        // TODO
+    }
+
+    @Override
+    public void edit() {
+        // TODO
+    }
+
+    @Override
+    public void refresh() {
+        // TODO
+    }
 }

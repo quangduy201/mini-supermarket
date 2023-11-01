@@ -26,4 +26,39 @@ public class ProductGUI extends ControlLayout {
         layoutFormAndData = new LeftRightLayout(3, 1, 20, 5, 0);
         panelData.add(layoutFormAndData, BorderLayout.CENTER);
     }
+
+    @Override
+    public void add() {
+        // TODO
+    }
+
+    @Override
+    public void edit() {
+        // TODO
+    }
+
+    @Override
+    public void remove() {
+        // TODO
+    }
+
+    @Override
+    public void detail() {
+        // TODO
+    }
+
+    @Override
+    public void excel() {
+        // TODO
+    }
+
+    @Override
+    public void pdf() {
+        // TODO
+    }
+
+    @Override
+    public void refresh() {
+        // TODO
+    }
 }

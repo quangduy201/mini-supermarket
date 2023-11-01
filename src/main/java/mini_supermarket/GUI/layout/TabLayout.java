@@ -28,7 +28,6 @@ public class TabLayout {
         UIManager.put("Table.showVerticalLines", false);
         UIManager.put("Table.showHorizontalLines", true);
         UIManager.put("TextComponent.arc", 5);
-        tabbedPane.setUI(new CustomTabbedPaneUI());
         tabbedPane.setOpaque(false);
         JPanel panel1 = new JPanel();
         panel1.add(new JLabel("This is Tab 1"));

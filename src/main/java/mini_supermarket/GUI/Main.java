@@ -39,7 +39,7 @@ public class Main extends JFrame {
     }
 
     public static void setFrameWidth(int frameWidth) {
-        frameWidth = frameWidth;
+        Main.frameWidth = frameWidth;
     }
 
     public static int getFrameHeight() {
@@ -47,7 +47,7 @@ public class Main extends JFrame {
     }
 
     public static void setFrameHeight(int frameHeight) {
-        frameHeight = frameHeight;
+        Main.frameHeight = frameHeight;
     }
 
     public void setAccount(Account account) {

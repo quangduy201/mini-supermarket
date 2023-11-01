@@ -26,4 +26,24 @@ public class ReceiptGUI extends ControlLayout {
         layoutFormAndData = new LeftRightLayout(1, 3, 20, 5, 0);
         panelData.add(layoutFormAndData, BorderLayout.CENTER);
     }
+
+    @Override
+    public void detail() {
+        // TODO
+    }
+
+    @Override
+    public void excel() {
+        // TODO
+    }
+
+    @Override
+    public void pdf() {
+        // TODO
+    }
+
+    @Override
+    public void refresh() {
+        // TODO
+    }
 }
