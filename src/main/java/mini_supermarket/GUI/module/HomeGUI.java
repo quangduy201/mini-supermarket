@@ -14,26 +14,29 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class HomeGUI extends EmptyLayout {
+    public static List<JLabel> banners;
     private final RoundPanel home;
     private RoundPanel content;
-    public static List<JLabel> banners;
-    private List<String> nameBanners;
+    private List<String> bannerNames;
     private Thread autoRenderBanner;
     private int currentBanner = 0;
+    private boolean bannersAreRunning;
+
     public HomeGUI(List<Function> functions) {
         home = getPanel();
         content = new RoundPanel();
         banners = new ArrayList<>();
         try {
             Settings.initialize();
-            nameBanners = Settings.getBanners();
+            bannerNames = Settings.getBanners();
         } catch (Exception e) {
-            Log.info(e);
+            Log.error(e.toString());
         }
-        for (String nameBanner : nameBanners) {
-            Icon icon = Resource.loadSVGIcon("img/" + nameBanner);
+        for (String bannerName : bannerNames) {
+            Icon icon = Resource.loadSVGIcon("img/banner/" + bannerName);
             banners.add(new JLabel(icon));
         }
 
@@ -65,47 +68,42 @@ public class HomeGUI extends EmptyLayout {
             });
         }
 
-
-        renderBanners();
-    }
-
-    public void renderBanners(){
-        if (autoRenderBanner != null)
-            autoRenderBanner.interrupt();
-        content.removeAll();
-        if (!banners.isEmpty()) {
-            currentBanner = 0;
-            content.add(banners.get(currentBanner));
-        } else {
-            currentBanner = -1;
-        }
-        content.repaint();
-        content.revalidate();
-        home.add(content);
+        bannersAreRunning = true;
         autoRenderBanner = new Thread(() -> {
-            DateTime start = new DateTime();
-            while (!Thread.currentThread().isInterrupted()) {
-                if (!banners.isEmpty()) {
-                    if (DateTime.calculateTime(start, new DateTime()) == 3) {
-                        if (currentBanner == banners.size()-1)
-                            currentBanner = 0;
-                        else
-                            currentBanner += 1;
-                        content.removeAll();
-                        content.add(banners.get(currentBanner));
-                        content.repaint();
-                        content.revalidate();
-                        start = new DateTime();
-                    }
-                } else {
-                    currentBanner = -1;
-                    content.removeAll();
-                    content.repaint();
-                    content.revalidate();
-                    start = new DateTime();
-                }
-            }
+            renderBanner();
+            while (bannersAreRunning)
+                runBanners();
         });
         autoRenderBanner.start();
+    }
+
+    public void runBanners() {
+        try {
+            DateTime nextSecond = DateTime.now().plusSeconds(3);
+            nextSecond.setNano(0);
+            long sleepTime = DateTime.calculateTime(DateTime.now(), nextSecond, TimeUnit.MILLISECONDS);
+            if (sleepTime > 0)
+                Thread.sleep(sleepTime);
+            renderBanner();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void renderBanner() {
+        content.removeAll();
+        if (banners.isEmpty()) {
+            currentBanner = -1;
+            content.repaint();
+            content.revalidate();
+            return;
+        }
+        if (currentBanner >= banners.size() - 1)
+            currentBanner = 0;
+        else
+            currentBanner += 1;
+        content.add(banners.get(currentBanner));
+        content.repaint();
+        content.revalidate();
     }
 }

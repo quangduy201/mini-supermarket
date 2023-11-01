@@ -50,6 +50,10 @@ public class Main extends JFrame {
         Main.frameHeight = frameHeight;
     }
 
+    public MainMenu getMainMenu() {
+        return mainMenu;
+    }
+
     public void setAccount(Account account) {
         this.account = account;
         Settings.setLastAccount(account);
@@ -105,7 +109,7 @@ public class Main extends JFrame {
         RoundPanel rightPanel = mainLayout.getRightPanel();
         rightPanel.setLayout(new BorderLayout());
 
-        JPanel panelModule = mainMenu.getPanelModule(1L, List.of());
+        JPanel panelModule = mainMenu.getAllPanelModules()[0];
         rightPanel.add(panelModule);
 
         this.addComponentListener(new ComponentAdapter() {

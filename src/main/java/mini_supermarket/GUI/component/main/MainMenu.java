@@ -27,6 +27,7 @@ public class MainMenu extends BottomTopLayout {
     private final JScrollPane scrollPane;
     private final RoundPanel panelModules;
     private final Button[] btnModules;
+    private final JPanel[] allPanelModules;
     private final Button btnLogout;
 
     public MainMenu(Account account) {
@@ -42,6 +43,7 @@ public class MainMenu extends BottomTopLayout {
         scrollPane = new JScrollPane();
         panelModules = new RoundPanel(20);
         btnModules = new Button[modules.size()];
+        allPanelModules = new RoundPanel[modules.size()];
         btnLogout = new Button();
 
         getTopPanel().add(mainUserInfo);
@@ -84,8 +86,9 @@ public class MainMenu extends BottomTopLayout {
             Module module = modules.get(i);
             List<Function> functions = function2D.get(i);
             btnModules[i].setText(I18n.get("frame", "main.module." + module.getName()));
-            JPanel panelModule = getPanelModule(module.getId(), functions);
-            btnModules[i].addActionListener(e -> openModule(panelModule));
+            allPanelModules[i] = getPanelModule(module.getId(), functions);
+            int index = i;
+            btnModules[i].addActionListener(e -> openModule(allPanelModules[index]));
             panelModules.add(btnModules[i]);
         }
 
@@ -97,6 +100,10 @@ public class MainMenu extends BottomTopLayout {
         btnLogout.setPreferredSize(new Dimension(230, ITEM_HEIGHT));
         btnLogout.addActionListener(e -> MiniSupermarket.main.logout());
         menuLayout.getBottomPanel().add(btnLogout);
+    }
+
+    public JPanel[] getAllPanelModules() {
+        return allPanelModules;
     }
 
     public Pair<List<Module>, List<List<Function>>> getModulesAndFunctionsFromRole(Role role) {
