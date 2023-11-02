@@ -2,7 +2,9 @@ package mini_supermarket.GUI.module;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import mini_supermarket.main.MiniSupermarket;
+import mini_supermarket.utils.I18n;
 import mini_supermarket.utils.Resource;
+import mini_supermarket.utils.Settings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +22,7 @@ public class ManageBannersGUI extends JDialog {
     private List<JLabel> banners = new ArrayList<>();
 
     public ManageBannersGUI() {
-        super((Frame) null, "Quản lý quảng cáo", true);
+        super((Frame) null, I18n.get("frame", "manage_advert"), true);
         setSize(1050, 500);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setResizable(false);
@@ -98,6 +100,10 @@ public class ManageBannersGUI extends JDialog {
                     });
                     reloadBanners();
                     HomeGUI.banners.add(label);
+
+                    List<String> listBanners = new ArrayList<>(Settings.getBanners());
+                    listBanners.add(jFileChooser.getSelectedFile().getName());
+                    Settings.setBanners(listBanners);
                 }
             }
         });
@@ -118,25 +124,28 @@ public class ManageBannersGUI extends JDialog {
     }
 
     public void removeBanner(JLabel banner) {
-        String[] options = new String[]{"Huỷ", "Xoá"};
-        int choice = JOptionPane.showOptionDialog(null, "Bạn có muốn xoá quảng cáo này?",
-            "Thông báo", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+        String[] options = new String[]{ I18n.get("dialog", "cancel"),  I18n.get("dialog", "delete")};
+        int choice = JOptionPane.showOptionDialog(null, I18n.get("frame", "manage_advert.delete.banner"),
+            I18n.get("dialog", "title.info"), JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
         if (choice == 1) {
+            List<String> listBanners = new ArrayList<>(Settings.getBanners());
             for (int i = 0; i < banners.size(); i++) {
                 if (banners.get(i) == banner) {
                     banners.remove(banner);
                     HomeGUI.banners.remove(i);
+                    listBanners.remove(i);
                     break;
                 }
             }
             reloadBanners();
+            Settings.setBanners(listBanners);
         }
     }
 
     public void exit() {
-        String[] options = new String[]{"Huỷ", "Thoát"};
-        int choice = JOptionPane.showOptionDialog(null, "Bạn có muốn thoát quản lý quảng cáo",
-            "Thông báo", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+        String[] options = new String[]{I18n.get("dialog", "cancel"),  I18n.get("dialog", "exit")};
+        int choice = JOptionPane.showOptionDialog(null, I18n.get("frame", "manage_advert.exit"),
+            I18n.get("dialog", "title.info"), JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
         if (choice == 1) {
             dispose();
         }
