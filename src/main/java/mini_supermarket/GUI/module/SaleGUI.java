@@ -1,21 +1,30 @@
 package mini_supermarket.GUI.module;
 
+import mini_supermarket.BLL.ProductBLL;
 import mini_supermarket.DTO.Function;
+import mini_supermarket.DTO.Product;
+import mini_supermarket.GUI.component.Button;
+import mini_supermarket.GUI.component.DataTable;
 import mini_supermarket.GUI.component.RoundPanel;
+import mini_supermarket.GUI.dialog.LayoutWarning;
 import mini_supermarket.GUI.layout.BottomTopLayout;
-import mini_supermarket.GUI.layout.LayoutWarningTable;
+import mini_supermarket.GUI.dialog.LayoutForm;
+import mini_supermarket.GUI.dialog.LayoutWarningTable;
 import mini_supermarket.GUI.layout.LeftRightLayout;
+import mini_supermarket.utils.Pair;
+import mini_supermarket.utils.__;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.List;
 
 public class SaleGUI extends LeftRightLayout {
     private final BottomTopLayout layoutContent;
     private final LeftRightLayout layoutInformation;
     private final BottomTopLayout layoutSearchProduct;
+    private final BottomTopLayout layoutFormAndButton;
+    private final BottomTopLayout layoutFormAndButtonSale;
     private final RoundPanel panelLeftSale;
     private final RoundPanel panelRightSale;
     private final RoundPanel panelListProduct;
@@ -33,42 +42,44 @@ public class SaleGUI extends LeftRightLayout {
     private RoundPanel[] panelDetailRightSale;
     private  RoundPanel[] panelDetails;
 
-    private JLabel lbNameProduct;
-    private JTextField TextNameProduct;
-    private JLabel lbIdProduct;
-    private JTextField IdTextProduct;
-    private JLabel lbNameStaff;
+    private JLabel[] labelProduct;
+    private JTextField[] textFieldProduct;
+    private JLabel[] labelSale;
+    private JTextField[] textFieldSale;
 
-    private JTextField textNameStaff;
-    private JLabel moneyReceived;
-    private JTextField containerReceived;
-    private JLabel totalAmount;
-    private JTextField containerTotalAmount;
-    private JLabel change;
-    private JTextField containerChange;
+    private Button btnAdd;
+    private Button btnRefresh;
+    private Button btnCansel;
+    private Button btnCompleted;
+    private LayoutForm layoutForm;
+    private LayoutForm layoutSale;
+    private int totalHeightPanel;
+    private Long[] idsOfCurrentProducts;
+
 
     public SaleGUI(List<Function> functions) {
         super(3, 1, 20, 5, 5);
         this.setBackground(null);
 
-        lbNameProduct = new JLabel();
-        TextNameProduct = new JTextField();
-        lbIdProduct = new JLabel();
-        IdTextProduct = new JTextField();
-        lbNameStaff = new JLabel();
-        textNameStaff = new JTextField();
-        moneyReceived = new JLabel();
-        containerReceived = new JTextField();
-        totalAmount = new JLabel();
-        containerTotalAmount = new JTextField();
-        change = new JLabel();
-        containerChange = new JTextField();
+        labelProduct = new JLabel[10];
+        textFieldProduct = new JTextField[10];
+        labelSale = new JLabel[10];
+        textFieldSale = new JTextField[10];
+        btnAdd = new Button();
+        btnRefresh = new Button();
+        btnCompleted = new Button();
+        btnCansel = new Button();
+        btnAdd.setColor(new Color(243, 240, 240));
+        btnRefresh.setColor(new Color(243, 240, 240));
+        btnCompleted.setColor(new Color(243, 240, 240));
+        btnCansel.setColor(new Color(243, 240, 240));
+
 
         panelLeftSale = this.getLeftPanel();
         panelRightSale = this.getRightPanel();
 
         panelLeftSale.setLayout(new BorderLayout());
-        layoutContent = new BottomTopLayout(3, 1.3, 20, 5, 0);
+        layoutContent = new BottomTopLayout(3, 1.5, 20, 5, 0);
         layoutContent.setBackground(new Color(255, 255, 255));
         panelLeftSale.add(layoutContent, BorderLayout.CENTER);
 
@@ -80,9 +91,12 @@ public class SaleGUI extends LeftRightLayout {
         layoutInformation.setBackground(new Color(255, 255, 255));
         panelDetailProduct.add(layoutInformation, BorderLayout.CENTER);
 
+        layoutFormAndButton = new BottomTopLayout(40,false,20,  0);
+        layoutFormAndButtonSale = new BottomTopLayout(40,false,20,  0);
+
         panelProduct = layoutInformation.getLeftPanel();
         panelProduct.setLayout(new BorderLayout());
-        layoutSearchProduct = new BottomTopLayout(40, true, 20, 0);
+        layoutSearchProduct = new BottomTopLayout(40, true, 20,0);
         layoutSearchProduct.setBackground(null);
         panelProduct.add(layoutSearchProduct, BorderLayout.CENTER);
 
@@ -93,7 +107,7 @@ public class SaleGUI extends LeftRightLayout {
         gbcd.weighty = 1.0;
         gbcd.gridx = 0;
         gbcd.gridy = 0;
-        gbcd.insets = new Insets(5,0,0,0);
+        gbcd.insets = new Insets(5, 10, 0, 10);
         searchProduct = new JTextField();
         panelSearch = layoutSearchProduct.getTopPanel();
         panelSearch.setLayout(new GridBagLayout());
@@ -143,169 +157,129 @@ public class SaleGUI extends LeftRightLayout {
         }
         panelProduct.add(scrollListProduct, gbc);
 
+//        GridBagConstraints panelgbc = new GridBagConstraints();
+//        panelgbc.fill = GridBagConstraints.BOTH;
+//        panelgbc.gridx = 0;
+//        panelgbc.gridy = 0;
+//        panelgbc.insets = new Insets(5, 5, 5, 5);
+
+        layoutForm = new LayoutForm(8);
+        JTextField jTextField = new JTextField();
+        JTextField jTextField1 = new JTextField();
+        JTextField jTextField2 = new JTextField();
+        JTextField jTextField3 = new JTextField();
+        JTextField jTextField4 = new JTextField();
+        JTextField jTextField5 = new JTextField();
+        JTextField jTextField6 = new JTextField();
+        JTextField jTextField7 = new JTextField();
+        JTextField jTextField8 = new JTextField();
+        JTextField jTextField9 = new JTextField();
+//        JTextArea jTextArea = new JTextArea();
+//        jTextField.setLineWrap(true);
+        jTextField.setEditable(false);
+//        jTextField.setBackground(null);
+//        jTextField.setBorder(null);
+        jTextField.setForeground(new Color(1));
+        JComboBox jComboBox = new JComboBox();
+        layoutForm.addTwoText("Mã sản phẩm", "Tên sản phẩm", 1,2,0);
+        layoutForm.addTwoComponent(jTextField, jTextField1, 1,4,5);
+        layoutForm.addTextAbove("Thương hiệu:", jTextField2);
+        layoutForm.addTextAbove("Thể loại :", jTextField3);
+        layoutForm.addTextAbove("Giá tiền:", jTextField4);
+        layoutForm.addTextAbove("Hàng tồn :", jTextField5);
+        layoutForm.addTwoText("Đơn vị:", "Số lượng",1,2,20);
+        layoutForm.addTwoComponent(jTextField6, jTextField7,1,2,20);
+//        layoutForm.add("Combox:", jComboBox,20,0);
+//        layoutForm.add("Con meo:", jTextField7);
+//        layoutForm.add("Con meo:", jTextField8);
+//        layoutForm.add("Con meo:", jTextField9);
+        totalHeightPanel = (layoutForm.getNumberAttribute() * layoutForm.getHeightFuncAndText());
+//        int sizeHeight = Main.getFrameHeight() - 165;
         GridBagConstraints panelgbc = new GridBagConstraints();
         panelgbc.fill = GridBagConstraints.BOTH;
+        panelgbc.weighty = 1.0;
+        panelgbc.weightx = 1.0;
         panelgbc.gridx = 0;
         panelgbc.gridy = 0;
         panelgbc.insets = new Insets(5, 5, 5, 5);
-
+        panelgbc.anchor = GridBagConstraints.PAGE_START;
         panelDetail = layoutInformation.getRightPanel();
         panelDetail.setLayout(new GridBagLayout());
-        panelDetails = new RoundPanel[7];
-        for (int i = 0; i < 7; i++) {
-            switch (i) {
-                case 0 -> {
-                    panelgbc.weighty = 0.2;
-                    lbIdProduct.setFont(new Font("Time New Romans", Font.PLAIN, 14));
-                    lbIdProduct.setText("Mã sản phẩm:");
-                    lbIdProduct.setHorizontalAlignment(SwingConstants.CENTER);
-                    lbIdProduct.setPreferredSize(new Dimension(0,30));
-                    IdTextProduct.setFont(new Font("Time New Romans", Font.PLAIN, 14));
-                    IdTextProduct.setText("");
-                    IdTextProduct.setPreferredSize(new Dimension(0,30));
-                    panelgbc.weightx = 1;
-                    panelDetail.add(lbIdProduct, panelgbc);
-                    panelgbc.weightx = 2;
-                    panelgbc.gridx++;
-                    panelDetail.add(IdTextProduct, panelgbc);
-                    panelgbc.gridx = 0;
-                    panelgbc.gridy++;
-                }
-                case 1 -> {
-                    panelgbc.weighty = 0.2;
-                    lbNameProduct.setFont(new Font("Time New Romans", Font.PLAIN, 14));
-                    lbNameProduct.setText("Tên sản phẩm:");
-                    lbNameProduct.setHorizontalAlignment(SwingConstants.CENTER);
-                    lbNameProduct.setPreferredSize(new Dimension(0,30));
-                    TextNameProduct.setFont(new Font("Time New Romans", Font.PLAIN, 14));
-                    TextNameProduct.setPreferredSize(new Dimension(0,30));
-                    TextNameProduct.setText("");
-                    panelgbc.weightx = 1;
-                    panelDetail.add(lbNameProduct, panelgbc);
-                    panelgbc.weightx = 2;
-                    panelgbc.gridx++;
-                    panelDetail.add(TextNameProduct, panelgbc);
-                    panelgbc.gridx = 0;
-                    panelgbc.gridy++;
-                }
-                case 2, 3, 4, 5 -> {
-                    panelgbc.weighty = 0.1;
-                    panelgbc.gridwidth = 2;
-                    panelDetails[i] = new RoundPanel(20);
-                    panelDetails[i].setRadius(20);
-                    panelDetails[i].setBackground(new Color(255, 255, 255));
-                    panelDetail.add(panelDetails[i], panelgbc);
-                    panelgbc.gridy++;
-                }
-                case 6 -> {
-                    panelgbc.weighty = 5;
-                    panelDetails[i] = new RoundPanel(20);
-                    panelDetails[i].setRadius(20);
-                    panelDetails[i].setBackground(new Color(255, 255, 255));
-                    panelDetail.add(panelDetails[i], panelgbc);
-                }
-            }
-        }
+        panelDetail.add(layoutFormAndButton, panelgbc);
 
+        layoutFormAndButton.getTopPanel().setLayout(new GridBagLayout());
+        layoutFormAndButton.getTopPanel().add(layoutForm, panelgbc);
+        layoutFormAndButton.getBottomPanel().setLayout(new GridBagLayout());
+        btnAdd.setPreferredSize(new Dimension(120,0));
+        btnRefresh.setPreferredSize(new Dimension(120,0));
+        layoutFormAndButton.getBottomPanel().add(btnAdd,panelgbc);
+        panelgbc.gridx++;
+        layoutFormAndButton.getBottomPanel().add(btnRefresh, panelgbc);
+        panelgbc.fill = GridBagConstraints.BOTH;
         panelgbc.gridx = 0;
-        panelgbc.gridy = 0;
-        panelgbc.gridwidth = 1;
+
+        layoutSale = new LayoutForm(5, new Insets(10,0,0,0));
+        JTextField jtextSale = new JTextField();
+        JTextField jtextSale1 = new JTextField();
+        JTextField jtextSale2 = new JTextField();
+        JTextField jtextSale3 = new JTextField();
+        RoundPanel panel = new RoundPanel(20);
+        panel.setBackground(new Color(240,240,240));
+        jTextField.setEditable(false);
+        layoutSale.addTextLeft("Tên Nhân Viên", jtextSale);
+        layoutSale.addPanel(panel, 500);
+        layoutSale.addTextLeft("Tổng Tiền:", jtextSale1);
+        layoutSale.addTextLeft("Tiền Nhận :", jtextSale2);
+        layoutSale.addTextLeft("Tiền Thừa:", jtextSale3);
+        totalHeightPanel = (layoutSale.getNumberAttribute() * layoutSale.getHeightFuncAndText());
         panelRightSale.setLayout(new GridBagLayout());
-        panelDetailRightSale = new RoundPanel[10];
-        for (int i = 0; i < 7; i++) {
-            switch (i) {
-                case 0 -> {
-                    panelgbc.weighty = 0.2;
-                    lbNameStaff.setFont(new Font("Time New Romans", Font.PLAIN, 14));
-                    lbNameStaff.setText("Tên Nhân Viên:");
-                    lbNameStaff.setPreferredSize(new Dimension(0,30));
-                    textNameStaff.setFont(new Font("Time New Romans", Font.PLAIN, 14));
-                    textNameStaff.setPreferredSize(new Dimension(0,30));
-                    textNameStaff.setText("");
-                    panelgbc.weightx = 1;
-                    panelRightSale.add(lbNameStaff, panelgbc);
-                    panelgbc.weightx = 2;
-                    panelgbc.gridx++;
-                    panelRightSale.add(textNameStaff, panelgbc);
-                    panelgbc.gridy++;
-                }
-                case 5, 6 -> {
-                    panelgbc.weighty = 0.5;
-                    panelgbc.gridwidth = 2;
-                    panelgbc.gridx = 0;
-                    panelDetailRightSale[i] = new RoundPanel(20);
-                    panelDetailRightSale[i].setRadius(20);
-                    panelDetailRightSale[i].setBackground(new Color(255, 255, 255));
-                    panelRightSale.add(panelDetailRightSale[i], panelgbc);
-                    panelgbc.gridy++;
-                }
-                case 1 -> {
-                    panelgbc.weighty = 7.2;
-                    panelgbc.gridwidth = 2;
-                    panelgbc.gridx = 0;
-                    panelDetailRightSale[i] = new RoundPanel(20);
-                    panelDetailRightSale[i].setRadius(20);
-                    panelDetailRightSale[i].setBackground(new Color(255, 255, 255));
-                    panelRightSale.add(panelDetailRightSale[i], panelgbc);
-                    panelgbc.gridy++;
-                    panelgbc.gridwidth = 1;
-                }
-                case 2 -> {
-                    panelgbc.weighty = 0.2;
-                    panelgbc.gridx = 0;
-                    moneyReceived.setFont(new Font("Time New Romans", Font.PLAIN, 14));
-                    moneyReceived.setText("Tổng tiền:");
-                    moneyReceived.setPreferredSize(new Dimension(0,30));
-                    containerReceived.setFont(new Font("Time New Romans", Font.PLAIN, 14));
-                    containerReceived.setPreferredSize(new Dimension(0,30));
-                    containerReceived.setText("");
-                    panelgbc.weightx = 1;
-                    panelRightSale.add(moneyReceived, panelgbc);
-                    panelgbc.weightx = 2;
-                    panelgbc.gridx++;
-                    panelRightSale.add(containerReceived, panelgbc);
-                    panelgbc.gridy++;
-                }
-                case 3 -> {
-                    panelgbc.weighty = 0.2;
-                    panelgbc.gridx = 0;
-                    totalAmount.setFont(new Font("Time New Romans", Font.PLAIN, 14));
-                    totalAmount.setText("Tiền Nhận:");
-                    totalAmount.setPreferredSize(new Dimension(0,30));
-                    containerTotalAmount.setFont(new Font("Time New Romans", Font.PLAIN, 14));
-                    containerTotalAmount.setPreferredSize(new Dimension(0,30));
-                    containerTotalAmount.setText("");
-                    panelgbc.weightx = 1;
-                    panelRightSale.add(totalAmount, panelgbc);
-                    panelgbc.weightx = 2;
-                    panelgbc.gridx++;
-                    panelRightSale.add(containerTotalAmount, panelgbc);
-                    panelgbc.gridy++;
-                }
-                case 4 -> {
-                    panelgbc.weighty = 0.2;
-                    panelgbc.gridx = 0;
-                    change.setFont(new Font("Time New Romans", Font.PLAIN, 14));
-                    change.setText("Tiền thừa:");
-                    change.setPreferredSize(new Dimension(0, 30));
-                    containerChange.setFont(new Font("Time New Romans", Font.PLAIN, 14));
-                    containerChange.setPreferredSize(new Dimension(0, 30));
-                    containerChange.setText("");
-                    panelgbc.weightx = 1;
-                    panelRightSale.add(change, panelgbc);
-                    panelgbc.weightx = 2;
-                    panelgbc.gridx++;
-                    panelRightSale.add(containerChange, panelgbc);
-                    panelgbc.gridy++;
-                }
-            }
-        }
-        change.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                LayoutWarningTable layoutWarning = new LayoutWarningTable();
-                layoutWarning.setVisible(true);
-            }
+        panelRightSale.add(layoutFormAndButtonSale, panelgbc);
+        layoutFormAndButtonSale.getTopPanel().setLayout(new GridBagLayout());
+        layoutFormAndButtonSale.getTopPanel().add(layoutSale, panelgbc);
+        btnCompleted.setPreferredSize(new Dimension(120,0));
+        btnCansel.setPreferredSize(new Dimension(120,0));
+
+        layoutFormAndButtonSale.getBottomPanel().setLayout(new GridBagLayout());
+        layoutFormAndButtonSale.getBottomPanel().add(btnCompleted,panelgbc);
+        panelgbc.gridx++;
+        layoutFormAndButtonSale.getBottomPanel().add(btnCansel, panelgbc);
+
+
+        DataTable dataTable = getDataTable(List.of());
+        panelListProduct.setLayout(new GridBagLayout());
+        panelListProduct.add(dataTable, gbc);
+
+        //Test
+        btnAdd.addActionListener((e) -> {
+            LayoutWarning layoutwa = new LayoutWarning();
+            layoutwa.setVisible(true);
         });
+    }
+
+    public DataTable getDataTable(List<Product> products) {
+        ProductBLL productBLL = new ProductBLL();
+        Object[][] ids = productBLL.getData(products, false, List.of(
+            new Pair<>(__.PRODUCT.COLUMN.ID, Long::parseLong)
+        ));
+        idsOfCurrentProducts = Arrays.stream(ids)
+            .map(row -> (Long) row[0])
+            .toArray(Long[]::new);
+        Object[][] data = productBLL.getData(products, true, List.of(
+            new Pair<>(__.PRODUCT.COLUMN.NAME, String::toString),
+            new Pair<>(__.PRODUCT.COLUMN.COST, Double::parseDouble),
+            new Pair<>(__.PRODUCT.COLUMN.QUANTITY, Double::parseDouble),
+            new Pair<>(__.PRODUCT.COLUMN.UNIT, String::toString),
+            new Pair<>(__.BRAND.COLUMN.NAME, String::toString),
+            new Pair<>(__.CATEGORY.COLUMN.NAME, String::toString)
+        ));
+        return new DataTable(data,
+            new Object[]{"STT", "Tài khoản", "Nhân viên", "Giới tính", "Ngày sinh", "Chức vụ", "Email"},
+            new Integer[]{1, 1, 100, 1, 1, 0, 0},
+            this::detail, false
+        );
+    }
+
+    public void detail() {
+
     }
 }
