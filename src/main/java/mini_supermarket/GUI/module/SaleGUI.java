@@ -6,10 +6,9 @@ import mini_supermarket.DTO.Product;
 import mini_supermarket.GUI.component.Button;
 import mini_supermarket.GUI.component.DataTable;
 import mini_supermarket.GUI.component.RoundPanel;
-import mini_supermarket.GUI.dialog.LayoutWarning;
+import mini_supermarket.GUI.dialog.CustomDialog;
 import mini_supermarket.GUI.layout.BottomTopLayout;
 import mini_supermarket.GUI.dialog.LayoutForm;
-import mini_supermarket.GUI.dialog.LayoutWarningTable;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 import mini_supermarket.utils.Pair;
 import mini_supermarket.utils.__;
@@ -251,7 +250,7 @@ public class SaleGUI extends LeftRightLayout {
 
         //Test
         btnAdd.addActionListener((e) -> {
-            LayoutWarning layoutwa = new LayoutWarning();
+            CustomDialog layoutwa = new CustomDialog();
             layoutwa.setVisible(true);
         });
     }

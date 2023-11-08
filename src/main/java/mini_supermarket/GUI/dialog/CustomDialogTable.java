@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-public class LayoutWarning extends JDialog {
+public class CustomDialogTable extends JDialog {
     private RoundPanel panelSearch;
     private RoundPanel panelForm;
     private RoundPanel form;
@@ -23,26 +23,28 @@ public class LayoutWarning extends JDialog {
     private JLabel labelText;
 
     private LayoutForm layoutForm;
-    public Dimension getSized() {
-        return this.getSize();
-    }
-    public LayoutWarning() {
+    public CustomDialogTable() {
         super();
-        this.setSize(new Dimension(500,600));
+        this.setSize(new Dimension(1300,700));
+        this.setVisible(true);
         this.setLayout(new GridBagLayout());
         this.getContentPane().setBackground(new Color(240,240,240));
         init();
     }
 
-    private void init() {
+    public Dimension getSized() {
+        return this.getSize();
+    }
+
+    public void init() {
         form = new RoundPanel();
         btnAssert = new JButton();
         btnCansel = new JButton();
         labelText = new JLabel();
         panelButton = new RoundPanel();
-        layoutForm = new LayoutForm(10);
-        panelSearch = new RoundPanel();
-        panelForm = new RoundPanel();
+        layoutForm = new LayoutForm(5);
+        panelSearch = new RoundPanel(20);
+        panelForm = new RoundPanel(20);
         panelDataTable = new RoundPanel();
         search = new JTextField();
         panelText = new RoundPanel();
@@ -63,13 +65,24 @@ public class LayoutWarning extends JDialog {
         panelText.setBackground(new Color(0x2CC9E5));
         panelText.add(labelText);
         this.add(panelText, gbcPanel);
-        gbcPanel.weighty = 5;
+        gbcPanel.insets = new Insets(5, 5, 5, 5);
+        gbcPanel.gridwidth = 2;
+        gbcPanel.weighty = 0.1;
         gbcPanel.gridy = 1;
+        panelSearch.setPreferredSize(new Dimension(0,30));
+        this.add(panelSearch, gbcPanel);
+        gbcPanel.weighty = 5;
+        gbcPanel.gridwidth = 1;
+        gbcPanel.gridy = 2;
+        gbcPanel.weightx = 3;
+        this.add(panelDataTable, gbcPanel);
+        gbcPanel.gridx = 1;
         gbcPanel.weightx = 1;
         this.add(panelForm, gbcPanel);
-        gbcPanel.weighty = 0.3;
+        gbcPanel.weighty = 0.1;
+        gbcPanel.gridwidth = 2;
         gbcPanel.gridx = 0;
-        gbcPanel.gridy = 2;
+        gbcPanel.gridy = 3;
         gbcPanel.weightx = 1;
         panelButton.setPreferredSize(new Dimension(0,30));
         this.add(panelButton, gbcPanel);
@@ -111,11 +124,11 @@ public class LayoutWarning extends JDialog {
         JTextField jTextField8 = new JTextField();
         JTextField jTextField9 = new JTextField();
         JComboBox jComboBox = new JComboBox();
-        layoutForm.addTextAbove("Con mèo:", jTextField);
-        layoutForm.addTextAbove("Con mèo:", jTextField1);
-        layoutForm.addTextAbove("Con meo :", jTextField2);
-        layoutForm.addTextAbove("Con meo:", jTextField3);
-        layoutForm.addTextAbove("Con meo:", jTextField4);
+        layoutForm.addTextLeft("Con mèo:", jTextField);
+        layoutForm.addTextLeft("Con mèo:", jTextField1);
+        layoutForm.addTextLeft("Con meo :", jTextField2);
+        layoutForm.addTextLeft("Con meo:", jTextField3);
+        layoutForm.addTextLeft("Con meo:", jTextField4);
 //        layoutForm.add("Con meo:", jTextField5);
 //        layoutForm.add("Con meo:", jTextField6);
 //        layoutForm.add("Combox:", jComboBox,20,0);
@@ -149,5 +162,6 @@ public class LayoutWarning extends JDialog {
                 panelForm.repaint();
             }
         });
+
     }
 }

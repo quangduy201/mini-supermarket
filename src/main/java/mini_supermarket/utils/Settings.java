@@ -84,7 +84,7 @@ public class Settings {
 
     public static List<String> getBanners() {
         String banners = configurations.getProperty("banners");
-        banners = banners.substring(1, banners.length()-1);
+        banners = banners.substring(1, banners.length() - 1);
         if (banners.isEmpty())
             return new ArrayList<>();
         return Arrays.asList(banners.split(", ", -2));
