@@ -20,6 +20,8 @@ public class HomeGUI extends EmptyLayout {
     public static List<JLabel> banners;
     private final RoundPanel home;
     private RoundPanel content;
+    private RoundPanel addBanner;
+    private JLabel addIcon;
     private List<String> bannerNames;
     private Thread autoRenderBanner;
     private int currentBanner = 0;
@@ -35,27 +37,21 @@ public class HomeGUI extends EmptyLayout {
         } catch (Exception e) {
             Log.error(e.toString());
         }
+
         for (String bannerName : bannerNames) {
             Icon icon = Resource.loadSVGIcon("img/banner/" + bannerName);
             banners.add(new JLabel(icon));
         }
-
-//        this.setLayout(new GridBagLayout());
-//        home = new RoundPanel(20);
-//        home.setBackground(new Color(215, 215, 215));
-//        GridBagConstraints gbc = new GridBagConstraints();
-//        gbc.fill = GridBagConstraints.BOTH;
-//        gbc.weightx = 1.0;
-//        gbc.weighty = 1.0;
-//        gbc.gridx = 0;
-//        gbc.gridy = 0;
-//        gbc.insets = new Insets(5, 5, 5, 5);
-//        this.add(home, gbc);
+        addBanner = new RoundPanel();
+        addIcon = new JLabel();
 
         home.setLayout(new BorderLayout());
 
         content.setLayout(new GridBagLayout());
         home.add(content, BorderLayout.CENTER);
+
+        addBanner.setLayout(new GridBagLayout());
+
 
         for (JLabel banner : banners) {
             banner.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -66,6 +62,23 @@ public class HomeGUI extends EmptyLayout {
                     new ManageBannersGUI();
                 }
             });
+        }
+
+        addIcon.setIcon(Resource.loadSVGIcon("img/icon/add_banner.svg"));
+        addIcon.setBackground(new Color(0xF3DA9B));
+        addIcon.setPreferredSize(new Dimension(70, 70));
+        addIcon.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        addIcon.setHorizontalAlignment(SwingConstants.CENTER);
+        addIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                new ManageBannersGUI();
+            }
+        });
+        addBanner.add(addIcon);
+
+        if (banners.isEmpty()) {
+            content.add(addBanner);
         }
 
         bannersAreRunning = true;
@@ -94,6 +107,7 @@ public class HomeGUI extends EmptyLayout {
         content.removeAll();
         if (banners.isEmpty()) {
             currentBanner = -1;
+            content.add(addBanner);
             content.repaint();
             content.revalidate();
             return;
