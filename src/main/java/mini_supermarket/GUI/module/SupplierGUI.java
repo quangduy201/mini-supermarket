@@ -1,7 +1,6 @@
 package mini_supermarket.GUI.module;
 
 import mini_supermarket.BLL.SupplierBLL;
-import mini_supermarket.DTO.Customer;
 import mini_supermarket.DTO.Function;
 import mini_supermarket.DTO.Supplier;
 import mini_supermarket.GUI.component.DataTable;
@@ -19,7 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SupplierGUI extends ControlLayout {
-
     private final SupplierBLL supplierBLL;
     private final RoundPanel panelFunction;
     private final RoundPanel panelData;
@@ -47,13 +45,12 @@ public class SupplierGUI extends ControlLayout {
         gbc.weighty = 1.0;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panelData.add(scrollPane,gbc);
+        panelData.add(scrollPane, gbc);
     }
 
-
-    public  DataTable getDataTable(List<Supplier> suppliers){
-        Object[][] ids = supplierBLL.getData(suppliers, false,List.of(
-            new Pair<>(__.SUPPLIER.COLUMN.ID, Long :: parseLong)
+    public  DataTable getDataTable(List<Supplier> suppliers) {
+        Object[][] ids = supplierBLL.getData(suppliers, false, List.of(
+            new Pair<>(__.SUPPLIER.COLUMN.ID, Long::parseLong)
         ));
 
         idsOfCurrentData = Arrays.stream(ids)
@@ -62,30 +59,31 @@ public class SupplierGUI extends ControlLayout {
 
         Object[][] data = supplierBLL.getData(suppliers, true, List.of(
             new Pair<>(__.SUPPLIER.COLUMN.NAME, String::toString),
-            new Pair<>(__.SUPPLIER.COLUMN.PHONE, String :: toString),
+            new Pair<>(__.SUPPLIER.COLUMN.PHONE, String::toString),
             new Pair<>(__.SUPPLIER.COLUMN.ADDRESS, String::toString),
             new Pair<>(__.SUPPLIER.COLUMN.EMAIL, String::toString)
         ));
 
         return new DataTable(data,
-            new Object[]{"STT","Nhà cung cấp","SĐT","Địa chỉ","Email"},
-            new Integer[]{1,0,0,0,0},
+            new Object[]{"STT", "Nhà cung cấp", "SĐT", "Địa chỉ", "Email"},
+            new Integer[]{1, 100, 50, 200, 100},
             this::detail, true,
-            new Pair<>(Date.class,3)
+            new Pair<>(Date.class, 3)
         );
     };
 
-
-    public List<Supplier> getSupplierFromSelectedRows(){
+    public List<Supplier> getSuppliersFromSelectedRows() {
         List<Supplier> suppliers = new ArrayList<>();
-        for (int row : dataTable.getSelectedRows()){
+        for (int row : dataTable.getSelectedRows()) {
             Supplier supplier = supplierBLL.findBy(__.SUPPLIER.ID,idsOfCurrentData[row]).get(0);
             suppliers.add(supplier);
         }
         return suppliers;
     }
 
-
+    public Supplier getSupplierFromSelectedRow() {
+        return getSuppliersFromSelectedRows().get(0);
+    }
 
     @Override
     public void add() {

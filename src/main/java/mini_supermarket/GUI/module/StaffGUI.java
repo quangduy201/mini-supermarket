@@ -1,7 +1,6 @@
 package mini_supermarket.GUI.module;
 
 import mini_supermarket.BLL.StaffBLL;
-import mini_supermarket.DTO.Account;
 import mini_supermarket.DTO.Function;
 import mini_supermarket.DTO.Staff;
 import mini_supermarket.GUI.component.DataTable;
@@ -14,7 +13,6 @@ import mini_supermarket.utils.__;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +21,6 @@ public class StaffGUI extends ControlLayout {
     private final StaffBLL staffBLL;
     private final RoundPanel panelFunction;
     private final RoundPanel panelData;
-
     private DataTable dataTable;
     private JScrollPane scrollPane;
     private Long[] idsOfCurrentData;
@@ -49,7 +46,7 @@ public class StaffGUI extends ControlLayout {
         gbc.weighty = 1.0;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panelData.add(scrollPane,gbc);
+        panelData.add(scrollPane, gbc);
     }
 
 
@@ -61,7 +58,6 @@ public class StaffGUI extends ControlLayout {
         idsOfCurrentData = Arrays.stream(ids)
             .map(row -> (long) row[0])
             .toArray(Long[]::new);
-
 
         Object[][] data = staffBLL.getData(staffs, true, List.of(
             new Pair<>(__.STAFF.COLUMN.NAME, String::toString),
@@ -79,7 +75,7 @@ public class StaffGUI extends ControlLayout {
         );
     }
 
-    public List<Staff> getStaffFromSelectedRows() {
+    public List<Staff> getStaffsFromSelectedRows() {
         List<Staff> staff = new ArrayList<>();
         for (int row : dataTable.getSelectedRows()) {
             Staff staffItem = staffBLL.findBy(__.STAFF.ID, idsOfCurrentData[row]).get(0);
@@ -88,9 +84,9 @@ public class StaffGUI extends ControlLayout {
         return staff;
     }
 
-    //public Staff getStaffFromSelectedRow() {
-//        return getStaffFromSelectedRows().get(0);
-//    }
+    public Staff getStaffFromSelectedRow() {
+        return getStaffsFromSelectedRows().get(0);
+    }
 
     @Override
     public void add() {
