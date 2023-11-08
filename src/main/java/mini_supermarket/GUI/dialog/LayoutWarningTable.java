@@ -1,7 +1,8 @@
-package mini_supermarket.GUI.layout;
+package mini_supermarket.GUI.dialog;
 
 import mini_supermarket.GUI.Main;
 import mini_supermarket.GUI.component.RoundPanel;
+import mini_supermarket.GUI.dialog.LayoutForm;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,8 +18,9 @@ public class LayoutWarningTable extends JDialog {
     private RoundPanel panelDataTable;
     private JTextField search;
     private JComboBox categorySearch;
-    private Button btnAssert;
-    private Button btnCansel;
+    private JButton btnAssert;
+    private JButton btnCansel;
+    private RoundPanel panelText;
     private int totalHeightPanel;
     private JLabel labelText;
 
@@ -26,6 +28,7 @@ public class LayoutWarningTable extends JDialog {
     public LayoutWarningTable() {
         super();
         this.setSize(new Dimension(1300,700));
+        this.setVisible(true);
         this.setLayout(new GridBagLayout());
         this.getContentPane().setBackground(new Color(240,240,240));
         init();
@@ -36,8 +39,8 @@ public class LayoutWarningTable extends JDialog {
     }
     public void init() {
         form = new RoundPanel();
-        btnAssert = new Button();
-        btnCansel = new Button();
+        btnAssert = new JButton();
+        btnCansel = new JButton();
         labelText = new JLabel();
         panelButton = new RoundPanel();
         layoutForm = new LayoutForm(5);
@@ -45,6 +48,7 @@ public class LayoutWarningTable extends JDialog {
         panelForm = new RoundPanel(20);
         panelDataTable = new RoundPanel();
         search = new JTextField();
+        panelText = new RoundPanel();
         categorySearch = new JComboBox();
         GridBagConstraints gbcPanel = new GridBagConstraints();
         gbcPanel.fill = GridBagConstraints.BOTH;
@@ -56,10 +60,12 @@ public class LayoutWarningTable extends JDialog {
         gbcPanel.weighty = 0.3;
         labelText.setPreferredSize(new Dimension(0,50));
         labelText.setFont(new Font("Time New Romans", Font.PLAIN, 20));
-        labelText.setForeground(new Color(0x2CC9E5));
         labelText.setHorizontalAlignment(SwingConstants.CENTER);
         labelText.setText("Con Meo Con");
-        this.add(labelText, gbcPanel);
+        panelText.setLayout(new BorderLayout());
+        panelText.setBackground(new Color(0x2CC9E5));
+        panelText.add(labelText);
+        this.add(panelText, gbcPanel);
         gbcPanel.insets = new Insets(5, 5, 5, 5);
         gbcPanel.gridwidth = 2;
         gbcPanel.weighty = 0.1;
@@ -103,20 +109,10 @@ public class LayoutWarningTable extends JDialog {
         btnAssert.setPreferredSize(new Dimension(150,0));
         panelButton.add(btnAssert, gbc);
         gbc.gridx = 1;
+        btnCansel.setText("àafafafa");
         btnCansel.setPreferredSize(new Dimension(150,0));
         panelButton.add(btnCansel, gbc);
 
-//        gbc.fill = GridBagConstraints.BOTH;
-//        gbc.weightx = 1.0;
-//        gbc.gridx = 0;
-//        gbc.gridy = 0;
-//        gbc.insets = new Insets(0, 0, 0, 0);
-//        panelForm.setLayout(new GridBagLayout());
-//        gbc.weighty = 9;
-//        panelForm.add(form, gbc);
-//        gbc.weighty = 1;
-//        gbc.gridy = 1;
-//        panelForm.add(panelButton, gbc);
 
         JTextField jTextField = new JTextField();
         JTextField jTextField1 = new JTextField();
@@ -129,11 +125,11 @@ public class LayoutWarningTable extends JDialog {
         JTextField jTextField8 = new JTextField();
         JTextField jTextField9 = new JTextField();
         JComboBox jComboBox = new JComboBox();
-        layoutForm.add("Con mèo:", jTextField);
-        layoutForm.add("Con mèo:", jTextField1);
-        layoutForm.add("Con meo :", jTextField2);
-        layoutForm.add("Con meo:", jTextField3);
-        layoutForm.add("Con meo:", jTextField4);
+        layoutForm.addTextLeft("Con mèo:", jTextField);
+        layoutForm.addTextLeft("Con mèo:", jTextField1);
+        layoutForm.addTextLeft("Con meo :", jTextField2);
+        layoutForm.addTextLeft("Con meo:", jTextField3);
+        layoutForm.addTextLeft("Con meo:", jTextField4);
 //        layoutForm.add("Con meo:", jTextField5);
 //        layoutForm.add("Con meo:", jTextField6);
 //        layoutForm.add("Combox:", jComboBox,20,0);
