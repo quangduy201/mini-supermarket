@@ -74,7 +74,7 @@ public class AccountGUI extends ControlLayout {
         );
     }
 
-    public List<Account> getAccountFromSelectedRows() {
+    public List<Account> getAccountsFromSelectedRows() {
         List<Account> accounts = new ArrayList<>();
         for (int row : dataTable.getSelectedRows()) {
             Account account = accountBLL.findBy(__.ACCOUNT.ID, idsOfCurrentData[row]).get(0);
@@ -84,7 +84,7 @@ public class AccountGUI extends ControlLayout {
     }
 
     public Account getAccountFromSelectedRow() {
-        return getAccountFromSelectedRows().get(0);
+        return getAccountsFromSelectedRows().get(0);
     }
 
     @Override

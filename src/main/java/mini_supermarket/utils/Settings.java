@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -78,5 +80,17 @@ public class Settings {
             setConfiguration("account", "");
         else
             setConfiguration("account", account.getUsername());
+    }
+
+    public static List<String> getBanners() {
+        String banners = configurations.getProperty("banners");
+        banners = banners.substring(1, banners.length() - 1);
+        if (banners.isEmpty())
+            return new ArrayList<>();
+        return Arrays.asList(banners.split(", ", -2));
+    }
+
+    public static void setBanners(List<String> banners) {
+        setConfiguration("banners", banners.toString());
     }
 }

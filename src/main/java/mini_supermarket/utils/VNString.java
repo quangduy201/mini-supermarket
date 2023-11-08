@@ -100,4 +100,42 @@ public class VNString {
     public static boolean containsSpecial(String str) {
         return str.chars().anyMatch(c -> !Character.isLetterOrDigit(c));
     }
+
+    public static boolean checkFormatPhone(String str) {
+        return str.matches("^(\\+?84|0)[35789]\\d{8}$");
+    }
+
+    public static boolean checkFormatOfEmail(String str) {
+        return str.matches("^\\w+(\\.\\w+)*@\\w+(\\.\\w+)+");
+    }
+
+    public static boolean checkFormatDate(String str) {
+        if (str.matches("^\\d{4}-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$"))
+            return true;
+        return str.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4}$");
+    }
+
+    public static boolean checkFormatDateTime(String str) {
+        if (str.matches("^\\d{4}-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01]) (\\d{2}:\\d{2}(?::\\d{2}(\\.\\d{1,6})?)?)?$"))
+            return true;
+        return str.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4} (\\d{2}:\\d{2}(?::\\d{2}(\\.\\d{1,6})?)?)?$");
+    }
+
+    public static boolean checkRangeOfPercent(String str) {
+        try {
+            return Double.parseDouble(str) > 0 && Double.parseDouble(str) < 100;
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
+    public static boolean checkUnsignedNumber(String str){
+        try {
+            return Double.parseDouble(str) > 0;
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
+
 }
