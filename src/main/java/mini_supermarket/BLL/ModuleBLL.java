@@ -15,17 +15,17 @@ public class ModuleBLL extends EntityBLL<Module> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Module module) {
+    public Pair<Boolean, String> exists(Module oldModule, Module newModule) {
         List<Module> modules;
-        modules = findBy(__.MODULE.ID, module.getId());
+        modules = findBy(__.MODULE.ID, newModule.getId());
         if (!modules.isEmpty()) {
             String message = I18n.get("messages", "module.exists");
             return new Pair<>(true, message);
         }
 
-        modules = findBy(__.MODULE.NAME, module.getName(), false);
+        modules = findBy(__.MODULE.NAME, newModule.getName(), false);
         if (!modules.isEmpty()) {
-            String message = I18n.get("messages", "module.exists.name", module.getName());
+            String message = I18n.get("messages", "module.exists.name", newModule.getName());
             return new Pair<>(true, message);
         }
 

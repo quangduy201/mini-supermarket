@@ -29,7 +29,7 @@ public class FunctionButton extends RoundPanel {
         functionName.setPreferredSize(new Dimension(80, 20));
         functionName.setText(I18n.get("frame", "function." + name));
         functionName.setForeground(new Color(0x000000));
-        functionName.setFont(new Font("Time new Romans", Font.BOLD, 18));
+        functionName.setFont(new Font("Roboto", Font.BOLD, 18));
         functionName.setHorizontalAlignment(SwingConstants.CENTER);
         this.add(functionName);
     }

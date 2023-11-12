@@ -16,11 +16,11 @@ public class ExportDetailBLL extends RelationshipBLL<ExportDetail, ExportDetailI
     }
 
     @Override
-    public Pair<Boolean, String> exists(ExportDetail exportDetail) {
+    public Pair<Boolean, String> exists(ExportDetail oldExportDetail, ExportDetail newExportDetail) {
         List<ExportDetail> exportDetails;
         exportDetails = findBy(
-            __.EXPORT_DETAIL.EXPORT_NOTE, exportDetail.getId().getExportNote(),
-            __.EXPORT_DETAIL.SHIPMENT, exportDetail.getId().getShipment());
+            __.EXPORT_DETAIL.EXPORT_NOTE, newExportDetail.getId().getExportNote(),
+            __.EXPORT_DETAIL.SHIPMENT, newExportDetail.getId().getShipment());
         if (!exportDetails.isEmpty()) {
             String message = I18n.get("messages", "export_detail.exists");
             return new Pair<>(true, message);

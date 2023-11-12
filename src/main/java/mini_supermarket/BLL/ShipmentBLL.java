@@ -15,9 +15,9 @@ public class ShipmentBLL extends EntityBLL<Shipment> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Shipment shipment) {
+    public Pair<Boolean, String> exists(Shipment oldShipment, Shipment newShipment) {
         List<Shipment> shipments;
-        shipments = findBy(__.SHIPMENT.ID, shipment.getId());
+        shipments = findBy(__.SHIPMENT.ID, newShipment.getId());
         if (!shipments.isEmpty()) {
             String message = I18n.get("messages", "shipment.exists");
             return new Pair<>(true, message);

@@ -1,78 +1,126 @@
 package mini_supermarket.GUI.dialog;
 
 import mini_supermarket.GUI.Main;
+import mini_supermarket.GUI.component.CustomTable;
 import mini_supermarket.GUI.component.RoundPanel;
+import mini_supermarket.utils.I18n;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 
 public class CustomDialog extends JDialog {
-    private RoundPanel panelSearch;
-    private RoundPanel panelForm;
-    private RoundPanel form;
-    private RoundPanel panelButton;
-    private RoundPanel panelDataTable;
-    private JTextField search;
-    private JComboBox categorySearch;
-    private JButton btnAssert;
-    private JButton btnCansel;
-    private RoundPanel panelText;
-    private int totalHeightPanel;
-    private JLabel labelText;
+    protected RoundPanel pnlTitle;
+    protected JLabel lbTitle;
+    protected RoundPanel pnlSearch;
+    protected JTextField txtSearch;
+    protected JComboBox cbbSearch;
+    protected JButton btnRefresh;
+    protected RoundPanel pnlTable;
+    protected GridBagConstraints gbcTable;
+    protected RoundPanel pnlForm;
+    protected LayoutForm layoutForm;
+    protected RoundPanel pnlButton;
+    protected JButton btnConfirm;
+    protected JButton btnCancel;
+    protected int totalHeightPanel;
+    protected boolean cancel;
 
-    private LayoutForm layoutForm;
-    public Dimension getSized() {
+    public CustomDialog(String title, int numberAttribute, boolean hasTable) {
+        super((Frame) null, true);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                cancel = true;
+                dispose();
+            }
+        });
+        this.setLayout(new GridBagLayout());
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.getContentPane().setBackground(new Color(240, 240, 240));
+        if (hasTable)
+            this.setSize(new Dimension(1300, 700));
+        else
+            this.setSize(new Dimension(500, 600));
+        this.setLocationRelativeTo(null);
+
+        init(title, numberAttribute, hasTable);
+    }
+
+    public Dimension getDimension() {
         return this.getSize();
     }
-    public CustomDialog() {
-        super();
-        this.setSize(new Dimension(500,600));
-        this.setLayout(new GridBagLayout());
-        this.getContentPane().setBackground(new Color(240,240,240));
-        init();
-    }
 
-    private void init() {
-        form = new RoundPanel();
-        btnAssert = new JButton();
-        btnCansel = new JButton();
-        labelText = new JLabel();
-        panelButton = new RoundPanel();
-        layoutForm = new LayoutForm(10);
-        panelSearch = new RoundPanel();
-        panelForm = new RoundPanel();
-        panelDataTable = new RoundPanel();
-        search = new JTextField();
-        panelText = new RoundPanel();
-        categorySearch = new JComboBox();
+    public void init(String title, int numberAttribute, boolean hasTable) {
+        pnlTitle = new RoundPanel();
+        lbTitle = new JLabel();
+        pnlSearch = new RoundPanel();
+        txtSearch = new JTextField();
+        cbbSearch = new JComboBox();
+        btnRefresh = new JButton();
+        pnlTable = new RoundPanel();
+        gbcTable = new GridBagConstraints();
+        pnlForm = new RoundPanel();
+        layoutForm = new LayoutForm(numberAttribute);
+        pnlButton = new RoundPanel();
+        btnConfirm = new JButton();
+        btnCancel = new JButton();
         GridBagConstraints gbcPanel = new GridBagConstraints();
         gbcPanel.fill = GridBagConstraints.BOTH;
         gbcPanel.gridx = 0;
         gbcPanel.gridy = 0;
 
-
         gbcPanel.gridwidth = 2;
         gbcPanel.weighty = 0.3;
-        labelText.setPreferredSize(new Dimension(0,50));
-        labelText.setFont(new Font("Time New Romans", Font.PLAIN, 20));
-        labelText.setHorizontalAlignment(SwingConstants.CENTER);
-        labelText.setText("Con Meo Con");
-        panelText.setLayout(new BorderLayout());
-        panelText.setBackground(new Color(0x2CC9E5));
-        panelText.add(labelText);
-        this.add(panelText, gbcPanel);
-        gbcPanel.weighty = 5;
-        gbcPanel.gridy = 1;
+        lbTitle.setPreferredSize(new Dimension(0, 50));
+        lbTitle.setFont(new Font("Roboto", Font.PLAIN, 20));
+        lbTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        lbTitle.setText(title);
+        pnlTitle.setLayout(new BorderLayout());
+        pnlTitle.setBackground(new Color(0x90bae0));
+        pnlTitle.add(lbTitle);
+        this.add(pnlTitle, gbcPanel);
+
+        if (hasTable) {
+            gbcPanel.insets = new Insets(2, 2, 2, 2);
+            gbcPanel.gridwidth = 2;
+            gbcPanel.weighty = 0.1;
+            gbcPanel.gridy = 1;
+            pnlSearch.setPreferredSize(new Dimension(0, 30));
+            this.add(pnlSearch, gbcPanel);
+            gbcPanel.weighty = 5;
+            gbcPanel.gridwidth = 1;
+            gbcPanel.gridy = 2;
+            gbcPanel.weightx = 3;
+            pnlTable.setLayout(new GridBagLayout());
+            this.add(pnlTable, gbcPanel);
+
+            gbcTable.fill = GridBagConstraints.BOTH;
+            gbcTable.insets = new Insets(10, 10, 10, 10);
+            gbcTable.weightx = 1.0;
+            gbcTable.weighty = 1.0;
+            gbcTable.gridx = 0;
+            gbcTable.gridy = 0;
+
+            gbcPanel.gridx = 1;
+            gbcPanel.weightx = 1;
+            this.add(pnlForm, gbcPanel);
+            gbcPanel.weighty = 0.1;
+            gbcPanel.gridwidth = 2;
+            gbcPanel.gridx = 0;
+            gbcPanel.gridy = 3;
+        } else {
+            gbcPanel.weighty = 5;
+            gbcPanel.gridy = 1;
+            gbcPanel.weightx = 1;
+            this.add(pnlForm, gbcPanel);
+            gbcPanel.weighty = 0.3;
+            gbcPanel.gridx = 0;
+            gbcPanel.gridy = 2;
+        }
         gbcPanel.weightx = 1;
-        this.add(panelForm, gbcPanel);
-        gbcPanel.weighty = 0.3;
-        gbcPanel.gridx = 0;
-        gbcPanel.gridy = 2;
-        gbcPanel.weightx = 1;
-        panelButton.setPreferredSize(new Dimension(0,30));
-        this.add(panelButton, gbcPanel);
+        pnlButton.setPreferredSize(new Dimension(0, 30));
+        this.add(pnlButton, gbcPanel);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.VERTICAL;
@@ -82,46 +130,27 @@ public class CustomDialog extends JDialog {
         gbc.gridy = 0;
         gbc.insets = new Insets(0, 5, 0, 5);
         gbc.anchor = GridBagConstraints.CENTER;
-        panelSearch.setLayout(new GridBagLayout());
-        search.setPreferredSize(new Dimension(200,0));
-        panelSearch.add(search, gbc);
+        pnlSearch.setLayout(new GridBagLayout());
+        txtSearch.setPreferredSize(new Dimension(200, 0));
+        pnlSearch.add(txtSearch, gbc);
         gbc.gridx = 1;
-        categorySearch.setPreferredSize(new Dimension(100,0));
-        panelSearch.add(categorySearch, gbc);
+        cbbSearch.setPreferredSize(new Dimension(100, 0));
+        pnlSearch.add(cbbSearch, gbc);
+        gbc.gridx = 2;
+        btnRefresh.setPreferredSize(new Dimension(100, 0));
+        btnRefresh.setText(I18n.get("frame", "function.refresh"));
+        pnlSearch.add(btnRefresh, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panelButton.setLayout(new GridBagLayout());
-        btnAssert.setPreferredSize(new Dimension(150,0));
-        panelButton.add(btnAssert, gbc);
+        pnlButton.setLayout(new GridBagLayout());
+        btnConfirm.setPreferredSize(new Dimension(150, 0));
+        pnlButton.add(btnConfirm, gbc);
         gbc.gridx = 1;
-        btnCansel.setText("àafafafa");
-        btnCansel.setPreferredSize(new Dimension(150,0));
-        panelButton.add(btnCansel, gbc);
+        btnCancel.setPreferredSize(new Dimension(150, 0));
+        btnCancel.setText(I18n.get("dialog", "cancel"));
+        pnlButton.add(btnCancel, gbc);
 
-
-        JTextField jTextField = new JTextField();
-        JTextField jTextField1 = new JTextField();
-        JTextField jTextField2 = new JTextField();
-        JTextField jTextField3 = new JTextField();
-        JTextField jTextField4 = new JTextField();
-        JTextField jTextField5 = new JTextField();
-        JTextField jTextField6 = new JTextField();
-        JTextField jTextField7 = new JTextField();
-        JTextField jTextField8 = new JTextField();
-        JTextField jTextField9 = new JTextField();
-        JComboBox jComboBox = new JComboBox();
-        layoutForm.addTextAbove("Con mèo:", jTextField);
-        layoutForm.addTextAbove("Con mèo:", jTextField1);
-        layoutForm.addTextAbove("Con meo :", jTextField2);
-        layoutForm.addTextAbove("Con meo:", jTextField3);
-        layoutForm.addTextAbove("Con meo:", jTextField4);
-//        layoutForm.add("Con meo:", jTextField5);
-//        layoutForm.add("Con meo:", jTextField6);
-//        layoutForm.add("Combox:", jComboBox,20,0);
-//        layoutForm.add("Con meo:", jTextField7);
-//        layoutForm.add("Con meo:", jTextField8);
-//        layoutForm.add("Con meo:", jTextField9);
         totalHeightPanel = (layoutForm.getNumberAttribute() * layoutForm.getHeightFuncAndText());
         int sizeHeight = Main.getFrameHeight() - 165;
         gbc.fill = GridBagConstraints.BOTH;
@@ -131,22 +160,39 @@ public class CustomDialog extends JDialog {
         gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, sizeHeight -  totalHeightPanel, 5);
         gbc.anchor = GridBagConstraints.PAGE_START;
-        panelForm.setLayout(new GridBagLayout());
-        panelForm.add(layoutForm, gbc);
-
-        panelForm.addComponentListener(new ComponentAdapter() {
+        pnlForm.setLayout(new GridBagLayout());
+        pnlForm.add(layoutForm, gbc);
+        pnlForm.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                int sizeHeight =  getSized().height - 165;
+                int sizeHeight =  getDimension().height - 165;
                 int distancePanel = sizeHeight - totalHeightPanel;
                 if (distancePanel >= 0 && totalHeightPanel != 0) {
                     gbc.insets = new Insets(5, 5, distancePanel, 5);
                 } else {
                     gbc.insets = new Insets(5, 5, 5, 5);
                 }
-                panelForm.add(layoutForm, gbc);
-                panelForm.revalidate();
-                panelForm.repaint();
+                pnlForm.add(layoutForm, gbc);
+                pnlForm.revalidate();
+                pnlForm.repaint();
+            }
+        });
+    }
+
+    public void setUpForeignTextField(JTextField textField, CustomTable table) {
+        textField.setEditable(false);
+        textField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                pnlTable.removeAll();
+                pnlTable.add(table, gbcTable);
+                pnlTable.revalidate();
+                pnlTable.repaint();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+
             }
         });
     }

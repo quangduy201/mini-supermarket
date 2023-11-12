@@ -15,19 +15,19 @@ public class BrandBLL extends EntityBLL<Brand> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Brand brand) {
+    public Pair<Boolean, String> exists(Brand oldBrand, Brand newBrand) {
         List<Brand> brands;
-        brands = findBy(__.BRAND.ID, brand.getId());
+        brands = findBy(__.BRAND.ID, newBrand.getId());
         if (!brands.isEmpty()) {
             String message = I18n.get("messages", "brand.exists");
             return new Pair<>(true, message);
         }
 
         brands = findBy(
-            __.BRAND.NAME, brand.getName(),
+            __.BRAND.NAME, newBrand.getName(),
             __.BRAND.DELETED, false);
         if (!brands.isEmpty()) {
-            String message = I18n.get("messages", "brand.exists.name", brand.getName());
+            String message = I18n.get("messages", "brand.exists.name", newBrand.getName());
             return new Pair<>(true, message);
         }
 

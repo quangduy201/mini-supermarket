@@ -15,17 +15,17 @@ public class FunctionBLL extends EntityBLL<Function> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Function function) {
+    public Pair<Boolean, String> exists(Function oldFunction, Function newFunction) {
         List<Function> functions;
-        functions = findBy(__.FUNCTION.ID, function.getId());
+        functions = findBy(__.FUNCTION.ID, newFunction.getId());
         if (!functions.isEmpty()) {
             String message = I18n.get("messages", "function.exists");
             return new Pair<>(true, message);
         }
 
-        functions = findBy(__.FUNCTION.NAME, function.getName(), false);
+        functions = findBy(__.FUNCTION.NAME, newFunction.getName(), false);
         if (!functions.isEmpty()) {
-            String message = I18n.get("messages", "function.exists.name", function.getName());
+            String message = I18n.get("messages", "function.exists.name", newFunction.getName());
             return new Pair<>(true, message);
         }
 

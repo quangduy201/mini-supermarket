@@ -15,9 +15,9 @@ public class ExportNoteBLL extends EntityBLL<ExportNote> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(ExportNote exportNote) {
+    public Pair<Boolean, String> exists(ExportNote oldExportNote, ExportNote newExportNote) {
         List<ExportNote> exportNotes;
-        exportNotes = findBy(__.EXPORT_NOTE.ID, exportNote.getInvoiceDate());
+        exportNotes = findBy(__.EXPORT_NOTE.ID, newExportNote.getInvoiceDate());
         if (!exportNotes.isEmpty()) {
             String message = I18n.get("messages", "export_note.exists");
             return new Pair<>(true, message);

@@ -15,9 +15,9 @@ public class ImportNoteBLL extends EntityBLL<ImportNote> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(ImportNote importNote) {
+    public Pair<Boolean, String> exists(ImportNote oldImportNote, ImportNote newImportNote) {
         List<ImportNote> importNotes;
-        importNotes = findBy(__.IMPORT_NOTE.IMPORT_NOTE, importNote.getId());
+        importNotes = findBy(__.IMPORT_NOTE.IMPORT_NOTE, newImportNote.getId());
         if (!importNotes.isEmpty()) {
             String message = I18n.get("messages", "import_note.exists");
             return new Pair<>(true, message);

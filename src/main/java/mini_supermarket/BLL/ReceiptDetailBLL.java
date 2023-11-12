@@ -16,11 +16,11 @@ public class ReceiptDetailBLL extends RelationshipBLL<ReceiptDetail, ReceiptDeta
     }
 
     @Override
-    public Pair<Boolean, String> exists(ReceiptDetail receiptDetail) {
+    public Pair<Boolean, String> exists(ReceiptDetail oldReceiptDetail, ReceiptDetail newReceiptDetail) {
         List<ReceiptDetail> receiptDetails;
         receiptDetails = findBy(
-            __.RECEIPT_DETAIL.RECEIPT, receiptDetail.getId().getReceipt(),
-            __.RECEIPT_DETAIL.PRODUCT, receiptDetail.getId().getProduct());
+            __.RECEIPT_DETAIL.RECEIPT, newReceiptDetail.getId().getReceipt(),
+            __.RECEIPT_DETAIL.PRODUCT, newReceiptDetail.getId().getProduct());
         if (!receiptDetails.isEmpty()) {
             String message = I18n.get("messages", "receipt_detail.exists");
             return new Pair<>(true, message);

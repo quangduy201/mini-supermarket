@@ -16,11 +16,11 @@ public class PromotionGiftBLL extends RelationshipBLL<PromotionGift, PromotionDe
     }
 
     @Override
-    public Pair<Boolean, String> exists(PromotionGift promotionGift) {
+    public Pair<Boolean, String> exists(PromotionGift oldPromotionGift, PromotionGift newPromotionGift) {
         List<PromotionGift> promotionGifts;
         promotionGifts = findBy(
-            __.PROMOTION_GIFT.PROMOTION, promotionGift.getId().getPromotion(),
-            __.PROMOTION_GIFT.PRODUCT, promotionGift.getId().getProduct());
+            __.PROMOTION_GIFT.PROMOTION, newPromotionGift.getId().getPromotion(),
+            __.PROMOTION_GIFT.PRODUCT, newPromotionGift.getId().getProduct());
         if (!promotionGifts.isEmpty()) {
             String message = I18n.get("messages", "promotion_gift.exists");
             return new Pair<>(true, message);

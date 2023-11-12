@@ -15,9 +15,9 @@ public class PromotionBLL extends EntityBLL<Promotion> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Promotion promotion) {
+    public Pair<Boolean, String> exists(Promotion oldPromotion, Promotion newPromotion) {
         List<Promotion> promotions;
-        promotions = findBy(__.PROMOTION.ID, promotion.getId());
+        promotions = findBy(__.PROMOTION.ID, newPromotion.getId());
         if (!promotions.isEmpty()) {
             String message = I18n.get("messages", "promotion.exists");
             return new Pair<>(true, message);

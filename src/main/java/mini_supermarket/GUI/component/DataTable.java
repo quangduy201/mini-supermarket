@@ -1,6 +1,5 @@
 package mini_supermarket.GUI.component;
 
-import mini_supermarket.utils.Log;
 import mini_supermarket.utils.Pair;
 
 import javax.swing.*;
@@ -13,11 +12,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class DataTable extends JTable {
-    private int lastSelectedRow = -1;
-    private Timer doubleClickTimer;
-    private boolean isDoubleClick;
-    private MouseListener singleClick;
-    private MouseListener doubleClick;
+    protected int lastSelectedRow = -1;
+    protected Timer doubleClickTimer;
+    protected boolean isDoubleClick;
+    protected MouseListener singleClick;
+    protected MouseListener doubleClick;
 
     @SafeVarargs
     public DataTable(Object[][] data, Object[] columnNames, Integer[] columnWidths, Runnable action,

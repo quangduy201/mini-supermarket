@@ -15,9 +15,9 @@ public class ReceiptBLL extends EntityBLL<Receipt> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Receipt receipt) {
+    public Pair<Boolean, String> exists(Receipt oldReceipt, Receipt newReceipt) {
         List<Receipt> receipts;
-        receipts = findBy(__.RECEIPT.ID, receipt.getId());
+        receipts = findBy(__.RECEIPT.ID, newReceipt.getId());
         if (!receipts.isEmpty()) {
             String message = I18n.get("messages", "receipt.exists");
             return new Pair<>(true, message);

@@ -15,16 +15,16 @@ public class RoleBLL extends EntityBLL<Role> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Role role) {
+    public Pair<Boolean, String> exists(Role oldRole, Role newRole) {
         List<Role> roles;
-        roles = findBy(__.ROLE.ID, role.getId());
+        roles = findBy(__.ROLE.ID, newRole.getId());
         if (!roles.isEmpty()) {
             String message = I18n.get("messages", "role.exists");
             return new Pair<>(true, message);
         }
 
         roles = findBy(
-            __.ROLE.NAME, role.getName(),
+            __.ROLE.NAME, newRole.getName(),
             __.ROLE.DELETED, false);
         if (!roles.isEmpty()) {
             String message = I18n.get("messages", "role.exists.name");

@@ -15,16 +15,16 @@ public class SupplierBLL extends EntityBLL<Supplier> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Supplier supplier) {
+    public Pair<Boolean, String> exists(Supplier oldSupplier, Supplier newSupplier) {
         List<Supplier> suppliers;
-        suppliers = findBy(__.SUPPLIER.ID, supplier.getId());
+        suppliers = findBy(__.SUPPLIER.ID, newSupplier.getId());
         if (!suppliers.isEmpty()) {
             String message = I18n.get("messages", "supplier.exists");
             return new Pair<>(true, message);
         }
 
         suppliers = findBy(
-            __.SUPPLIER.NAME, supplier.getName(),
+            __.SUPPLIER.NAME, newSupplier.getName(),
             __.SUPPLIER.DELETED, false);
         if (!suppliers.isEmpty()) {
             String message = I18n.get("messages", "supplier.exists.name");
@@ -32,7 +32,7 @@ public class SupplierBLL extends EntityBLL<Supplier> {
         }
 
         suppliers = findBy(
-            __.SUPPLIER.PHONE, supplier.getPhone(),
+            __.SUPPLIER.PHONE, newSupplier.getPhone(),
             __.SUPPLIER.DELETED, false);
         if (!suppliers.isEmpty()) {
             String message = I18n.get("messages", "supplier.exists.phone");

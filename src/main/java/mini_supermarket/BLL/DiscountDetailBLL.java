@@ -15,11 +15,11 @@ public class DiscountDetailBLL extends RelationshipBLL<DiscountDetail, DiscountD
     }
 
     @Override
-    public Pair<Boolean, String> exists(DiscountDetail discountDetail) {
+    public Pair<Boolean, String> exists(DiscountDetail oldDiscountDetail, DiscountDetail newDiscountDetail) {
         List<DiscountDetail> discountDetails;
         discountDetails = findBy(
-            __.DISCOUNT_DETAIL.DISCOUNT, discountDetail.getId().getDiscount(),
-            __.DISCOUNT_DETAIL.PRODUCT, discountDetail.getId().getProduct());
+            __.DISCOUNT_DETAIL.DISCOUNT, newDiscountDetail.getId().getDiscount(),
+            __.DISCOUNT_DETAIL.PRODUCT, newDiscountDetail.getId().getProduct());
         if (!discountDetails.isEmpty()) {
             String message = I18n.get("messages", "discount_detail.exists");
             return new Pair<>(true, message);

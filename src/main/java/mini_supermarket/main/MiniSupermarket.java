@@ -1,6 +1,7 @@
 package mini_supermarket.main;
 
 import mini_supermarket.DTO.Account;
+import mini_supermarket.GUI.ForgottenPassword;
 import mini_supermarket.GUI.Login;
 import mini_supermarket.GUI.Main;
 import mini_supermarket.GUI.SplashScreen;
@@ -25,7 +26,7 @@ public class MiniSupermarket {
             HibernateUtil.initialize();
             MiniSupermarket.initialize();
         } catch (Exception e) {
-            Log.fatal("Cannot initialize the application.");
+            Log.fatal(e.toString());
         }
     }
 
@@ -39,6 +40,12 @@ public class MiniSupermarket {
             main = new Main(account);
             splashScreen.dispose();
             main.setVisible(true);
+            if (account.getPassword().startsWith("first")) {
+                ForgottenPassword forgottenPassword = new ForgottenPassword();
+                forgottenPassword.setAccount(account);
+                forgottenPassword.toStep(3);
+                forgottenPassword.setVisible(true);
+            }
         }
     }
 
