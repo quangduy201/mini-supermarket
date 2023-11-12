@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ControlLayout extends BottomTopLayout {
-    private RoundPanel mainFunction;
-    private List<Function> functions;
-    private FunctionButtonList listFunction;
-    private RoundPanel searchFunction;
-    private JComboBox comboBoxFilter;
-    private JTextField jTextFieldSearch;
-    private RoundPanel resetPanel;
-    private FunctionButton btnRefresh;
+    protected RoundPanel mainFunction;
+    protected List<Function> functions;
+    protected FunctionButtonList listFunction;
+    protected RoundPanel searchFunction;
+    protected JComboBox comboBoxFilter;
+    protected JTextField jTextFieldSearch;
+    protected RoundPanel resetPanel;
+    protected FunctionButton btnRefresh;
 
     public ControlLayout(List<Function> functions) {
         super(100, true, 20, 5);
@@ -73,7 +73,7 @@ public class ControlLayout extends BottomTopLayout {
             final int index = i;
             functionButtons.get(i).addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseClicked(MouseEvent e) {
+                public void mousePressed(MouseEvent e) {
                     String functionName = functions.get(index).getName();
                     doFunction(functionName);
                 }

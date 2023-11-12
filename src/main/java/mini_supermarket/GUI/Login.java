@@ -128,38 +128,16 @@ public class Login extends JFrame {
     }
 
     private void forgotPassword() {
-        new ForgottenPassword();
-    }
-
-    public Pair<Account, String> validateLogin(String username, String password) {
-        Pair<Boolean, String> result;
-        result = AccountBLL.validate(__.ACCOUNT.USERNAME, username);
-        if (!result.getFirst())
-            return new Pair<>(null, I18n.get("frame", "login.failed.username"));
-
-        result = AccountBLL.validate(__.ACCOUNT.PASSWORD, password);
-        if (!result.getFirst())
-            return new Pair<>(null, I18n.get("frame", "login.failed.password"));
-
-        AccountBLL accountBLL = new AccountBLL();
-        List<Account> accountList = accountBLL.findBy(__.ACCOUNT.USERNAME, username);
-        if (accountList.isEmpty())
-            return new Pair<>(null, I18n.get("frame", "login.failed.username"));
-
-        Account account = accountList.get(0);
-        if (!Password.verifyPassword(password, account.getPassword()))
-            return new Pair<>(null, I18n.get("frame", "login.failed.password"));
-
-        return new Pair<>(account, I18n.get("frame", "login.success"));
+        new ForgottenPassword().setVisible(true);
     }
 
     public void login() {
         String username = txtUsername.getText();
         String password = new String(txtPassword.getPassword());
-        Pair<Account, String> result = validateLogin(username, password);
+        Pair<Account, String> result = AccountBLL.validateLogin(username, password);
         Account account = result.getFirst();
         String message = result.getSecond();
-        if (result.getFirst() == null) {
+        if (account == null) {
             String title = I18n.get("dialog", "title.error");
             JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
             return;
@@ -172,6 +150,12 @@ public class Login extends JFrame {
         MiniSupermarket.main = new Main(account);
         dispose();
         MiniSupermarket.main.setVisible(true);
+        if (account.getPassword().startsWith("first")) {
+            ForgottenPassword forgottenPassword = new ForgottenPassword();
+            forgottenPassword.setAccount(account);
+            forgottenPassword.toStep(3);
+            forgottenPassword.setVisible(true);
+        }
         MiniSupermarket.login = null;
         System.gc();
     }

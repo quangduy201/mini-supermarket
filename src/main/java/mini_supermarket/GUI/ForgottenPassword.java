@@ -55,10 +55,17 @@ public class ForgottenPassword extends JDialog {
                 exit();
             }
         });
-        setVisible(true);
     }
 
-    private void showEnterEmail() {
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public void showEnterEmail() {
         otpEnterEmail.removeAll();
 
         JLabel lbEnterEmail = new JLabel(I18n.get("frame", "forgotten_password.email"), SwingConstants.CENTER);
@@ -90,7 +97,7 @@ public class ForgottenPassword extends JDialog {
         panel.add(buttons[1]);
     }
 
-    private void showConfirmPanel() {
+    public void showConfirmPanel() {
         otpConfirmPanel.removeAll();
 
         JLabel username = new JLabel(account.getUsername(), SwingConstants.CENTER);
@@ -168,7 +175,7 @@ public class ForgottenPassword extends JDialog {
         sendOTP(nothing);
     }
 
-    private void showChangePassword() {
+    public void showChangePassword() {
         JLabel title = new JLabel(I18n.get("frame", "forgotten_password.change_password"), SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 20));
         title.setPreferredSize(new Dimension(500, 50));
@@ -231,7 +238,7 @@ public class ForgottenPassword extends JDialog {
         panel.add(buttons[1]);
     }
 
-    private void exit() {
+    public void exit() {
         String message = I18n.get("frame", "exit.forgotten_password");
         String title = I18n.get("dialog", "title.warning");
         String[] options = new String[]{
@@ -244,7 +251,7 @@ public class ForgottenPassword extends JDialog {
             dispose();
     }
 
-    private void toStep(int step) {
+    public void toStep(int step) {
         JPanel panel = new JPanel();
         switch (step) {
             case 1 -> {
@@ -265,7 +272,7 @@ public class ForgottenPassword extends JDialog {
         revalidate();
     }
 
-    private void sendOTP(JLabel nothing) {
+    public void sendOTP(JLabel nothing) {
         if (currentCountDownThread != null)
             currentCountDownThread.interrupt();
         currentCountDownThread = new Thread(() -> {
@@ -287,7 +294,7 @@ public class ForgottenPassword extends JDialog {
         currentCountDownThread.start();
     }
 
-    private void validateStep1(String email) {
+    public void validateStep1(String email) {
         if (email.isEmpty()) {
             String title = I18n.get("dialog", "title.error");
             JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.email_not_empty"), title, JOptionPane.ERROR_MESSAGE);
@@ -312,7 +319,7 @@ public class ForgottenPassword extends JDialog {
         toStep(++step);
     }
 
-    private void validateStep2(String otp) {
+    public void validateStep2(String otp) {
         if (otp.isEmpty()) {
             String title = I18n.get("dialog", "title.error");
             JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.otp"), title, JOptionPane.ERROR_MESSAGE);
@@ -339,7 +346,7 @@ public class ForgottenPassword extends JDialog {
         toStep(++step);
     }
 
-    private void validateStep3(String password, String confirm) {
+    public void validateStep3(String password, String confirm) {
         if (password.isEmpty()) {
             String title = I18n.get("dialog", "title.error");
             JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.new_password_not_empty"), title, JOptionPane.ERROR_MESSAGE);
@@ -368,7 +375,7 @@ public class ForgottenPassword extends JDialog {
             return;
         }
         String title = I18n.get("dialog", "title.info");
-        JOptionPane.showMessageDialog(this, I18n.get("messages", "forgotten_password.success"), title, JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, I18n.get("frame", "forgotten_password.success"), title, JOptionPane.INFORMATION_MESSAGE);
         this.dispose();
     }
 }

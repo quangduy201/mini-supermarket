@@ -15,9 +15,9 @@ public class DiscountBLL extends EntityBLL<Discount> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Discount discount) {
+    public Pair<Boolean, String> exists(Discount oldDiscount, Discount newDiscount) {
         List<Discount> discounts;
-        discounts = findBy(__.DISCOUNT.ID, discount.getId());
+        discounts = findBy(__.DISCOUNT.ID, newDiscount.getId());
         if (!discounts.isEmpty()) {
             String message = I18n.get("messages", "discount.exists");
             return new Pair<>(true, message);

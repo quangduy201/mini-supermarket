@@ -15,19 +15,19 @@ public class StaffBLL extends EntityBLL<Staff> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Staff staff) {
+    public Pair<Boolean, String> exists(Staff oldStaff, Staff newStaff) {
         List<Staff> staffs;
-        staffs = findBy(__.STAFF.ID, staff.getId());
+        staffs = findBy(__.STAFF.ID, newStaff.getId());
         if (!staffs.isEmpty()) {
             String message = I18n.get("messages", "staff.exists");
             return new Pair<>(true, message);
         }
 
         staffs = findBy(
-            __.STAFF.PHONE, staff.getPhone(),
+            __.STAFF.PHONE, newStaff.getPhone(),
             __.STAFF.DELETED, false);
         if (!staffs.isEmpty()) {
-            String message = I18n.get("messages", "staff.exists.phone", staff.getPhone());
+            String message = I18n.get("messages", "staff.exists.phone", newStaff.getPhone());
             return new Pair<>(true, message);
         }
 

@@ -15,19 +15,19 @@ public class CustomerBLL extends EntityBLL<Customer> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Customer customer) {
+    public Pair<Boolean, String> exists(Customer oldCustomer, Customer newCustomer) {
         List<Customer> customers;
-        customers = findBy(__.CUSTOMER.ID, customer.getId());
+        customers = findBy(__.CUSTOMER.ID, newCustomer.getId());
         if (!customers.isEmpty()) {
             String message = I18n.get("messages", "customer.exists");
             return new Pair<>(true, message);
         }
 
         customers = findBy(
-            __.CUSTOMER.PHONE, customer.getPhone(),
+            __.CUSTOMER.PHONE, newCustomer.getPhone(),
             __.CUSTOMER.DELETED, false);
         if (!customers.isEmpty()) {
-            String message = I18n.get("messages", "customer.exists.phone", customer.getPhone());
+            String message = I18n.get("messages", "customer.exists.phone", newCustomer.getPhone());
             return new Pair<>(true, message);
         }
 

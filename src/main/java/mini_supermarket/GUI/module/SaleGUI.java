@@ -250,7 +250,7 @@ public class SaleGUI extends LeftRightLayout {
 
         //Test
         btnAdd.addActionListener((e) -> {
-            CustomDialog layoutwa = new CustomDialog();
+            CustomDialog layoutwa = new CustomDialog("abc", 10, false);
             layoutwa.setVisible(true);
         });
     }

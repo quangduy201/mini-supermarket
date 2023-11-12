@@ -14,15 +14,15 @@ public class StatisticBLL extends EntityBLL<Statistic> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Statistic statistic) {
+    public Pair<Boolean, String> exists(Statistic oldStatistic, Statistic newStatistic) {
         List<Statistic> statistics;
-        statistics = findBy(__.STATISTIC.ID, statistic.getId());
+        statistics = findBy(__.STATISTIC.ID, newStatistic.getId());
         if (!statistics.isEmpty()) {
             String message = I18n.get("messages", "statistic.exists");
             return new Pair<>(true, message);
         }
 
-        statistics = findBy(__.STATISTIC.DATE, statistic.getDate(), false);
+        statistics = findBy(__.STATISTIC.DATE, newStatistic.getDate(), false);
         if (!statistics.isEmpty()) {
             String message = I18n.get("messages", "statistic.exists.date");
             return new Pair<>(true, message);

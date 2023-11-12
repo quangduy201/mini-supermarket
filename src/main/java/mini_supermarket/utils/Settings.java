@@ -68,7 +68,7 @@ public class Settings {
     }
 
     public static Account getLastAccount() {
-        String accountUsername = configurations.getProperty("account");
+        String accountUsername = Password.decrypt(configurations.getProperty("account"), "account", "account".length());
         List<Account> accounts = new AccountBLL().findBy(__.ACCOUNT.USERNAME, accountUsername);
         if (!accounts.isEmpty())
             return accounts.get(0);
@@ -79,7 +79,7 @@ public class Settings {
         if (account == null)
             setConfiguration("account", "");
         else
-            setConfiguration("account", account.getUsername());
+            setConfiguration("account", Password.encrypt(account.getUsername(), "account", "account".length()));
     }
 
     public static List<String> getBanners() {

@@ -15,19 +15,19 @@ public class ProductBLL extends EntityBLL<Product> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Product product) {
+    public Pair<Boolean, String> exists(Product oldProduct, Product newProduct) {
         List<Product> products;
-        products = findBy(__.PRODUCT.ID, product.getId());
+        products = findBy(__.PRODUCT.ID, newProduct.getId());
         if (!products.isEmpty()) {
             String message = I18n.get("messages", "product.exists");
             return new Pair<>(true, message);
         }
 
         products = findBy(
-            __.PRODUCT.NAME, product.getName(),
+            __.PRODUCT.NAME, newProduct.getName(),
             __.PRODUCT.DELETED, false);
         if (!products.isEmpty()) {
-            String message = I18n.get("messages", "product.exists.name", product.getName());
+            String message = I18n.get("messages", "product.exists.name", newProduct.getName());
             return new Pair<>(true, message);
         }
 

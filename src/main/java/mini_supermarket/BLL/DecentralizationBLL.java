@@ -15,12 +15,12 @@ public class DecentralizationBLL extends RelationshipBLL<Decentralization, Decen
     }
 
     @Override
-    public Pair<Boolean, String> exists(Decentralization decentralization) {
+    public Pair<Boolean, String> exists(Decentralization oldDecentralization, Decentralization newDecentralization) {
         List<Decentralization> decentralizations;
         decentralizations = findBy(
-            __.DECENTRALIZATION.ROLE, decentralization.getId().getRole(),
-            __.DECENTRALIZATION.MODULE, decentralization.getId().getModule(),
-            __.DECENTRALIZATION.FUNCTION, decentralization.getId().getFunction());
+            __.DECENTRALIZATION.ROLE, newDecentralization.getId().getRole(),
+            __.DECENTRALIZATION.MODULE, newDecentralization.getId().getModule(),
+            __.DECENTRALIZATION.FUNCTION, newDecentralization.getId().getFunction());
         if (!decentralizations.isEmpty()) {
             String message = I18n.get("messages", "decentralization.exists");
             return new Pair<>(true, message);

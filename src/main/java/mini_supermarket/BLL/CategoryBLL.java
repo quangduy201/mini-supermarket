@@ -15,19 +15,19 @@ public class CategoryBLL extends EntityBLL<Category> {
     }
 
     @Override
-    public Pair<Boolean, String> exists(Category category) {
+    public Pair<Boolean, String> exists(Category oldCategory, Category newCategory) {
         List<Category> categories;
-        categories = findBy(__.CATEGORY.ID, category.getId());
+        categories = findBy(__.CATEGORY.ID, newCategory.getId());
         if (!categories.isEmpty()) {
             String message = I18n.get("messages", "category.exists");
             return new Pair<>(true, message);
         }
 
         categories = findBy(
-            __.CATEGORY.NAME, category.getName(),
+            __.CATEGORY.NAME, newCategory.getName(),
             __.CATEGORY.DELETED, false);
         if (!categories.isEmpty()) {
-            String message = I18n.get("messages", "category.exists.name", category.getName());
+            String message = I18n.get("messages", "category.exists.name", newCategory.getName());
             return new Pair<>(true, message);
         }
 

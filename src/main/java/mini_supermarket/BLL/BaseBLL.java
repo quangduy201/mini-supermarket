@@ -271,5 +271,5 @@ public abstract class BaseBLL<DTO extends BaseDTO, ID extends Serializable> {
         }
     }
 
-    public abstract Pair<Boolean, String> exists(DTO object);
+    public abstract Pair<Boolean, String> exists(DTO oldObject, DTO newObject);
 }
