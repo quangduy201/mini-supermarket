@@ -3,7 +3,8 @@ package mini_supermarket.GUI.module;
 import mini_supermarket.BLL.CustomerBLL;
 import mini_supermarket.DTO.Customer;
 import mini_supermarket.DTO.Function;
-import mini_supermarket.GUI.component.DataTable;
+import mini_supermarket.DTO.Staff;
+import mini_supermarket.GUI.component.CustomTable;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.ControlLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
@@ -11,7 +12,6 @@ import mini_supermarket.utils.Date;
 import mini_supermarket.utils.Pair;
 import mini_supermarket.utils.__;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,11 +20,11 @@ import java.util.List;
 public class CustomerGUI extends ControlLayout {
     private final CustomerBLL customerBLL;
     private final RoundPanel panelFunction;
+
+
     private final RoundPanel panelData;
-    private DataTable dataTable;
-    private JScrollPane scrollPane;
+    private CustomTable dataTable;
     private  Long[] idsOfCurrentData;
-    private LeftRightLayout layoutFormAndData;
 
     public CustomerGUI(List<Function> functions) {
         super(functions);
@@ -33,23 +33,12 @@ public class CustomerGUI extends ControlLayout {
         panelData = getBottomPanel();
         panelData.setLayout(new GridBagLayout());
 
-        dataTable = getDataTable(customerBLL.findAll());
-        dataTable.setBackground(null);
 
-        scrollPane = new JScrollPane(dataTable);
-        scrollPane.setBorder(null);
-        scrollPane.getViewport().setBackground(null);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(10, 10, 10,10);
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panelData.add(scrollPane, gbc);
+
+        refresh();;
     }
 
-    public  DataTable getDataTable(List<Customer> customers){
+    public  CustomTable getDataTable(List<Customer> customers){
           Object[][] ids = customerBLL.getData(customers, false, List.of(
                 new Pair<>(__.CUSTOMER.COLUMN.ID, Long::parseLong)
           ));
@@ -67,7 +56,7 @@ public class CustomerGUI extends ControlLayout {
               new Pair<>(__.CUSTOMER.COLUMN.SIGNED_UP_DATE, Date::parse)
           ));
 
-          return new DataTable(data,
+          return new CustomTable(data,
               new Object[]{"STT", "Khách hàng", "Giới tính", "SĐT", "Thành viên", "Điểm tích lũy", "Ngày đăng ký"},
               new Integer[]{1, 100, 1, 0, 1, 1, 0},
               this::detail, true,
@@ -77,7 +66,7 @@ public class CustomerGUI extends ControlLayout {
 
     public List<Customer> getCustomerFromSelectedRows() {
         List<Customer> customers = new ArrayList<>();
-        for (int row : dataTable.getSelectedRows()) {
+        for (int row : dataTable.getTable().getSelectedRows()) {
             Customer customer = customerBLL.findBy(__.CUSTOMER.ID, idsOfCurrentData[row]).get(0);
             customers.add(customer);
         }
@@ -85,7 +74,10 @@ public class CustomerGUI extends ControlLayout {
     }
 
     public Customer getCustomerFromSelectedRow() {
-        return getCustomerFromSelectedRows().get(0);
+        List<Customer> customers = getCustomerFromSelectedRows();
+        if(customers.isEmpty())
+            return  null;
+        return customers.get(0);
     }
 
     @Override
@@ -120,6 +112,19 @@ public class CustomerGUI extends ControlLayout {
 
     @Override
     public void refresh() {
-        // TODO
+        panelData.removeAll();;
+        panelData.revalidate();
+        panelData.repaint();
+        dataTable = getDataTable(customerBLL.findBy(__.CUSTOMER.DELETED,false));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelData.add(dataTable,gbc);
+        jTextFieldSearch.setText("");
+        System.gc();
     }
 }

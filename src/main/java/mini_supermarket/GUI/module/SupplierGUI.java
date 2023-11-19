@@ -3,15 +3,13 @@ package mini_supermarket.GUI.module;
 import mini_supermarket.BLL.SupplierBLL;
 import mini_supermarket.DTO.Function;
 import mini_supermarket.DTO.Supplier;
-import mini_supermarket.GUI.component.DataTable;
+import mini_supermarket.GUI.component.CustomTable;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.ControlLayout;
-import mini_supermarket.GUI.layout.LeftRightLayout;
 import mini_supermarket.utils.Date;
 import mini_supermarket.utils.Pair;
 import mini_supermarket.utils.__;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,10 +19,8 @@ public class SupplierGUI extends ControlLayout {
     private final SupplierBLL supplierBLL;
     private final RoundPanel panelFunction;
     private final RoundPanel panelData;
-    private DataTable dataTable;
-    private JScrollPane scrollPane;
+    private CustomTable dataTable;
     private  Long[] idsOfCurrentData;
-    private LeftRightLayout layoutFormAndData;
 
     public SupplierGUI(List<Function> functions) {
         super(functions);
@@ -32,23 +28,10 @@ public class SupplierGUI extends ControlLayout {
         panelFunction = getTopPanel();
         panelData = getBottomPanel();
         panelData.setLayout(new GridBagLayout());
-        dataTable = getDataTable(supplierBLL.findAll());
-        dataTable.setBackground(null);
-
-        scrollPane = new JScrollPane(dataTable);
-        scrollPane.setBorder(null);
-        scrollPane.getViewport().setBackground(null);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(10, 10 , 10 ,10);
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panelData.add(scrollPane, gbc);
+        refresh();
     }
 
-    public  DataTable getDataTable(List<Supplier> suppliers) {
+    public  CustomTable getDataTable(List<Supplier> suppliers) {
         Object[][] ids = supplierBLL.getData(suppliers, false, List.of(
             new Pair<>(__.SUPPLIER.COLUMN.ID, Long::parseLong)
         ));
@@ -64,17 +47,17 @@ public class SupplierGUI extends ControlLayout {
             new Pair<>(__.SUPPLIER.COLUMN.EMAIL, String::toString)
         ));
 
-        return new DataTable(data,
+        return new CustomTable(data,
             new Object[]{"STT", "Nhà cung cấp", "SĐT", "Địa chỉ", "Email"},
             new Integer[]{1, 100, 50, 200, 100},
             this::detail, true,
             new Pair<>(Date.class, 3)
         );
-    };
+    }
 
     public List<Supplier> getSuppliersFromSelectedRows() {
         List<Supplier> suppliers = new ArrayList<>();
-        for (int row : dataTable.getSelectedRows()) {
+        for (int row : dataTable.getTable().getSelectedRows()) {
             Supplier supplier = supplierBLL.findBy(__.SUPPLIER.ID,idsOfCurrentData[row]).get(0);
             suppliers.add(supplier);
         }
@@ -82,7 +65,10 @@ public class SupplierGUI extends ControlLayout {
     }
 
     public Supplier getSupplierFromSelectedRow() {
-        return getSuppliersFromSelectedRows().get(0);
+        List<Supplier> suppliers = getSuppliersFromSelectedRows();
+        if (suppliers.isEmpty())
+            return null;
+        return suppliers.get(0);
     }
 
     @Override
@@ -117,6 +103,20 @@ public class SupplierGUI extends ControlLayout {
 
     @Override
     public void refresh() {
-        // TODO
+        panelData.removeAll();
+        panelData.revalidate();
+        panelData.repaint();
+        dataTable = getDataTable(supplierBLL.findBy(__.SUPPLIER.DELETED,false));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelData.add(dataTable,gbc);
+        jTextFieldSearch.setText("");
+        System.gc();
     }
+
 }

@@ -27,30 +27,32 @@ public class MiniSupermarket {
             MiniSupermarket.initialize();
         } catch (Exception e) {
             Log.fatal(e.toString());
+
         }
     }
 
-    public static void initialize() {
-        Account account = Settings.getLastAccount();
-        if (account == null) {
-            login = new Login();
-            splashScreen.dispose();
-            login.setVisible(true);
-        } else {
-            main = new Main(account);
-            splashScreen.dispose();
-            main.setVisible(true);
-            if (account.getPassword().startsWith("first")) {
-                ForgottenPassword forgottenPassword = new ForgottenPassword();
-                forgottenPassword.setAccount(account);
-                forgottenPassword.toStep(3);
-                forgottenPassword.setVisible(true);
+        public static void initialize () {
+            Account account = Settings.getLastAccount();
+            if (account == null) {
+                login = new Login();
+                splashScreen.dispose();
+                login.setVisible(true);
+            } else {
+                main = new Main(account);
+                splashScreen.dispose();
+                main.setVisible(true);
+                if (account.getPassword().startsWith("first")) {
+                    ForgottenPassword forgottenPassword = new ForgottenPassword();
+                    forgottenPassword.setAccount(account);
+                    forgottenPassword.toStep(3);
+                    forgottenPassword.setVisible(true);
+                }
             }
         }
+
+        public static void exit ( int status){
+            HibernateUtil.shutdown();
+            System.exit(status);
+        }
     }
 
-    public static void exit(int status) {
-        HibernateUtil.shutdown();
-        System.exit(status);
-    }
-}
