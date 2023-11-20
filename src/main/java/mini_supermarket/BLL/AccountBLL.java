@@ -36,11 +36,13 @@ public class AccountBLL extends EntityBLL<Account> {
 
     public Pair<Boolean, String> editAccount(Account currentAccount, Account account) {
         Pair<Boolean, String> result;
+
+        account.setId(currentAccount.getId());
+
         result = validate(__.ACCOUNT.USERNAME, account.getUsername());
         if (!result.getFirst())
             return new Pair<>(false, result.getSecond());
 
-        account.setId(currentAccount.getId());
         result = exists(currentAccount, account);
         if (result.getFirst())
             return new Pair<>(false, result.getSecond());

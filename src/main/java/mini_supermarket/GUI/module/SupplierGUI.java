@@ -7,7 +7,6 @@ import mini_supermarket.DTO.Supplier;
 import mini_supermarket.GUI.component.CustomTable;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.ControlLayout;
-import mini_supermarket.GUI.layout.LeftRightLayout;
 import mini_supermarket.utils.I18n;
 import mini_supermarket.utils.Pair;
 import mini_supermarket.utils.__;
@@ -22,13 +21,15 @@ public class SupplierGUI extends ControlLayout {
     private final RoundPanel panelFunction;
     private final RoundPanel panelData;
     private CustomTable dataTable;
-    private  Long[] idsOfCurrentData;
-    private LeftRightLayout layoutFormAndData;
+    private Long[] idsOfCurrentData;
 
     public SupplierGUI(List<Function> functions) {
         super(functions);
         supplierBLL = new SupplierBLL();
         panelFunction = getTopPanel();
+
+        // TODO
+
         panelData = getBottomPanel();
         panelData.setLayout(new GridBagLayout());
 

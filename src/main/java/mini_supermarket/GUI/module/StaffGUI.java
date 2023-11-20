@@ -2,12 +2,15 @@ package mini_supermarket.GUI.module;
 
 import mini_supermarket.BLL.Criteria;
 import mini_supermarket.BLL.StaffBLL;
+import mini_supermarket.DTO.Account;
 import mini_supermarket.DTO.Function;
 import mini_supermarket.DTO.Staff;
 import mini_supermarket.GUI.component.CustomTable;
 import mini_supermarket.GUI.component.RoundPanel;
+import mini_supermarket.GUI.dialog.AccountDialog;
 import mini_supermarket.GUI.dialog.ExcelDialog;
 import mini_supermarket.GUI.dialog.SmallDialog;
+import mini_supermarket.GUI.dialog.StaffDialog;
 import mini_supermarket.GUI.layout.ControlLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 import mini_supermarket.main.MiniSupermarket;
@@ -22,16 +25,23 @@ import java.util.List;
 public class StaffGUI extends ControlLayout {
     private final StaffBLL staffBLL;
     private final RoundPanel panelFunction;
+    private StaffDialog dialogAdd;
+    private StaffDialog dialogEdit;
+    private StaffDialog dialogDetail;
     private ExcelDialog dialogExcel;
     private final RoundPanel panelData;
     private CustomTable dataTable;
     private Long[] idsOfCurrentData;
-    private LeftRightLayout layoutFormAndData;
 
     public StaffGUI(List<Function> functions) {
         super(functions);
         staffBLL = new StaffBLL();
         panelFunction = getTopPanel();
+
+        dialogAdd = new StaffDialog(I18n.get("dialog", "staff.add"), false);
+        dialogEdit = new StaffDialog(I18n.get("dialog", "staff.edit"), false);
+        dialogDetail = new StaffDialog(I18n.get("dialog", "staff.detail"), true);
+
         panelData = getBottomPanel();
         panelData.setLayout(new GridBagLayout());
 
@@ -91,7 +101,8 @@ public class StaffGUI extends ControlLayout {
 
     @Override
     public void add() {
-        // TODO
+        dialogAdd.setVisible(true);
+
     }
 
     @Override

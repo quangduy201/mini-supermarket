@@ -7,7 +7,6 @@ import mini_supermarket.DTO.Function;
 import mini_supermarket.GUI.component.CustomTable;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.ControlLayout;
-import mini_supermarket.GUI.layout.LeftRightLayout;
 import mini_supermarket.utils.Date;
 import mini_supermarket.utils.I18n;
 import mini_supermarket.utils.Pair;
@@ -24,12 +23,14 @@ public class CustomerGUI extends ControlLayout {
     private final RoundPanel panelData;
     private CustomTable dataTable;
     private  Long[] idsOfCurrentData;
-    private LeftRightLayout layoutFormAndData;
 
     public CustomerGUI(List<Function> functions) {
         super(functions);
         customerBLL = new CustomerBLL();
         panelFunction = getTopPanel();
+
+        // TODO
+
         panelData = getBottomPanel();
         panelData.setLayout(new GridBagLayout());
 
