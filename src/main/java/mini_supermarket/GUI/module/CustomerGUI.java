@@ -1,28 +1,28 @@
 package mini_supermarket.GUI.module;
 
+import mini_supermarket.BLL.Criteria;
 import mini_supermarket.BLL.CustomerBLL;
 import mini_supermarket.DTO.Customer;
 import mini_supermarket.DTO.Function;
-import mini_supermarket.GUI.component.DataTable;
+import mini_supermarket.GUI.component.CustomTable;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.layout.ControlLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 import mini_supermarket.utils.Date;
+import mini_supermarket.utils.I18n;
 import mini_supermarket.utils.Pair;
 import mini_supermarket.utils.__;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CustomerGUI extends ControlLayout {
     private final CustomerBLL customerBLL;
     private final RoundPanel panelFunction;
     private final RoundPanel panelData;
-    private DataTable dataTable;
-    private JScrollPane scrollPane;
+    private CustomTable dataTable;
     private  Long[] idsOfCurrentData;
     private LeftRightLayout layoutFormAndData;
 
@@ -33,12 +33,17 @@ public class CustomerGUI extends ControlLayout {
         panelData = getBottomPanel();
         panelData.setLayout(new GridBagLayout());
 
-        dataTable = getDataTable(customerBLL.findAll());
-        dataTable.setBackground(null);
+        String[] attributes = I18n.get("components", "table_headers.customer").split(", ");
 
-        scrollPane = new JScrollPane(dataTable);
-        scrollPane.setBorder(null);
-        scrollPane.getViewport().setBackground(null);
+        Pair<Long[], Object[][]> pair = CustomerBLL.getDataFrom(customerBLL.findAll());
+        idsOfCurrentData = pair.getFirst();
+        dataTable = new CustomTable(
+            pair.getSecond(),
+            attributes,
+            new Integer[]{1, 100, 1, 0, 1, 1, 0},
+            this::detail, true,
+            new Pair<>(Date.class, 6)
+        );
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10,10);
@@ -46,38 +51,17 @@ public class CustomerGUI extends ControlLayout {
         gbc.weighty = 1.0;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panelData.add(scrollPane, gbc);
+        panelData.add(dataTable, gbc);
+
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBoxFilter.getModel();
+        model.addElement(attributes[1]); // name
+        model.addElement(attributes[3]); // phone
+        model.addElement(attributes[5]); // point
     }
-
-    public  DataTable getDataTable(List<Customer> customers){
-          Object[][] ids = customerBLL.getData(customers, false, List.of(
-                new Pair<>(__.CUSTOMER.COLUMN.ID, Long::parseLong)
-          ));
-
-          idsOfCurrentData = Arrays.stream(ids)
-              .map(row -> (long) row[0])
-              .toArray(Long[]::new);
-
-          Object[][] data = customerBLL.getData(customers, true, List.of(
-              new Pair<>(__.CUSTOMER.COLUMN.NAME, String::toString),
-              new Pair<>(__.CUSTOMER.COLUMN.GENDER, s -> Boolean.parseBoolean(s) ? "Nam" : "Nữ"),
-              new Pair<>(__.CUSTOMER.COLUMN.PHONE, String::toString),
-              new Pair<>(__.CUSTOMER.COLUMN.MEMBERSHIP, s -> Boolean.parseBoolean(s) ? "Có" : "" ),
-              new Pair<>(__.CUSTOMER.COLUMN.POINT, Integer::valueOf),
-              new Pair<>(__.CUSTOMER.COLUMN.SIGNED_UP_DATE, Date::parse)
-          ));
-
-          return new DataTable(data,
-              new Object[]{"STT", "Khách hàng", "Giới tính", "SĐT", "Thành viên", "Điểm tích lũy", "Ngày đăng ký"},
-              new Integer[]{1, 100, 1, 0, 1, 1, 0},
-              this::detail, true,
-              new Pair<>(Date.class,3)
-              );
-    };
 
     public List<Customer> getCustomerFromSelectedRows() {
         List<Customer> customers = new ArrayList<>();
-        for (int row : dataTable.getSelectedRows()) {
+        for (int row : dataTable.getTable().getSelectedRows()) {
             Customer customer = customerBLL.findBy(__.CUSTOMER.ID, idsOfCurrentData[row]).get(0);
             customers.add(customer);
         }
@@ -85,7 +69,10 @@ public class CustomerGUI extends ControlLayout {
     }
 
     public Customer getCustomerFromSelectedRow() {
-        return getCustomerFromSelectedRows().get(0);
+        List<Customer> customers = getCustomerFromSelectedRows();
+        if (customers.isEmpty())
+            return null;
+        return customers.get(0);
     }
 
     @Override
@@ -119,7 +106,42 @@ public class CustomerGUI extends ControlLayout {
     }
 
     @Override
+    public void find() {
+        int attributeIndex = comboBoxFilter.getSelectedIndex();
+        String criteria = jTextFieldSearch.getText().trim();
+
+        List<Customer> customers;
+        if (criteria.isBlank())
+            customers = customerBLL.findAll();
+        else {
+            Criteria<Customer> c = new Criteria<>(customerBLL);
+            customers = switch (attributeIndex) {
+                case 0 -> customerBLL.findByCriteria(
+                    c.like(__.CUSTOMER.NAME, "%" + criteria + "%"));
+                case 1 -> customerBLL.findByCriteria(
+                    c.like(__.CUSTOMER.PHONE, "%" + criteria + "%"));
+                case 2 -> customerBLL.findByCriteria(
+                    c.equal(__.CUSTOMER.POINT, criteria));
+                default -> customerBLL.findAll();
+            };
+        }
+
+        Pair<Long[], Object[][]> pair = CustomerBLL.getDataFrom(customers);
+        idsOfCurrentData = pair.getFirst();
+        Object[][] data = pair.getSecond();
+        dataTable.setData(data);
+    }
+
+    @Override
     public void refresh() {
-        // TODO
+        jTextFieldSearch.setText("");
+        if (comboBoxFilter.getSelectedIndex() == 0)
+            find();
+        else
+            comboBoxFilter.setSelectedIndex(0);
+//        dialogAdd.refresh();
+//        dialogEdit.refresh();
+//        dialogDetail.refresh();
+        System.gc();
     }
 }

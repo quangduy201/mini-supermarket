@@ -49,8 +49,27 @@ public class MiniSupermarket {
         }
     }
 
+    public static void restart() {
+        HibernateUtil.shutdown();
+        I18n.shutdown();
+        Log.shutdown();
+        if (splashScreen != null)
+            splashScreen.dispose();
+        if (login != null)
+            login.dispose();
+        if (main != null)
+            main.dispose();
+        splashScreen = null;
+        login = null;
+        main = null;
+        System.gc();
+        start();
+    }
+
     public static void exit(int status) {
         HibernateUtil.shutdown();
+        I18n.shutdown();
+        Log.shutdown();
         System.exit(status);
     }
 }

@@ -166,8 +166,16 @@ public class Date implements Serializable {
         return new Date(date.minusDays(daysToSubtract));
     }
 
+    public String toString(DateTimeFormatter dateTimeFormatter) {
+        return date.format(dateTimeFormatter);
+    }
+
+    public String toString(String pattern) {
+        return toString(DateTimeFormatter.ofPattern(pattern));
+    }
+
     @Override
     public String toString() {
-        return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return toString("dd/MM/yyyy");
     }
 }

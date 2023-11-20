@@ -2,14 +2,12 @@ package mini_supermarket.BLL;
 
 import mini_supermarket.DAL.StaffDAL;
 import mini_supermarket.DTO.Staff;
-import mini_supermarket.utils.I18n;
-import mini_supermarket.utils.Pair;
-import mini_supermarket.utils.VNString;
-import mini_supermarket.utils.__;
+import mini_supermarket.utils.*;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class StaffBLL extends EntityBLL<Staff> {
+public class StaffBLL extends SafeEntityBLL<Staff> {
     public StaffBLL() {
         super(new StaffDAL());
     }
@@ -23,9 +21,7 @@ public class StaffBLL extends EntityBLL<Staff> {
             return new Pair<>(true, message);
         }
 
-        staffs = findBy(
-            __.STAFF.PHONE, newStaff.getPhone(),
-            __.STAFF.DELETED, false);
+        staffs = findBy(__.STAFF.PHONE, newStaff.getPhone());
         if (!staffs.isEmpty()) {
             String message = I18n.get("messages", "staff.exists.phone", newStaff.getPhone());
             return new Pair<>(true, message);
@@ -91,5 +87,24 @@ public class StaffBLL extends EntityBLL<Staff> {
         if (!VNString.checkFormatOfEmail(email))
             return new Pair<>(false, I18n.get("messages", "staff.validate.email.format.not"));
         return new Pair<>(true, I18n.get("messages", "staff.validate.email"));
+    }
+
+    public static Pair<Long[], Object[][]> getDataFrom(List<Staff> staffs) {
+        StaffBLL staffBLL = new StaffBLL();
+        Object[][] ids = staffBLL.getData(staffs, false, List.of(
+            new Pair<>(__.STAFF.COLUMN.ID, Long::parseLong)
+        ));
+        Long[] idsOfData = Arrays.stream(ids)
+            .map(row -> (long) row[0])
+            .toArray(Long[]::new);
+        Object[][] data = staffBLL.getData(staffs, true, List.of(
+            new Pair<>(__.STAFF.COLUMN.NAME, String::toString),
+            new Pair<>(__.STAFF.COLUMN.GENDER, s -> Boolean.parseBoolean(s) ? "Nam" : "Nữ"),
+            new Pair<>(__.STAFF.COLUMN.BIRTHDATE, Date::parse),
+            new Pair<>(__.STAFF.COLUMN.PHONE, String::toString),
+            new Pair<>(__.STAFF.COLUMN.EMAIL, String::toString),
+            new Pair<>(__.STAFF.COLUMN.ENTRY_DATE, Date::parse)
+        ));
+        return new Pair<>(idsOfData, data);
     }
 }

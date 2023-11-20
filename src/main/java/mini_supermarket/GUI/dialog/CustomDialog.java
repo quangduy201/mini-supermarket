@@ -35,6 +35,10 @@ public class CustomDialog extends JDialog {
                 dispose();
             }
         });
+        this.getRootPane().registerKeyboardAction(e -> {
+            cancel = true;
+            dispose();
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
         this.setLayout(new GridBagLayout());
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.getContentPane().setBackground(new Color(240, 240, 240));

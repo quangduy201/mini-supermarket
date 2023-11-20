@@ -2,8 +2,10 @@ package mini_supermarket.BLL;
 
 import mini_supermarket.DAL.AccountDAL;
 import mini_supermarket.DTO.Account;
+import mini_supermarket.main.MiniSupermarket;
 import mini_supermarket.utils.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class AccountBLL extends EntityBLL<Account> {
@@ -47,11 +49,14 @@ public class AccountBLL extends EntityBLL<Account> {
         account.setLastSignedIn(currentAccount.getLastSignedIn());
         if (!update(account))
             return new Pair<>(false, I18n.get("messages", "account.edit.failed"));
+
+        if (MiniSupermarket.main.getAccount().getId().equals(account.getId()))
+            MiniSupermarket.main.setAccount(account);
         return new Pair<>(true, I18n.get("messages", "account.edit.success"));
     }
 
     public Pair<Boolean, String> removeAccount(Account account) {
-        if (!delete(account))
+        if (account.getId() == 1 || !delete(account))
             return new Pair<>(false, I18n.get("messages", "account.remove.failed"));
         return new Pair<>(true, I18n.get("messages", "account.remove.success"));
     }
@@ -69,9 +74,7 @@ public class AccountBLL extends EntityBLL<Account> {
 
         if (oldAccount == null || !newAccount.getUsername().equals(oldAccount.getUsername())) {
             hasChanges = true;
-            accounts = findBy(
-                __.ACCOUNT.USERNAME, newAccount.getUsername(),
-                __.ACCOUNT.DELETED, false);
+            accounts = findBy(__.ACCOUNT.USERNAME, newAccount.getUsername());
             Account foundAccount = null;
             for (Account acc : accounts) {
                 if (acc.getUsername().equals(newAccount.getUsername())) {
@@ -84,9 +87,7 @@ public class AccountBLL extends EntityBLL<Account> {
         }
 
         if (oldAccount == null || !newAccount.getStaff().equals(oldAccount.getStaff())) {
-            accounts = findBy(
-                __.ACCOUNT.STAFF, newAccount.getStaff(),
-                __.ACCOUNT.DELETED, false);
+            accounts = findBy(__.ACCOUNT.STAFF, newAccount.getStaff());
             if (!accounts.isEmpty())
                 return new Pair<>(true, I18n.get("messages", "account.exists.staff", newAccount.getStaff().getName()));
         }
@@ -159,5 +160,24 @@ public class AccountBLL extends EntityBLL<Account> {
             return new Pair<>(null, I18n.get("frame", "login.failed.password"));
 
         return new Pair<>(account, I18n.get("frame", "login.success"));
+    }
+
+    public static Pair<Long[], Object[][]> getDataFrom(List<Account> accounts) {
+        AccountBLL accountBLL = new AccountBLL();
+        Object[][] ids = accountBLL.getData(accounts, false, List.of(
+            new Pair<>(__.ACCOUNT.COLUMN.ID, Long::parseLong)
+        ));
+        Long[] idsOfData = Arrays.stream(ids)
+            .map(row -> (Long) row[0])
+            .toArray(Long[]::new);
+        Object[][] data = accountBLL.getData(accounts, true, List.of(
+            new Pair<>(__.ACCOUNT.COLUMN.USERNAME, String::toString),
+            new Pair<>(__.STAFF.COLUMN.NAME, String::toString),
+            new Pair<>(__.STAFF.COLUMN.GENDER, s -> Boolean.parseBoolean(s) ? "Nam" : "Nữ"),
+            new Pair<>(__.STAFF.COLUMN.BIRTHDATE, Date::parse),
+            new Pair<>(__.ROLE.COLUMN.NAME, String::toString),
+            new Pair<>(__.STAFF.COLUMN.EMAIL, String::toString)
+        ));
+        return new Pair<>(idsOfData, data);
     }
 }

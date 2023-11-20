@@ -1,20 +1,22 @@
 package mini_supermarket.GUI.module;
 
 import mini_supermarket.BLL.AccountBLL;
+import mini_supermarket.BLL.Criteria;
 import mini_supermarket.DTO.Account;
 import mini_supermarket.DTO.Function;
 import mini_supermarket.GUI.component.CustomTable;
 import mini_supermarket.GUI.component.RoundPanel;
 import mini_supermarket.GUI.dialog.AccountDialog;
+import mini_supermarket.GUI.dialog.SmallDialog;
 import mini_supermarket.GUI.layout.ControlLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 import mini_supermarket.main.MiniSupermarket;
 import mini_supermarket.utils.*;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AccountGUI extends ControlLayout {
@@ -33,33 +35,38 @@ public class AccountGUI extends ControlLayout {
         accountBLL = new AccountBLL();
         panelFunction = getTopPanel();
 
+        dialogAdd = new AccountDialog(I18n.get("dialog", "account.add"), false);
+        dialogEdit = new AccountDialog(I18n.get("dialog", "account.edit"), false);
+        dialogDetail = new AccountDialog(I18n.get("dialog", "account.detail"), true);
+
         panelData = getBottomPanel();
         panelData.setLayout(new GridBagLayout());
 
-        refresh();
-    }
+        String[] attributes = I18n.get("components", "table_headers.account").split(", ");
 
-    public CustomTable getDataTable(List<Account> accounts) {
-        Object[][] ids = accountBLL.getData(accounts, false, List.of(
-            new Pair<>(__.ACCOUNT.COLUMN.ID, Long::parseLong)
-        ));
-        idsOfCurrentData = Arrays.stream(ids)
-            .map(row -> (Long) row[0])
-            .toArray(Long[]::new);
-        Object[][] data = accountBLL.getData(accounts, true, List.of(
-            new Pair<>(__.ACCOUNT.COLUMN.USERNAME, String::toString),
-            new Pair<>(__.STAFF.COLUMN.NAME, String::toString),
-            new Pair<>(__.STAFF.COLUMN.GENDER, s -> Boolean.parseBoolean(s) ? "Nam" : "Nữ"),
-            new Pair<>(__.STAFF.COLUMN.BIRTHDATE, Date::parse),
-            new Pair<>(__.ROLE.COLUMN.NAME, String::toString),
-            new Pair<>(__.STAFF.COLUMN.EMAIL, String::toString)
-        ));
-        return new CustomTable(data,
-            new Object[]{"STT", "Tài khoản", "Nhân viên", "Giới tính", "Ngày sinh", "Chức vụ", "Email"},
-            new Integer[]{1, 1, 100, 1, 1, 0, 0},
+        Pair<Long[], Object[][]> pair = AccountBLL.getDataFrom(accountBLL.findAll());
+        idsOfCurrentData = pair.getFirst();
+        dataTable = new CustomTable(
+            pair.getSecond(),
+            attributes,
+            new Integer[]{1, 1, -100, 1, 1, 0, null},
             this::detail, true,
             new Pair<>(Date.class, 3)
         );
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panelData.add(dataTable, gbc);
+
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBoxFilter.getModel();
+        model.addElement(attributes[1]); // username
+        model.addElement(attributes[2]); // staff
+        model.addElement(attributes[5]); // role
+        model.addElement(attributes[6]); // email
     }
 
     public List<Account> getAccountsFromSelectedRows() {
@@ -86,15 +93,7 @@ public class AccountGUI extends ControlLayout {
             return;
 
         Pair<Boolean, String> result = accountBLL.addAccount(account);
-        if (result.getFirst()) {
-            String title = I18n.get("dialog", "title.info");
-            JOptionPane.showMessageDialog(MiniSupermarket.main, result.getSecond(), title, JOptionPane.INFORMATION_MESSAGE);
-            refresh();
-        } else {
-            String title = I18n.get("dialog", "title.error");
-            JOptionPane.showMessageDialog(MiniSupermarket.main, result.getSecond(), title, JOptionPane.ERROR_MESSAGE);
-            add();
-        }
+        SmallDialog.showResult(result, this::refresh, this::add);
     }
 
     @Override
@@ -113,15 +112,7 @@ public class AccountGUI extends ControlLayout {
             return;
 
         Pair<Boolean, String> result = accountBLL.editAccount(currentAccount, account);
-        if (result.getFirst()) {
-            String title = I18n.get("dialog", "title.info");
-            JOptionPane.showMessageDialog(MiniSupermarket.main, result.getSecond(), title, JOptionPane.INFORMATION_MESSAGE);
-            refresh();
-        } else {
-            String title = I18n.get("dialog", "title.error");
-            JOptionPane.showMessageDialog(MiniSupermarket.main, result.getSecond(), title, JOptionPane.ERROR_MESSAGE);
-            edit();
-        }
+        SmallDialog.showResult(result, this::refresh, this::edit);
     }
 
     @Override
@@ -145,14 +136,7 @@ public class AccountGUI extends ControlLayout {
             return;
 
         Pair<Boolean, String> result = accountBLL.removeAccount(account);
-        if (result.getFirst()) {
-            String title = I18n.get("dialog", "title.info");
-            JOptionPane.showMessageDialog(MiniSupermarket.main, result.getSecond(), title, JOptionPane.INFORMATION_MESSAGE);
-            refresh();
-        } else {
-            String title = I18n.get("dialog", "title.error");
-            JOptionPane.showMessageDialog(MiniSupermarket.main, result.getSecond(), title, JOptionPane.ERROR_MESSAGE);
-        }
+        SmallDialog.showResult(result, this::refresh, null);
     }
 
     @Override
@@ -180,24 +164,50 @@ public class AccountGUI extends ControlLayout {
     }
 
     @Override
+    public void find() {
+        int attributeIndex = comboBoxFilter.getSelectedIndex();
+        String criteria = jTextFieldSearch.getText().trim();
+
+        List<Account> accounts;
+        if (criteria.isBlank())
+            accounts = accountBLL.findAll();
+        else {
+            Criteria<Account> c = new Criteria<>(accountBLL);
+            accounts = switch (attributeIndex) {
+                case 0 -> accountBLL.findByCriteria(
+                    c.like(__.ACCOUNT.USERNAME, "%" + criteria + "%"));
+                case 1 -> accountBLL.findByCriteria(
+                    c.like(
+                        c.join(__.ACCOUNT.STAFF).get(__.STAFF.NAME), "%" + criteria + "%"
+                    ));
+                case 2 -> accountBLL.findByCriteria(
+                    c.like(
+                        c.join(__.ACCOUNT.ROLE).get(__.ROLE.NAME), "%" + criteria + "%"
+                    ));
+                case 3 -> accountBLL.findByCriteria(
+                    c.like(
+                        c.join(__.ACCOUNT.STAFF).get(__.STAFF.EMAIL), "%" + criteria + "%"
+                    ));
+                default -> accountBLL.findAll();
+            };
+        }
+
+        Pair<Long[], Object[][]> pair = AccountBLL.getDataFrom(accounts);
+        idsOfCurrentData = pair.getFirst();
+        Object[][] data = pair.getSecond();
+        dataTable.setData(data);
+    }
+
+    @Override
     public void refresh() {
-        panelData.removeAll();
-        panelData.revalidate();
-        panelData.repaint();
-        dataTable = getDataTable(accountBLL.findBy(__.ACCOUNT.DELETED, false));
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(10, 10, 10, 10);
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panelData.add(dataTable, gbc);
-//        comboBoxFilter.setSelectedIndex(0);
         jTextFieldSearch.setText("");
-        dialogAdd = new AccountDialog(I18n.get("dialog", "account.add"), false);
-        dialogEdit = new AccountDialog(I18n.get("dialog", "account.edit"), false);
-        dialogDetail = new AccountDialog(I18n.get("dialog", "account.detail"), true);
+        if (comboBoxFilter.getSelectedIndex() == 0)
+            find();
+        else
+            comboBoxFilter.setSelectedIndex(0);
+        dialogAdd.refresh();
+        dialogEdit.refresh();
+        dialogDetail.refresh();
         System.gc();
     }
 }

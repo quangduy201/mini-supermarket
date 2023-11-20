@@ -69,20 +69,14 @@ public class AccountDialog extends CustomDialog {
     }
 
     public CustomTable getRoleTable(List<Role> roles) {
-        Object[][] ids = roleBLL.getData(roles, false, List.of(
-            new Pair<>(__.ROLE.COLUMN.ID, Long::parseLong)
-        ));
-        idsOfRoles = Arrays.stream(ids)
-            .map(row -> (Long) row[0])
-            .toArray(Long[]::new);
-        Object[][] data = roleBLL.getData(roles, true, List.of(
-            new Pair<>(__.ROLE.COLUMN.NAME, String::toString)
-        ));
+        Pair<Long[], Object[][]> pair = RoleBLL.getDataFrom(roles);
+        idsOfRoles = pair.getFirst();
+        String[] attributes = I18n.get("components", "table_headers.role").split(", ");
         Runnable action = this::fillRole;
         if (readOnly)
             action = null;
-        return new CustomTable(data,
-            new Object[]{"STT", "Tên chức vụ"},
+        return new CustomTable(pair.getSecond(),
+            attributes,
             new Integer[]{1, 50},
             action, false, readOnly
         );

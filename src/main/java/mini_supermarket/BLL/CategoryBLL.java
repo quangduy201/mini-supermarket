@@ -9,7 +9,7 @@ import mini_supermarket.utils.__;
 
 import java.util.List;
 
-public class CategoryBLL extends EntityBLL<Category> {
+public class CategoryBLL extends SafeEntityBLL<Category> {
     public CategoryBLL() {
         super(new CategoryDAL());
     }
@@ -23,9 +23,7 @@ public class CategoryBLL extends EntityBLL<Category> {
             return new Pair<>(true, message);
         }
 
-        categories = findBy(
-            __.CATEGORY.NAME, newCategory.getName(),
-            __.CATEGORY.DELETED, false);
+        categories = findBy(__.CATEGORY.NAME, newCategory.getName());
         if (!categories.isEmpty()) {
             String message = I18n.get("messages", "category.exists.name", newCategory.getName());
             return new Pair<>(true, message);

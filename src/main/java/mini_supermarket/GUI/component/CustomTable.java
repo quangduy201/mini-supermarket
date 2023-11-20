@@ -4,6 +4,7 @@ import mini_supermarket.utils.Pair;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -12,6 +13,8 @@ import java.awt.event.MouseListener;
 
 public class CustomTable extends JScrollPane {
     protected JTable table;
+    protected Object[] columnNames;
+    protected Integer[] columnWidths;
     protected int lastSelectedRow = -1;
     protected Timer doubleClickTimer;
     protected boolean isDoubleClick;
@@ -29,6 +32,8 @@ public class CustomTable extends JScrollPane {
                        boolean isDoubleClick, boolean readOnly, Pair<Class<?>, Integer>... customColumns) {
         createTable(data, columnNames, readOnly, customColumns);
 
+        this.columnNames = columnNames;
+        this.columnWidths = columnWidths;
         this.isDoubleClick = isDoubleClick;
         setColumnWidths(columnWidths);
 
@@ -56,10 +61,17 @@ public class CustomTable extends JScrollPane {
         this.table = table;
     }
 
+    public void setData(Object[][] data) {
+        DefaultTableModel model = (DefaultTableModel) this.table.getModel();
+        model.setRowCount(0);
+        model.setDataVector(data, columnNames);
+        setColumnWidths(columnWidths);
+    }
+
     @SafeVarargs
     public final void createTable(Object[][] data, Object[] columnNames, boolean readOnly, Pair<Class<?>, Integer>... customColumns) {
         if (readOnly) {
-            table = new JTable(data, columnNames) {
+            table = new JTable(new DefaultTableModel(data, columnNames)) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
@@ -80,7 +92,7 @@ public class CustomTable extends JScrollPane {
                 }
             };
         } else {
-            table = new JTable(data, columnNames) {
+            table = new JTable(new DefaultTableModel(data, columnNames)) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false;
@@ -125,11 +137,14 @@ public class CustomTable extends JScrollPane {
             TableColumn column = table.getColumnModel().getColumn(i);
             if (columnWidths[i] == null) {
                 column.setCellRenderer(null);
-                continue;
-            }
-            column.setCellRenderer(cellRenderer);
-            if (columnWidths[i] > 0)
+            } else if (columnWidths[i] > 0) {
+                column.setCellRenderer(cellRenderer);
                 column.setPreferredWidth(columnWidths[i]);
+            } else if (columnWidths[i] < 0) {
+                column.setPreferredWidth(-columnWidths[i]);
+            } else {
+                column.setCellRenderer(cellRenderer);
+            }
         }
     }
 

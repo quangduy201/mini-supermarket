@@ -287,8 +287,16 @@ public class DateTime implements Serializable {
         return new DateTime(dateTime.minusNanos(nanosToAdd));
     }
 
+    public String toString(DateTimeFormatter dateTimeFormatter) {
+        return dateTime.format(dateTimeFormatter);
+    }
+
+    public String toString(String pattern) {
+        return toString(DateTimeFormatter.ofPattern(pattern));
+    }
+
     @Override
     public String toString() {
-        return dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss.SSSSSS"));
+        return toString("dd/MM/yyyy HH:mm:ss.SSSSSS");
     }
 }

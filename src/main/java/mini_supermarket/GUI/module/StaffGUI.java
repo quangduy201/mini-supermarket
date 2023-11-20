@@ -1,28 +1,30 @@
 package mini_supermarket.GUI.module;
 
+import mini_supermarket.BLL.Criteria;
 import mini_supermarket.BLL.StaffBLL;
 import mini_supermarket.DTO.Function;
 import mini_supermarket.DTO.Staff;
-import mini_supermarket.GUI.component.DataTable;
+import mini_supermarket.GUI.component.CustomTable;
 import mini_supermarket.GUI.component.RoundPanel;
+import mini_supermarket.GUI.dialog.ExcelDialog;
+import mini_supermarket.GUI.dialog.SmallDialog;
 import mini_supermarket.GUI.layout.ControlLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
-import mini_supermarket.utils.Date;
-import mini_supermarket.utils.Pair;
-import mini_supermarket.utils.__;
+import mini_supermarket.main.MiniSupermarket;
+import mini_supermarket.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class StaffGUI extends ControlLayout {
     private final StaffBLL staffBLL;
     private final RoundPanel panelFunction;
+    private ExcelDialog dialogExcel;
     private final RoundPanel panelData;
-    private DataTable dataTable;
-    private JScrollPane scrollPane;
+    private CustomTable dataTable;
     private Long[] idsOfCurrentData;
     private LeftRightLayout layoutFormAndData;
 
@@ -33,12 +35,29 @@ public class StaffGUI extends ControlLayout {
         panelData = getBottomPanel();
         panelData.setLayout(new GridBagLayout());
 
-        dataTable = getDataTable(staffBLL.findAll());
-        dataTable.setBackground(null);
+        String[] columns = I18n.get("components", "excel_headers.staff").split(", ");
+        dialogExcel = new ExcelDialog(List.of(
+            new Pair<>(columns[0], Excel.Type.STRING), // name
+            new Pair<>(columns[1], Excel.Type.STRING), // gender
+            new Pair<>(columns[2], Excel.Type.STRING), // birthdate
+            new Pair<>(columns[3], Excel.Type.STRING), // phone
+            new Pair<>(columns[4], Excel.Type.STRING), // address
+            new Pair<>(columns[5], Excel.Type.STRING), // email
+            new Pair<>(columns[6], Excel.Type.STRING) // entry date
+        ));
 
-        scrollPane = new JScrollPane(dataTable);
-        scrollPane.setBorder(null);
-        scrollPane.getViewport().setBackground(null);
+        String[] attributes = I18n.get("components", "table_headers.staff").split(", ");
+
+        Pair<Long[], Object[][]> pair = StaffBLL.getDataFrom(staffBLL.findAll());
+        idsOfCurrentData = pair.getFirst();
+        dataTable = new CustomTable(
+            pair.getSecond(),
+            attributes,
+            new Integer[]{1, 100, 1, 2, 0, 0, 2},
+            this::detail, true,
+            new Pair<>(Date.class, 2),
+            new Pair<>(Date.class, 5)
+        );
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10 , 10 ,10);
@@ -46,38 +65,17 @@ public class StaffGUI extends ControlLayout {
         gbc.weighty = 1.0;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panelData.add(scrollPane, gbc);
-    }
+        panelData.add(dataTable, gbc);
 
-
-    public DataTable getDataTable(List<Staff> staffs) {
-        Object[][] ids = staffBLL.getData(staffs, false, List.of(
-            new Pair<>(__.STAFF.COLUMN.ID, Long::parseLong)
-        ));
-
-        idsOfCurrentData = Arrays.stream(ids)
-            .map(row -> (long) row[0])
-            .toArray(Long[]::new);
-
-        Object[][] data = staffBLL.getData(staffs, true, List.of(
-            new Pair<>(__.STAFF.COLUMN.NAME, String::toString),
-            new Pair<>(__.STAFF.COLUMN.GENDER, s -> Boolean.parseBoolean(s) ? "Nam" : "Nữ"),
-            new Pair<>(__.STAFF.COLUMN.BIRTHDATE, Date::parse),
-            new Pair<>(__.STAFF.COLUMN.PHONE, String::toString),
-            new Pair<>(__.STAFF.COLUMN.EMAIL, String::toString),
-            new Pair<>(__.STAFF.COLUMN.ENTRY_DATE, Date::parse)
-        ));
-        return new DataTable(data,
-            new Object[]{"STT", "Nhân viên", "Giới tính", "Ngày sinh", "SĐT", "Email", "Ngày làm"},
-            new Integer[]{1, 100, 1, 2, 0, 0, 2},
-            this::detail, true,
-            new Pair<>(Date.class, 3)
-        );
+        DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) comboBoxFilter.getModel();
+        model.addElement(attributes[1]); // name
+        model.addElement(attributes[4]); // phone
+        model.addElement(attributes[5]); // email
     }
 
     public List<Staff> getStaffsFromSelectedRows() {
         List<Staff> staff = new ArrayList<>();
-        for (int row : dataTable.getSelectedRows()) {
+        for (int row : dataTable.getTable().getSelectedRows()) {
             Staff staffItem = staffBLL.findBy(__.STAFF.ID, idsOfCurrentData[row]).get(0);
             staff.add(staffItem);
         }
@@ -85,7 +83,10 @@ public class StaffGUI extends ControlLayout {
     }
 
     public Staff getStaffFromSelectedRow() {
-        return getStaffsFromSelectedRows().get(0);
+        List<Staff> staffs = getStaffsFromSelectedRows();
+        if (staffs.isEmpty())
+            return null;
+        return staffs.get(0);
     }
 
     @Override
@@ -110,16 +111,99 @@ public class StaffGUI extends ControlLayout {
 
     @Override
     public void excel() {
-        // TODO
+        dialogExcel.setVisible(true);
+        List<List<String>> data = dialogExcel.getData();
+        if (data == null)
+            return;
+
+        boolean hasError = false;
+        for (int i = 0; i < data.size(); i++) {
+            String messageArgument = data.get(i).toString();
+            try {
+                List<String> row = data.get(i);
+                String name = row.get(0);
+                String stringGender = VNString.removeAccent(row.get(1).toLowerCase());
+                Boolean gender = stringGender.equals("nam") || stringGender.equals("male");
+                Date birthdate = Date.parse(row.get(2));
+                String phone = row.get(3);
+                String address = row.get(4);
+                String email = row.get(5);
+                Date entryDate = Date.parse(row.get(6));
+                Staff staff = new Staff(null, name, gender, birthdate, phone, address, email, entryDate);
+                Log.info(staff);
+//                Pair<Boolean, String> result = staffBLL.addStaff(staff);
+                Pair<Boolean, String> result = new Pair<>(true, "Hello");
+                if (!result.getFirst()) {
+                    messageArgument = result.getSecond();
+                    throw new RuntimeException();
+                }
+                data.remove(i);
+                dialogExcel.getModel().removeRow(i);
+                i--;
+            } catch (Exception e) {
+                hasError = true;
+                String message = I18n.get("messages", "excel.import.error.row", i + 1, messageArgument);
+                int choice = SmallDialog.showErrorWhileImporting(message);
+                if (choice == 0) continue;
+                if (choice == 1) {
+                    excel();
+                    break;
+                }
+            }
+        }
+        if (hasError) {
+            excel();
+            return;
+        }
+        SmallDialog.showResult(new Pair<>(true, I18n.get("messages", "excel.import.success")), this::refresh, null);
     }
 
     @Override
     public void pdf() {
-        // TODO
+        File file = Excel.saveFile();
+        if (file == null)
+            return;
+        Pair<Boolean, String> result = Excel.exportExcel(file, I18n.get("components", "excel_title.staff"), dataTable.getTable().getModel());
+        SmallDialog.showResult(result, null, null);
+    }
+
+    @Override
+    public void find() {
+        int attributeIndex = comboBoxFilter.getSelectedIndex();
+        String criteria = jTextFieldSearch.getText().trim();
+
+        List<Staff> staffs;
+        if (criteria.isBlank())
+            staffs = staffBLL.findAll();
+        else {
+            Criteria<Staff> c = new Criteria<>(staffBLL);
+            staffs = switch (attributeIndex) {
+                case 0 -> staffBLL.findByCriteria(
+                    c.like(__.STAFF.NAME, "%" + criteria + "%"));
+                case 1 -> staffBLL.findByCriteria(
+                    c.like(__.STAFF.PHONE, "%" + criteria + "%"));
+                case 2 -> staffBLL.findByCriteria(
+                    c.like(__.STAFF.EMAIL, "%" + criteria + "%"));
+                default -> staffBLL.findAll();
+            };
+        }
+
+        Pair<Long[], Object[][]> pair = StaffBLL.getDataFrom(staffs);
+        idsOfCurrentData = pair.getFirst();
+        Object[][] data = pair.getSecond();
+        dataTable.setData(data);
     }
 
     @Override
     public void refresh() {
-        // TODO
+        jTextFieldSearch.setText("");
+        if (comboBoxFilter.getSelectedIndex() == 0)
+            find();
+        else
+            comboBoxFilter.setSelectedIndex(0);
+//        dialogAdd.refresh();
+//        dialogEdit.refresh();
+//        dialogDetail.refresh();
+        System.gc();
     }
 }

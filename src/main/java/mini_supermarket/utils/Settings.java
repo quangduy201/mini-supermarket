@@ -69,10 +69,15 @@ public class Settings {
 
     public static Account getLastAccount() {
         String accountUsername = Password.decrypt(configurations.getProperty("account"), "account", "account".length());
-        List<Account> accounts = new AccountBLL().findBy(__.ACCOUNT.USERNAME, accountUsername);
-        if (!accounts.isEmpty())
-            return accounts.get(0);
-        return null;
+        List<Account> accountList = new AccountBLL().findBy(__.ACCOUNT.USERNAME, accountUsername);
+        Account account = null;
+        for (Account acc : accountList) {
+            if (acc.getUsername().equals(accountUsername)) {
+                account = acc;
+                break;
+            }
+        }
+        return account;
     }
 
     public static void setLastAccount(Account account) {
