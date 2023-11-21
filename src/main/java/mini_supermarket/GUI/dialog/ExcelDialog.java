@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import java.util.function.Function;
 
 public class ExcelDialog extends JDialog {
     protected boolean cancel;
@@ -38,7 +39,7 @@ public class ExcelDialog extends JDialog {
     protected final JButton btnReadFile;
     protected final List<Pair<String, Excel.Type>> columns;
 
-    public ExcelDialog(List<Pair<String, Excel.Type>> columns) {
+    public ExcelDialog(List<Pair<String, Excel.Type>> columns, Function<List<String>, Pair<Boolean, String>> runWhenConfirm) {
         super((Frame) null, true);
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -105,7 +106,7 @@ public class ExcelDialog extends JDialog {
         pnlButton.add(btnRemoveRow);
         pnlButton.add(btnPaste);
         pnlButton.add(btnReadFile);
-        addListenerToButtons();
+        addListenerToButtons(runWhenConfirm);
     }
 
     public JTable getTable() {
@@ -116,10 +117,44 @@ public class ExcelDialog extends JDialog {
         return model;
     }
 
-    public void addListenerToButtons() {
+    public boolean isCancel() {
+        return cancel;
+    }
+
+    public void setCancel(boolean cancel) {
+        this.cancel = cancel;
+    }
+
+    public void addListenerToButtons(Function<List<String>, Pair<Boolean, String>> runWhenConfirm) {
         btnConfirm.addActionListener(e -> {
             cancel = false;
-            dispose();
+            List<List<String>> data = getData();
+            if (data == null)
+                return;
+
+            boolean hasError = false;
+            for (int i = 0; i < data.size(); i++) {
+                String messageArgument = data.get(i).toString();
+                try {
+                    List<String> row = data.get(i);
+                    Pair<Boolean, String> result = runWhenConfirm.apply(row);
+                    if (!result.getFirst()) {
+                        messageArgument = result.getSecond();
+                        throw new RuntimeException();
+                    }
+                    data.remove(i);
+                    model.removeRow(i);
+                    i--;
+                } catch (Exception exception) {
+                    hasError = true;
+                    table.setRowSelectionInterval(i, i);
+                    String message = I18n.get("messages", "excel.import.error.row", i + 1, messageArgument);
+                    int choice = SmallDialog.showErrorWhileImporting(this, message);
+                    if (choice != 0) break;
+                }
+            }
+            if (!hasError)
+                dispose();
         });
         btnCancel.addActionListener(e -> {
             cancel = true;
@@ -143,11 +178,11 @@ public class ExcelDialog extends JDialog {
                 return;
             Pair<List<List<Object>>, String> result = Excel.importExcel(file, columns);
             if (result.getFirst() == null) {
-                JOptionPane.showMessageDialog(MiniSupermarket.main, result.getSecond(),
+                JOptionPane.showMessageDialog(this, result.getSecond(),
                     I18n.get("dialog", "title.error"), JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            JOptionPane.showMessageDialog(MiniSupermarket.main, result.getSecond(),
+            JOptionPane.showMessageDialog(this, result.getSecond(),
                 I18n.get("dialog", "title.info"), JOptionPane.INFORMATION_MESSAGE);
             table.clearSelection();
             List<List<Object>> data = result.getFirst();
@@ -206,12 +241,12 @@ public class ExcelDialog extends JDialog {
                     }
                 }
                 if (hasError) {
-                    JOptionPane.showMessageDialog(MiniSupermarket.main,
+                    JOptionPane.showMessageDialog(this,
                         I18n.get("messages", "excel.import.error.paste"),
                         I18n.get("dialog", "title.info"), JOptionPane.INFORMATION_MESSAGE);
                 }
-            } catch (UnsupportedFlavorException | IOException e) {
-                JOptionPane.showMessageDialog(MiniSupermarket.main,
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
                     I18n.get("messages", "excel.import.error.paste"),
                     I18n.get("dialog", "title.error"), JOptionPane.ERROR_MESSAGE);
             }

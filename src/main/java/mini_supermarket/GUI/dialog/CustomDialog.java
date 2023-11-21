@@ -140,18 +140,19 @@ public class CustomDialog extends JDialog {
         gbc.gridx = 1;
         cbbSearch.setPreferredSize(new Dimension(100, 0));
         pnlSearch.add(cbbSearch, gbc);
-        gbc.gridx = 2;
-        btnRefresh.setPreferredSize(new Dimension(100, 0));
-        btnRefresh.setText(I18n.get("frame", "function.refresh"));
-        pnlSearch.add(btnRefresh, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
         pnlButton.setLayout(new GridBagLayout());
-        btnConfirm.setPreferredSize(new Dimension(150, 0));
+        btnConfirm.setPreferredSize(new Dimension(120, 0));
+        btnConfirm.setText(I18n.get("dialog", "confirm"));
         pnlButton.add(btnConfirm, gbc);
         gbc.gridx = 1;
-        btnCancel.setPreferredSize(new Dimension(150, 0));
+        btnRefresh.setPreferredSize(new Dimension(120, 0));
+        btnRefresh.setText(I18n.get("dialog", "refresh"));
+        pnlButton.add(btnRefresh, gbc);
+        gbc.gridx = 2;
+        btnCancel.setPreferredSize(new Dimension(120, 0));
         btnCancel.setText(I18n.get("dialog", "cancel"));
         pnlButton.add(btnCancel, gbc);
 
@@ -199,5 +200,13 @@ public class CustomDialog extends JDialog {
 
             }
         });
+    }
+
+    public boolean isCancel() {
+        return cancel;
+    }
+
+    public void setCancel(boolean cancel) {
+        this.cancel = cancel;
     }
 }

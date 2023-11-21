@@ -2,17 +2,14 @@ package mini_supermarket.GUI.module;
 
 import mini_supermarket.BLL.Criteria;
 import mini_supermarket.BLL.StaffBLL;
-import mini_supermarket.DTO.Account;
 import mini_supermarket.DTO.Function;
 import mini_supermarket.DTO.Staff;
 import mini_supermarket.GUI.component.CustomTable;
 import mini_supermarket.GUI.component.RoundPanel;
-import mini_supermarket.GUI.dialog.AccountDialog;
 import mini_supermarket.GUI.dialog.ExcelDialog;
 import mini_supermarket.GUI.dialog.SmallDialog;
 import mini_supermarket.GUI.dialog.StaffDialog;
 import mini_supermarket.GUI.layout.ControlLayout;
-import mini_supermarket.GUI.layout.LeftRightLayout;
 import mini_supermarket.main.MiniSupermarket;
 import mini_supermarket.utils.*;
 
@@ -25,12 +22,12 @@ import java.util.List;
 public class StaffGUI extends ControlLayout {
     private final StaffBLL staffBLL;
     private final RoundPanel panelFunction;
-    private StaffDialog dialogAdd;
-    private StaffDialog dialogEdit;
-    private StaffDialog dialogDetail;
-    private ExcelDialog dialogExcel;
+    private final StaffDialog dialogAdd;
+    private final StaffDialog dialogEdit;
+    private final StaffDialog dialogDetail;
+    private final ExcelDialog dialogExcel;
     private final RoundPanel panelData;
-    private CustomTable dataTable;
+    private final CustomTable dataTable;
     private Long[] idsOfCurrentData;
 
     public StaffGUI(List<Function> functions) {
@@ -38,13 +35,12 @@ public class StaffGUI extends ControlLayout {
         staffBLL = new StaffBLL();
         panelFunction = getTopPanel();
 
-        dialogAdd = new StaffDialog(I18n.get("dialog", "staff.add"), false);
-        dialogEdit = new StaffDialog(I18n.get("dialog", "staff.edit"), false);
-        dialogDetail = new StaffDialog(I18n.get("dialog", "staff.detail"), true);
-
-        panelData = getBottomPanel();
-        panelData.setLayout(new GridBagLayout());
-
+        dialogAdd = new StaffDialog(I18n.get("dialog", "staff.add"),
+            false, staff -> staffBLL.addStaff(staff.getSecond()));
+        dialogEdit = new StaffDialog(I18n.get("dialog", "staff.edit"),
+            false, staff -> staffBLL.editStaff(staff.getFirst(), staff.getSecond()));
+        dialogDetail = new StaffDialog(I18n.get("dialog", "staff.detail"),
+            true, null);
         String[] columns = I18n.get("components", "excel_headers.staff").split(", ");
         dialogExcel = new ExcelDialog(List.of(
             new Pair<>(columns[0], Excel.Type.STRING), // name
@@ -54,7 +50,21 @@ public class StaffGUI extends ControlLayout {
             new Pair<>(columns[4], Excel.Type.STRING), // address
             new Pair<>(columns[5], Excel.Type.STRING), // email
             new Pair<>(columns[6], Excel.Type.STRING) // entry date
-        ));
+        ), row -> {
+            String name = row.get(0).trim().toUpperCase();
+            String stringGender = VNString.removeAccent(row.get(1).trim().toLowerCase());
+            Boolean gender = stringGender.equals("nam") || stringGender.equals("male");
+            Date birthdate = Date.parse(row.get(2).trim());
+            String phone = row.get(3).trim();
+            String address = row.get(4).trim();
+            String email = row.get(5).trim();
+            Date entryDate = Date.parse(row.get(6).trim());
+            Staff staff = new Staff(null, name, gender, birthdate, phone, address, email, entryDate);
+            return staffBLL.addStaff(staff);
+        });
+
+        panelData = getBottomPanel();
+        panelData.setLayout(new GridBagLayout());
 
         String[] attributes = I18n.get("components", "table_headers.staff").split(", ");
 
@@ -102,71 +112,58 @@ public class StaffGUI extends ControlLayout {
     @Override
     public void add() {
         dialogAdd.setVisible(true);
-
+        if (!dialogAdd.isCancel())
+            refresh();
     }
 
     @Override
     public void edit() {
-        // TODO
+        Staff currentStaff = getStaffFromSelectedRow();
+        if (currentStaff == null) {
+            SmallDialog.showErrorWhenDataTableIsNotSelected(MiniSupermarket.main);
+            return;
+        }
+        dialogEdit.setData(currentStaff);
+        dialogEdit.setVisible(true);
+        if (!dialogEdit.isCancel())
+            refresh();
     }
 
     @Override
     public void remove() {
-        // TODO
+        Staff staff = getStaffFromSelectedRow();
+        if (staff == null) {
+            SmallDialog.showErrorWhenDataTableIsNotSelected(MiniSupermarket.main);
+            return;
+        }
+        int choice = SmallDialog.showOptionDialogWhenDeleting(MiniSupermarket.main,
+            I18n.get("messages", "staff.remove.confirm"));
+        if (choice != 0)
+            return;
+
+        Pair<Boolean, String> result = staffBLL.removeStaff(staff);
+        SmallDialog.showResult(MiniSupermarket.main, result, this::refresh, null);
     }
 
     @Override
     public void detail() {
-        // TODO
+        Staff staff = getStaffFromSelectedRow();
+        if (staff == null) {
+            SmallDialog.showErrorWhenDataTableIsNotSelected(MiniSupermarket.main);
+            return;
+        }
+        dialogDetail.setData(staff);
+        dialogDetail.setVisible(true);
     }
 
     @Override
     public void excel() {
         dialogExcel.setVisible(true);
-        List<List<String>> data = dialogExcel.getData();
-        if (data == null)
-            return;
-
-        boolean hasError = false;
-        for (int i = 0; i < data.size(); i++) {
-            String messageArgument = data.get(i).toString();
-            try {
-                List<String> row = data.get(i);
-                String name = row.get(0);
-                String stringGender = VNString.removeAccent(row.get(1).toLowerCase());
-                Boolean gender = stringGender.equals("nam") || stringGender.equals("male");
-                Date birthdate = Date.parse(row.get(2));
-                String phone = row.get(3);
-                String address = row.get(4);
-                String email = row.get(5);
-                Date entryDate = Date.parse(row.get(6));
-                Staff staff = new Staff(null, name, gender, birthdate, phone, address, email, entryDate);
-                Log.info(staff);
-//                Pair<Boolean, String> result = staffBLL.addStaff(staff);
-                Pair<Boolean, String> result = new Pair<>(true, "Hello");
-                if (!result.getFirst()) {
-                    messageArgument = result.getSecond();
-                    throw new RuntimeException();
-                }
-                data.remove(i);
-                dialogExcel.getModel().removeRow(i);
-                i--;
-            } catch (Exception e) {
-                hasError = true;
-                String message = I18n.get("messages", "excel.import.error.row", i + 1, messageArgument);
-                int choice = SmallDialog.showErrorWhileImporting(message);
-                if (choice == 0) continue;
-                if (choice == 1) {
-                    excel();
-                    break;
-                }
-            }
+        if (!dialogExcel.isCancel()) {
+            Pair<Boolean, String> result = new Pair<>(true, I18n.get("messages", "excel.import.success"));
+            SmallDialog.showResult(MiniSupermarket.main, result, this::refresh, null);
+            refresh();
         }
-        if (hasError) {
-            excel();
-            return;
-        }
-        SmallDialog.showResult(new Pair<>(true, I18n.get("messages", "excel.import.success")), this::refresh, null);
     }
 
     @Override
@@ -174,8 +171,8 @@ public class StaffGUI extends ControlLayout {
         File file = Excel.saveFile();
         if (file == null)
             return;
-        Pair<Boolean, String> result = Excel.exportExcel(file, I18n.get("components", "excel_title.staff"), dataTable.getTable().getModel());
-        SmallDialog.showResult(result, null, null);
+        Pair<Boolean, String> result = Excel.exportExcel(file, dataTable.getTable().getModel());
+        SmallDialog.showResult(MiniSupermarket.main, result, null, null);
     }
 
     @Override
@@ -212,9 +209,10 @@ public class StaffGUI extends ControlLayout {
             find();
         else
             comboBoxFilter.setSelectedIndex(0);
-//        dialogAdd.refresh();
-//        dialogEdit.refresh();
-//        dialogDetail.refresh();
+        dialogAdd.refresh();
+        dialogEdit.refresh();
+        dialogDetail.refresh();
+        dialogExcel.refresh();
         System.gc();
     }
 }

@@ -36,13 +36,11 @@ public class AccountBLL extends EntityBLL<Account> {
 
     public Pair<Boolean, String> editAccount(Account currentAccount, Account account) {
         Pair<Boolean, String> result;
-
-        account.setId(currentAccount.getId());
-
         result = validate(__.ACCOUNT.USERNAME, account.getUsername());
         if (!result.getFirst())
             return new Pair<>(false, result.getSecond());
 
+        account.setId(currentAccount.getId());
         result = exists(currentAccount, account);
         if (result.getFirst())
             return new Pair<>(false, result.getSecond());
@@ -89,10 +87,14 @@ public class AccountBLL extends EntityBLL<Account> {
         }
 
         if (oldAccount == null || !newAccount.getStaff().equals(oldAccount.getStaff())) {
+            hasChanges = true;
             accounts = findBy(__.ACCOUNT.STAFF, newAccount.getStaff());
             if (!accounts.isEmpty())
                 return new Pair<>(true, I18n.get("messages", "account.exists.staff", newAccount.getStaff().getName()));
         }
+
+        if (oldAccount == null || !newAccount.getRole().equals(oldAccount.getRole()))
+            hasChanges = true;
 
         if (!hasChanges)
             return new Pair<>(true, I18n.get("messages", "account.edit.unchanged"));

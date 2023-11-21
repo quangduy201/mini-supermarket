@@ -7,6 +7,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 public class DateTime implements Serializable {
+    public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(
+        "[yyyy[[/][-][MM][M][[/][-][dd][d][ [HH][H][:[mm][m][:[ss][s][.SSSSSS][.SS]]]]]]]" +
+            "[[dd][d][[/][-][MM][M][[/][-]yyyy[ [HH][H][:[mm][m][:[ss][s][.SSSSSS][.SS]]]]]]]"
+    );
     public static final DateTime MIN = new DateTime();
     public static final DateTime MAX = new DateTime();
 
@@ -93,37 +97,15 @@ public class DateTime implements Serializable {
         return isValidDateTime(y, M, d, h, m, 0, 0);
     }
 
-    public static DateTime parse(String text, String pattern) {
+    public static DateTime parse(String text) {
         try {
-            LocalDateTime localDateTime = LocalDateTime.parse(text, DateTimeFormatter.ofPattern(pattern));
+            LocalDateTime localDateTime = LocalDateTime.parse(text, dateTimeFormatter);
             if (!isValidDateTime(localDateTime))
                 throw new IllegalArgumentException("Invalid date and time");
             return new DateTime(localDateTime);
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid date and time");
         }
-    }
-
-    public static DateTime parse(String text) {
-        if (text.matches("^\\d{4}-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01]) (\\d{2}:\\d{2}(?::\\d{2}(\\.\\d{1,6})?)?)?$")) {
-            if (text.contains(".")) {
-                return parse(text, "yyyy-MM-dd HH:mm:ss.SSSSSS");
-            } else if (text.contains(":")) {
-                return parse(text, "yyyy-MM-dd HH:mm:ss");
-            } else {
-                return parse(text, "yyyy-MM-dd");
-            }
-        }
-        if (text.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4} (\\d{2}:\\d{2}(?::\\d{2}(\\.\\d{1,6})?)?)?$")) {
-            if (text.contains(".")) {
-                return parse(text, "dd/MM/yyyy HH:mm:ss.SSSSSS");
-            } else if (text.contains(":")) {
-                return parse(text, "dd/MM/yyyy HH:mm:ss");
-            } else {
-                return parse(text, "dd/MM/yyyy");
-            }
-        }
-        throw new IllegalArgumentException("Invalid date and time");
     }
 
     public static long calculateTime(DateTime dateTime1, DateTime dateTime2, TimeUnit timeUnit) {

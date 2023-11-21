@@ -7,30 +7,34 @@ import mini_supermarket.DTO.Role;
 import mini_supermarket.GUI.component.CustomTable;
 import mini_supermarket.GUI.component.DecentralizationTable;
 import mini_supermarket.GUI.component.RoundPanel;
+import mini_supermarket.GUI.dialog.ExcelDialog;
 import mini_supermarket.GUI.dialog.RoleDialog;
 import mini_supermarket.GUI.dialog.SmallDialog;
 import mini_supermarket.GUI.layout.ControlLayout;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 import mini_supermarket.main.MiniSupermarket;
+import mini_supermarket.utils.Excel;
 import mini_supermarket.utils.I18n;
 import mini_supermarket.utils.Pair;
 import mini_supermarket.utils.__;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DecentralizationGUI extends ControlLayout {
     private final RoleBLL roleBLL;
     private final RoundPanel panelFunction;
-    private RoleDialog dialogAdd;
-    private RoleDialog dialogEdit;
+    private final RoleDialog dialogAdd;
+    private final RoleDialog dialogEdit;
+    private final ExcelDialog dialogExcel;
     private final RoundPanel panelData;
     private final LeftRightLayout layoutFormAndData;
     private RoundPanel panelDetailData;
     private RoundPanel panelForm;
-    private CustomTable dataTable;
+    private final CustomTable dataTable;
     private Long[] idsOfCurrentData;
     private DecentralizationTable detailTable;
 
@@ -39,8 +43,18 @@ public class DecentralizationGUI extends ControlLayout {
         roleBLL = new RoleBLL();
         panelFunction = getTopPanel();
 
-        dialogAdd = new RoleDialog(I18n.get("dialog", "role.add"), false);
-        dialogEdit = new RoleDialog(I18n.get("dialog", "role.edit"), false);
+        dialogAdd = new RoleDialog(I18n.get("dialog", "role.add"),
+            false, role -> roleBLL.addRole(role.getSecond()));
+        dialogEdit = new RoleDialog(I18n.get("dialog", "role.edit"),
+            false, role -> roleBLL.editRole(role.getFirst(), role.getSecond()));
+        String[] columns = I18n.get("components", "excel_headers.role").split(", ");
+        dialogExcel = new ExcelDialog(List.of(
+            new Pair<>(columns[0], Excel.Type.STRING)
+        ), row -> {
+            String name = row.get(0).trim();
+            Role role = new Role(null, name);
+            return roleBLL.addRole(role);
+        });
 
         panelData = getBottomPanel();
         panelData.setBackground(null);
@@ -106,55 +120,37 @@ public class DecentralizationGUI extends ControlLayout {
     @Override
     public void add() {
         dialogAdd.setVisible(true);
-        Role role = dialogAdd.getData();
-        if (role == null)
-            return;
-
-        Pair<Boolean, String> result = roleBLL.addRole(role);
-        SmallDialog.showResult(result, this::refresh, this::add);
+        if (!dialogAdd.isCancel())
+            refresh();
     }
 
     @Override
     public void edit() {
         Role currentRole = getRoleFromSelectedRow();
         if (currentRole == null) {
-            JOptionPane.showMessageDialog(MiniSupermarket.main,
-                I18n.get("messages", "data_table.selected.not"),
-                I18n.get("dialog", "title.info"), JOptionPane.INFORMATION_MESSAGE);
+            SmallDialog.showErrorWhenDataTableIsNotSelected(MiniSupermarket.main);
             return;
         }
         dialogEdit.setData(currentRole);
         dialogEdit.setVisible(true);
-        Role role = dialogEdit.getData();
-        if (role == null)
-            return;
-
-        Pair<Boolean, String> result = roleBLL.editRole(currentRole, role);
-        SmallDialog.showResult(result, this::refresh, this::edit);
+        if (!dialogEdit.isCancel())
+            refresh();
     }
 
     @Override
     public void remove() {
         Role role = getRoleFromSelectedRow();
         if (role == null) {
-            JOptionPane.showMessageDialog(MiniSupermarket.main,
-                I18n.get("messages", "data_table.selected.not"),
-                I18n.get("dialog", "title.info"), JOptionPane.INFORMATION_MESSAGE);
+            SmallDialog.showErrorWhenDataTableIsNotSelected(MiniSupermarket.main);
             return;
         }
-        String[] options = new String[]{
-            I18n.get("dialog", "yes"),
-            I18n.get("dialog", "no")
-        };
-        int choice = JOptionPane.showOptionDialog(MiniSupermarket.main,
-            I18n.get("messages", "role.remove.confirm"),
-            I18n.get("dialog", "title.question"),
-            JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        int choice = SmallDialog.showOptionDialogWhenDeleting(MiniSupermarket.main,
+            I18n.get("messages", "role.remove.confirm"));
         if (choice != 0)
             return;
 
         Pair<Boolean, String> result = roleBLL.removeRole(role);
-        SmallDialog.showResult(result, this::refresh, null);
+        SmallDialog.showResult(MiniSupermarket.main, result, this::refresh, null);
     }
 
     @Override
@@ -166,12 +162,21 @@ public class DecentralizationGUI extends ControlLayout {
 
     @Override
     public void excel() {
-        // TODO
+        dialogExcel.setVisible(true);
+        if (!dialogExcel.isCancel()) {
+            Pair<Boolean, String> result = new Pair<>(true, I18n.get("messages", "excel.import.success"));
+            SmallDialog.showResult(MiniSupermarket.main, result, this::refresh, null);
+            refresh();
+        }
     }
 
     @Override
     public void pdf() {
-        // TODO
+        File file = Excel.saveFile();
+        if (file == null)
+            return;
+        Pair<Boolean, String> result = Excel.exportExcel(file, dataTable.getTable().getModel());
+        SmallDialog.showResult(MiniSupermarket.main, result, null, null);
     }
 
     @Override
@@ -206,6 +211,7 @@ public class DecentralizationGUI extends ControlLayout {
             comboBoxFilter.setSelectedIndex(0);
         dialogAdd.refresh();
         dialogEdit.refresh();
+        dialogExcel.refresh();
         detailTable.refreshTable();
         System.gc();
     }

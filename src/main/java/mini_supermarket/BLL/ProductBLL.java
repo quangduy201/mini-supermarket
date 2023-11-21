@@ -55,7 +55,7 @@ public class ProductBLL extends SafeEntityBLL<Product> {
         if (cost.isBlank())
             return new Pair<>(false, I18n.get("messages", "product.validate.cost.no_empty"));
         if (!VNString.checkUnsignedNumber(cost))
-            return new Pair<>(false, I18n.get("messages", "product.validate.cost.unsignedNumber.not"));
+            return new Pair<>(false, I18n.get("messages", "product.validate.cost.unsigned_number.not"));
         return new Pair<>(true, I18n.get("messages", "product.validate.cost"));
     }
 

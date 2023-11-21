@@ -88,17 +88,13 @@ public class Excel {
         }
     }
 
-    public static Pair<Boolean, String> exportExcel(File file, String title, TableModel model) {
+    public static Pair<Boolean, String> exportExcel(File file, TableModel model) {
         try {
             workbook = new XSSFWorkbook();
             sheet = workbook.createSheet();
 
             Font titleFont = newFont(14, true, false, false, Font.U_NONE);
             CellStyle titleStyle = newCellStyle(titleFont, HorizontalAlignment.CENTER);
-
-            Row titleRow = sheet.createRow(0);
-            titleRow.setHeightInPoints(20f);
-            setCellRange(title, new CellRangeAddress(0, 0, 0, model.getColumnCount() - 1), titleStyle);
 
             XSSFTable table = ((XSSFSheet) sheet).createTable(null);
             CTTable ctTable = table.getCTTable();
@@ -107,15 +103,15 @@ public class Excel {
             columns.setCount(model.getColumnCount());
 
             // Table header
-            sheet.createRow(1);
+            sheet.createRow(0);
             for (int i = 0; i < model.getColumnCount(); i++) {
                 columns.addNewTableColumn().setId(i + 1);
-                setCell(model.getColumnName(i), 1, i, null);
+                setCell(model.getColumnName(i), 0, i, null);
             }
 
             AreaReference dataRange = new AreaReference(
-                new CellReference(1, 0),
-                new CellReference(model.getRowCount() + 1, model.getColumnCount() - 1),
+                new CellReference(0, 0),
+                new CellReference(model.getRowCount(), model.getColumnCount() - 1),
                 SpreadsheetVersion.EXCEL2007
             );
             ctTable.setRef(dataRange.formatAsString());
@@ -124,11 +120,11 @@ public class Excel {
 
             // Table data
             for (int i = 0; i < model.getRowCount(); i++) {
-                sheet.createRow(i + 2);
+                sheet.createRow(i + 1);
                 for (int j = 0; j < model.getColumnCount(); j++) {
                     Object value = model.getValueAt(i, j);
                     if (value != null)
-                        setCell(value, i + 2, j, null);
+                        setCell(value, i + 1, j, null);
                 }
             }
             CTTableStyleInfo styleInfo = ctTable.addNewTableStyleInfo();
@@ -137,7 +133,7 @@ public class Excel {
             // Resize all the columns to fit their content's size
             for (int i = 0; i < model.getColumnCount(); i++) {
                 sheet.autoSizeColumn(i);
-                sheet.setColumnWidth(i, sheet.getColumnWidth(i) + 20);
+                sheet.setColumnWidth(i, sheet.getColumnWidth(i) + 500);
             }
 
             FileOutputStream fileOut = new FileOutputStream(file);

@@ -24,8 +24,6 @@ public class RoleBLL extends SafeEntityBLL<Role> {
 
         if (!add(role))
             return new Pair<>(false, I18n.get("messages", "role.add.failed"));
-
-
         return new Pair<>(true, I18n.get("messages", "role.add.success"));
     }
 
@@ -40,7 +38,7 @@ public class RoleBLL extends SafeEntityBLL<Role> {
         if (result.getFirst())
             return new Pair<>(false, result.getSecond());
 
-        if (!update(role))
+        if (role.getId() == 1 || !update(role))
             return new Pair<>(false, I18n.get("messages", "role.edit.failed"));
         return new Pair<>(true, I18n.get("messages", "role.edit.success"));
     }

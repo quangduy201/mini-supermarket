@@ -37,17 +37,17 @@ public class PromotionBLL extends EntityBLL<Promotion> {
 
     private static Pair<Boolean, String> validateStartDate(String startDate) {
         if (startDate.isBlank())
-            return new Pair<>(false, I18n.get("messages", "promotion.validate.startDate.no_empty"));
+            return new Pair<>(false, I18n.get("messages", "promotion.validate.start_date.no_empty"));
         if (!VNString.checkFormatDate(startDate))
-            return new Pair<>(false, I18n.get("messages", "promotion.validate.startDate.format.not"));
-        return new Pair<>(true, I18n.get("messages", "promotion.validate.startDate"));
+            return new Pair<>(false, I18n.get("messages", "promotion.validate.start_date.format.not"));
+        return new Pair<>(true, I18n.get("messages", "promotion.validate.start_date"));
     }
 
     private static Pair<Boolean, String> validateEndDate(String endDate) {
         if (endDate.isBlank())
-            return new Pair<>(false, I18n.get("messages", "promotion.validate.endDate.no_empty"));
+            return new Pair<>(false, I18n.get("messages", "promotion.validate.end_date.no_empty"));
         if (!VNString.checkFormatDate(endDate))
-            return new Pair<>(false, I18n.get("messages", "promotion.validate.endDate.format.not"));
-        return new Pair<>(true, I18n.get("messages", "promotion.validate.endDate"));
+            return new Pair<>(false, I18n.get("messages", "promotion.validate.end_date.format.not"));
+        return new Pair<>(true, I18n.get("messages", "promotion.validate.end_date"));
     }
 }

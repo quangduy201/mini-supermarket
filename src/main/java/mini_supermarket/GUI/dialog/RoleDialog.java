@@ -2,14 +2,16 @@ package mini_supermarket.GUI.dialog;
 
 import mini_supermarket.DTO.Role;
 import mini_supermarket.utils.I18n;
+import mini_supermarket.utils.Pair;
 
 import javax.swing.*;
+import java.util.function.Function;
 
 public class RoleDialog extends CustomDialog {
     private JTextField txtName;
     private Role role;
 
-    public RoleDialog(String title, boolean readOnly) {
+    public RoleDialog(String title, boolean readOnly, Function<Pair<Role, Role>, Pair<Boolean, String>> runWhenConfirm) {
         super(title, 1, false);
         txtName = new JTextField();
 
@@ -23,19 +25,25 @@ public class RoleDialog extends CustomDialog {
         });
         btnConfirm.addActionListener(e -> {
             cancel = false;
-            dispose();
+            Role role = getData();
+            if (role == null)
+                return;
+
+            Pair<Boolean, String> result = runWhenConfirm.apply(new Pair<>(this.role, role));
+            SmallDialog.showResult(this, result, () -> {
+                refresh();
+                dispose();
+            }, null);
         });
 
         if (readOnly) {
             txtName.setEditable(false);
-            btnConfirm.setText(I18n.get("dialog", "ok"));
-            pnlButton.remove(btnCancel);
+            btnCancel.setText(I18n.get("dialog", "ok"));
+            pnlButton.remove(btnConfirm);
         }
     }
 
     public void refresh() {
-        txtSearch.setText("");
-//        cbbSearch.setSelectedIndex(0);
         if (role != null) {
             setData(role);
         } else {

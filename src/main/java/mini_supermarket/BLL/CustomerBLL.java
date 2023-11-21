@@ -73,17 +73,17 @@ public class CustomerBLL extends SafeEntityBLL<Customer> {
 
     private static Pair<Boolean, String> validateSignedUpDate(String signedUpDate) {
         if (signedUpDate.isBlank())
-            return new Pair<>(false, I18n.get("messages", "customer.validate.signedUpDate.no_empty"));
+            return new Pair<>(false, I18n.get("messages", "customer.validate.signed_up_date.no_empty"));
         if (!VNString.checkFormatDate(signedUpDate))
-            return new Pair<>(false, I18n.get("messages", "customer.validate.signedUpDate.format.not"));
-        return new Pair<>(true, I18n.get("messages", "customer.validate.signedUpDate"));
+            return new Pair<>(false, I18n.get("messages", "customer.validate.signed_up_date.format.not"));
+        return new Pair<>(true, I18n.get("messages", "customer.validate.signed_up_date"));
     }
 
     private static Pair<Boolean, String> validatePoint(String point) {
         if (point.isBlank())
             return new Pair<>(false, I18n.get("messages", "customer.validate.point.no_empty"));
         if (!VNString.checkUnsignedNumber(point))
-            return new Pair<>(false, I18n.get("messages", "customer.validate.point.unsignedNumber.not"));
+            return new Pair<>(false, I18n.get("messages", "customer.validate.point.unsigned_number.not"));
         return new Pair<>(true, I18n.get("messages", "customer.validate.point"));
     }
 
