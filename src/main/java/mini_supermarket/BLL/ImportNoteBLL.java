@@ -35,9 +35,9 @@ public class ImportNoteBLL extends EntityBLL<ImportNote> {
 
     private static Pair<Boolean, String> validateReceivedDate(String receivedDate) {
         if (receivedDate.isBlank())
-            return new Pair<>(false, I18n.get("messages", "import_note.validate.receivedDate.no_empty"));
+            return new Pair<>(false, I18n.get("messages", "import_note.validate.received_date.no_empty"));
         if (!VNString.checkFormatDateTime(receivedDate))
-            return new Pair<>(false, I18n.get("messages", "import_note.validate.receivedDate.format.not"));
-        return new Pair<>(true, I18n.get("messages", "import_note.validate.receivedDate"));
+            return new Pair<>(false, I18n.get("messages", "import_note.validate.received_date.format.not"));
+        return new Pair<>(true, I18n.get("messages", "import_note.validate.received_date"));
     }
 }

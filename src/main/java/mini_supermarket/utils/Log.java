@@ -3,6 +3,7 @@ package mini_supermarket.utils;
 import mini_supermarket.main.MiniSupermarket;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Configurator;
 
@@ -12,6 +13,8 @@ import java.util.Collection;
 import java.util.Map;
 
 public class Log {
+    private static LoggerContext context;
+
     private Log() {
         throw new AssertionError();
     }
@@ -20,10 +23,15 @@ public class Log {
         try {
             InputStream inputStream = Resource.getInputStreamFromResource("settings/log4j2.xml", true);
             ConfigurationSource source = new ConfigurationSource(inputStream);
-            Configurator.initialize(null, source);
+            context = Configurator.initialize(null, source);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void shutdown() {
+        if (context != null)
+            context.close();
     }
 
     public static String getIndentation(int level) {
@@ -32,6 +40,8 @@ public class Log {
 
     public static String format(Object obj, int level) {
         StringBuilder result = new StringBuilder();
+        if (obj == null)
+            return result.append("Null").toString();
         result.append(obj.getClass().getSimpleName()).append(": ");
         if (obj instanceof Map<?, ?> || obj instanceof Collection<?> || obj instanceof Object[]) {
             result.append("[");

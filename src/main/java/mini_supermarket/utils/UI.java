@@ -28,6 +28,8 @@ public class UI {
         UIManager.put("Table.showVerticalLines", false);
         UIManager.put("Table.showHorizontalLines", true);
         UIManager.put("TextComponent.arc", 5);
+        UIManager.put("CheckBox.icon.offFontSize", 20);
+        UIManager.put("CheckBox.icon.onFontSize", 20);
         FlatRobotoFont.install();
         FlatLaf.setPreferredFontFamily(FlatRobotoFont.FAMILY);
         Properties properties = Resource.loadProperties(Settings.CONFIG_FILE, false);

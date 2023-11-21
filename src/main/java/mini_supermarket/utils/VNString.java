@@ -98,7 +98,7 @@ public class VNString {
     }
 
     public static boolean containsSpecial(String str) {
-        return str.chars().anyMatch(c -> !Character.isLetterOrDigit(c));
+        return str.chars().anyMatch(c -> !(Character.isLetterOrDigit(c) || Character.isWhitespace(c)));
     }
 
     public static boolean checkFormatPhone(String str) {

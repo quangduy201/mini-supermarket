@@ -35,9 +35,9 @@ public class ExportNoteBLL extends EntityBLL<ExportNote> {
 
     private static Pair<Boolean, String> validateInvoiceDate(String invoiceDate) {
         if (invoiceDate.isBlank())
-            return new Pair<>(false, I18n.get("messages", "export_note.validate.invoiceDate.no_empty"));
+            return new Pair<>(false, I18n.get("messages", "export_note.validate.invoice_date.no_empty"));
         if (!VNString.checkFormatDateTime(invoiceDate))
-            return new Pair<>(false, I18n.get("messages", "export_note.validate.invoiceDate.format.not"));
-        return new Pair<>(true, I18n.get("messages", "export_note.validate.invoiceDate"));
+            return new Pair<>(false, I18n.get("messages", "export_note.validate.invoice_date.format.not"));
+        return new Pair<>(true, I18n.get("messages", "export_note.validate.invoice_date"));
     }
 }
