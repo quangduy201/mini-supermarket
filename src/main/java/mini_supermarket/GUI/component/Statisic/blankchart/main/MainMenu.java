@@ -1,4 +1,4 @@
-package mini_supermarket.GUI.component.main;
+package mini_supermarket.GUI.component.Statisic.blankchart.main;
 
 import mini_supermarket.BLL.DecentralizationBLL;
 import mini_supermarket.DTO.Module;

@@ -149,7 +149,6 @@ public class SaleGUI extends LeftRightLayout {
         scrollListProduct.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         for (int i = 0; i < y; i++) {
             product[i] = new RoundPanel(20);
-            product[i].setRadius(20);
             product[i].setPreferredSize(new Dimension(0, size));
             product[i].setBackground(new Color(255, 255, 255));
             listProduct.add(product[i], gbcPanel);
@@ -251,7 +250,7 @@ public class SaleGUI extends LeftRightLayout {
 
         //Test
         btnAdd.addActionListener((e) -> {
-            LayoutWarning layoutwa = new LayoutWarning();
+            LayoutWarningTable layoutwa = new LayoutWarningTable();
             layoutwa.setVisible(true);
         });
     }

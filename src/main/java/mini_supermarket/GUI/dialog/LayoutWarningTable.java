@@ -59,7 +59,7 @@ public class LayoutWarningTable extends JDialog {
         gbcPanel.gridwidth = 2;
         gbcPanel.weighty = 0.3;
         labelText.setPreferredSize(new Dimension(0,50));
-        labelText.setFont(new Font("Time New Romans", Font.PLAIN, 20));
+        labelText.setFont(new Font("Roboto", Font.PLAIN, 20));
         labelText.setHorizontalAlignment(SwingConstants.CENTER);
         labelText.setText("Con Meo Con");
         panelText.setLayout(new BorderLayout());

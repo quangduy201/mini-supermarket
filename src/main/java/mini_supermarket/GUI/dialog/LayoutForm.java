@@ -96,7 +96,7 @@ public class LayoutForm extends RoundPanel {
         initializationPanel();
         textView = new JLabel();
         textView.setHorizontalAlignment(SwingConstants.CENTER);
-        textView.setFont(new Font("Time New Romans", Font.PLAIN, 14));
+        textView.setFont(new Font("Roboto", Font.PLAIN, 14));
         textView.setPreferredSize(new Dimension(0,heightFuncAndText));
         textView.setText(text);
         gbcPanel.weightx = textOccupy;
@@ -137,7 +137,7 @@ public class LayoutForm extends RoundPanel {
         textOne = new JLabel();
         gbc.weighty = 1.0;
         textOne.setHorizontalAlignment(SwingConstants.LEFT);
-        textOne.setFont(new Font("Time New Romans", Font.PLAIN, 14));
+        textOne.setFont(new Font("Roboto", Font.PLAIN, 14));
         textOne.setPreferredSize(new Dimension(0,heightFuncAndText));
         textOne.setText(strOne);
         gbcPanel.weightx = firstTextWidth;
@@ -146,7 +146,7 @@ public class LayoutForm extends RoundPanel {
         PanelDataEntry.add(textOne, gbcPanel);
         textTwo = new JLabel();
         textTwo.setHorizontalAlignment(SwingConstants.LEFT);
-        textTwo.setFont(new Font("Time New Romans", Font.PLAIN, 14));
+        textTwo.setFont(new Font("Roboto", Font.PLAIN, 14));
         textTwo.setPreferredSize(new Dimension(0,heightFuncAndText));
         textTwo.setText(strTwo);
         gbcPanel.weightx = secondTextWidth;
@@ -160,7 +160,7 @@ public class LayoutForm extends RoundPanel {
     public void addTextAbove(String text, JComponent dataEntry) {
         textView = new JLabel();
         textView.setHorizontalAlignment(SwingConstants.LEFT);
-        textView.setFont(new Font("Time New Romans", Font.PLAIN, 14));
+        textView.setFont(new Font("Roboto", Font.PLAIN, 14));
         textView.setPreferredSize(new Dimension(0,20));
         textView.setText(text);
         gbc.weightx = 1.0;
@@ -177,7 +177,7 @@ public class LayoutForm extends RoundPanel {
         initializationPanel();
         textView = new JLabel();
         textView.setHorizontalAlignment(SwingConstants.CENTER);
-        textView.setFont(new Font("Time New Romans", Font.PLAIN, 14));
+        textView.setFont(new Font("Roboto", Font.PLAIN, 14));
         textView.setText(text);
         textView.setPreferredSize(new Dimension(0,heightFuncAndText));
         gbcPanel.weightx = textOccupy;

@@ -2,7 +2,7 @@ package mini_supermarket.GUI;
 
 import mini_supermarket.DTO.Account;
 import mini_supermarket.GUI.component.RoundPanel;
-import mini_supermarket.GUI.component.main.MainMenu;
+import mini_supermarket.GUI.component.Statisic.blankchart.main.MainMenu;
 import mini_supermarket.GUI.layout.LeftRightLayout;
 import mini_supermarket.main.MiniSupermarket;
 import mini_supermarket.utils.*;
