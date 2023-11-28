@@ -145,6 +145,7 @@ public class CustomDialog extends JDialog {
         gbc.gridy = 0;
         pnlButton.setLayout(new GridBagLayout());
         btnConfirm.setPreferredSize(new Dimension(150, 0));
+        btnConfirm.setText(I18n.get("dialog", "confirm"));
         pnlButton.add(btnConfirm, gbc);
         gbc.gridx = 1;
         btnCancel.setPreferredSize(new Dimension(150, 0));
