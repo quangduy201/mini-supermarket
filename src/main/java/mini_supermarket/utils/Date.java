@@ -70,23 +70,15 @@ public class Date implements Serializable {
         }
     }
 
-    public static Date parse(String text, String pattern) {
+    public static Date parse(String text) {
         try {
-            LocalDate localDate = LocalDate.parse(text, DateTimeFormatter.ofPattern(pattern));
+            LocalDate localDate = LocalDate.parse(text, DateTime.dateTimeFormatter);
             if (!isValidDate(localDate))
                 throw new IllegalArgumentException("Invalid date");
             return new Date(localDate);
         } catch (Exception e) {
             throw new IllegalArgumentException("Invalid date");
         }
-    }
-
-    public static Date parse(String text) {
-        if (text.matches("^\\d{4}-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01])$"))
-            return parse(text, "yyyy-MM-dd");
-        if (text.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4}$"))
-            return parse(text, "dd/MM/yyyy");
-        throw new IllegalArgumentException("Invalid date");
     }
 
     public static long calculateDays(Date date1, Date date2) {
@@ -166,8 +158,16 @@ public class Date implements Serializable {
         return new Date(date.minusDays(daysToSubtract));
     }
 
+    public String toString(DateTimeFormatter dateTimeFormatter) {
+        return date.format(dateTimeFormatter);
+    }
+
+    public String toString(String pattern) {
+        return toString(DateTimeFormatter.ofPattern(pattern));
+    }
+
     @Override
     public String toString() {
-        return date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return toString("dd/MM/yyyy");
     }
 }

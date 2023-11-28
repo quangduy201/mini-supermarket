@@ -42,7 +42,7 @@ public class ReceiptDetailBLL extends RelationshipBLL<ReceiptDetail, ReceiptDeta
         if (quantity.isBlank())
             return new Pair<>(false, I18n.get("messages", "receipt_detail.validate.quantity.no_empty"));
         if (!VNString.checkUnsignedNumber(quantity))
-            return new Pair<>(false, I18n.get("messages", "receipt_detail.validate.quantity.unsignedNumber.not"));
+            return new Pair<>(false, I18n.get("messages", "receipt_detail.validate.quantity.unsigned_number.not"));
         return new Pair<>(true, I18n.get("messages", "receipt_detail.validate.quantity"));
     }
 

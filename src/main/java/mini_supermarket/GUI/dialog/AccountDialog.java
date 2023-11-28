@@ -14,6 +14,7 @@ import mini_supermarket.utils.__;
 import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public class AccountDialog extends CustomDialog {
@@ -31,7 +32,7 @@ public class AccountDialog extends CustomDialog {
     private boolean readOnly;
     private Account account;
 
-    public AccountDialog(String title, boolean readOnly) {
+    public AccountDialog(String title, boolean readOnly, Function<Pair<Account, Account>, Pair<Boolean, String>> runWhenConfirm) {
         super(title, 4, true);
         this.readOnly = readOnly;
         roleBLL = new RoleBLL();
@@ -56,33 +57,36 @@ public class AccountDialog extends CustomDialog {
         });
         btnConfirm.addActionListener(e -> {
             cancel = false;
-            dispose();
+            Account account = getData();
+            if (account == null)
+                return;
+
+            Pair<Boolean, String> result = runWhenConfirm.apply(new Pair<>(this.account, account));
+            SmallDialog.showResult(this, result, () -> {
+                refresh();
+                dispose();
+            }, null);
         });
 
         if (readOnly) {
             txtUsername.setEditable(false);
             txtRole.setEditable(false);
             txtStaff.setEditable(false);
-            btnConfirm.setText(I18n.get("dialog", "ok"));
-            pnlButton.remove(btnCancel);
+            btnCancel.setText(I18n.get("dialog", "ok"));
+            pnlButton.remove(btnConfirm);
+            pnlButton.remove(btnRefresh);
         }
     }
 
     public CustomTable getRoleTable(List<Role> roles) {
-        Object[][] ids = roleBLL.getData(roles, false, List.of(
-            new Pair<>(__.ROLE.COLUMN.ID, Long::parseLong)
-        ));
-        idsOfRoles = Arrays.stream(ids)
-            .map(row -> (Long) row[0])
-            .toArray(Long[]::new);
-        Object[][] data = roleBLL.getData(roles, true, List.of(
-            new Pair<>(__.ROLE.COLUMN.NAME, String::toString)
-        ));
+        Pair<Long[], Object[][]> pair = RoleBLL.getDataFrom(roles);
+        idsOfRoles = pair.getFirst();
+        String[] attributes = I18n.get("components", "table_headers.role").split(", ");
         Runnable action = this::fillRole;
         if (readOnly)
             action = null;
-        return new CustomTable(data,
-            new Object[]{"STT", "Tên chức vụ"},
+        return new CustomTable(pair.getSecond(),
+            attributes,
             new Integer[]{1, 50},
             action, false, readOnly
         );

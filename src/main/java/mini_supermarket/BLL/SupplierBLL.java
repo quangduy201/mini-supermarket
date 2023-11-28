@@ -7,9 +7,10 @@ import mini_supermarket.utils.Pair;
 import mini_supermarket.utils.VNString;
 import mini_supermarket.utils.__;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class SupplierBLL extends EntityBLL<Supplier> {
+public class SupplierBLL extends SafeEntityBLL<Supplier> {
     public SupplierBLL() {
         super(new SupplierDAL());
     }
@@ -79,5 +80,22 @@ public class SupplierBLL extends EntityBLL<Supplier> {
         if (!VNString.checkFormatOfEmail(email))
             return new Pair<>(false, I18n.get("messages", "supplier.validate.email.format.not"));
         return new Pair<>(true, I18n.get("messages", "supplier.validate.email"));
+    }
+
+    public static Pair<Long[], Object[][]> getDataFrom(List<Supplier> suppliers) {
+        SupplierBLL supplierBLL = new SupplierBLL();
+        Object[][] ids = supplierBLL.getData(suppliers, false, List.of(
+            new Pair<>(__.SUPPLIER.COLUMN.ID, Long::parseLong)
+        ));
+        Long[] idsOfData = Arrays.stream(ids)
+            .map(row -> (long) row[0])
+            .toArray(Long[]::new);
+        Object[][] data = supplierBLL.getData(suppliers, true, List.of(
+            new Pair<>(__.SUPPLIER.COLUMN.NAME, String::toString),
+            new Pair<>(__.SUPPLIER.COLUMN.PHONE, String::toString),
+            new Pair<>(__.SUPPLIER.COLUMN.ADDRESS, String::toString),
+            new Pair<>(__.SUPPLIER.COLUMN.EMAIL, String::toString)
+        ));
+        return new Pair<>(idsOfData, data);
     }
 }

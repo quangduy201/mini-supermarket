@@ -43,17 +43,17 @@ public class ShipmentBLL extends EntityBLL<Shipment> {
 
     private static Pair<Boolean, String> validateUnitPrice(String unitPrice) {
         if (unitPrice.isBlank())
-            return new Pair<>(false, I18n.get("messages", "shipment.validate.unitPrice.no_empty"));
+            return new Pair<>(false, I18n.get("messages", "shipment.validate.unit_price.no_empty"));
         if (!VNString.checkUnsignedNumber(unitPrice))
-            return new Pair<>(false, I18n.get("messages", "shipment.validate.unitPrice.unsignedNumber.not"));
-        return new Pair<>(true, I18n.get("messages", "shipment.validate.unitPrice"));
+            return new Pair<>(false, I18n.get("messages", "shipment.validate.unit_price.unsigned_number.not"));
+        return new Pair<>(true, I18n.get("messages", "shipment.validate.unit_price"));
     }
 
     private static Pair<Boolean, String> validateQuantity(String quantity) {
         if (quantity.isBlank())
             return new Pair<>(false, I18n.get("messages", "shipment.validate.quantity.no_empty"));
         if (!VNString.checkUnsignedNumber(quantity))
-            return new Pair<>(false, I18n.get("messages", "shipment.validate.quantity.unsignedNumber.not"));
+            return new Pair<>(false, I18n.get("messages", "shipment.validate.quantity.unsigned_number.not"));
         return new Pair<>(true, I18n.get("messages", "shipment.validate.quantity"));
     }
 

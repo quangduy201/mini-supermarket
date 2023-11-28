@@ -6,6 +6,8 @@ import mini_supermarket.GUI.component.FunctionButtonList;
 import mini_supermarket.GUI.component.RoundPanel;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,7 +19,7 @@ public class ControlLayout extends BottomTopLayout {
     protected List<Function> functions;
     protected FunctionButtonList listFunction;
     protected RoundPanel searchFunction;
-    protected JComboBox comboBoxFilter;
+    protected JComboBox<String> comboBoxFilter;
     protected JTextField jTextFieldSearch;
     protected RoundPanel resetPanel;
     protected FunctionButton btnRefresh;
@@ -51,10 +53,28 @@ public class ControlLayout extends BottomTopLayout {
 
         comboBoxFilter = new JComboBox<>();
         comboBoxFilter.setPreferredSize(new Dimension(150, 40));
+        comboBoxFilter.addItemListener(e -> doFunction("find"));
         searchFunction.add(comboBoxFilter);
 
         jTextFieldSearch = new JTextField();
         jTextFieldSearch.setPreferredSize(new Dimension(230, 40));
+        jTextFieldSearch.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                doFunction("find");
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                doFunction("find");
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                doFunction("find");
+            }
+        });
+
         searchFunction.add(jTextFieldSearch);
 
         resetPanel = new RoundPanel();
@@ -95,9 +115,10 @@ public class ControlLayout extends BottomTopLayout {
             case "detail" -> detail();
             case "excel" -> excel();
             case "pdf" -> pdf();
+            case "find" -> find();
             case "refresh" -> refresh();
             default -> throw new UnsupportedOperationException("Unsupported operation: " + functionName);
-        };
+        }
     }
 
     public void add() {
@@ -121,6 +142,10 @@ public class ControlLayout extends BottomTopLayout {
     }
 
     public void pdf() {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    public void find() {
         throw new UnsupportedOperationException("Not supported.");
     }
 

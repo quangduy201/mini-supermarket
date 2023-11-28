@@ -37,17 +37,17 @@ public class ReceiptBLL extends EntityBLL<Receipt> {
 
     private static Pair<Boolean, String> validateInvoiceDate(String invoiceDate) {
         if (invoiceDate.isBlank())
-            return new Pair<>(false, I18n.get("messages", "receipt.validate.invoiceDate.no_empty"));
+            return new Pair<>(false, I18n.get("messages", "receipt.validate.invoice_date.no_empty"));
         if (!VNString.checkFormatDateTime(invoiceDate))
-            return new Pair<>(false, I18n.get("messages", "receipt.validate.invoiceDate.format.not"));
-        return new Pair<>(true, I18n.get("messages", "receipt.validate.invoiceDate"));
+            return new Pair<>(false, I18n.get("messages", "receipt.validate.invoice_date.format.not"));
+        return new Pair<>(true, I18n.get("messages", "receipt.validate.invoice_date"));
     }
 
     private static Pair<Boolean, String> validateReceived(String received) {
         if (received.isBlank())
             return new Pair<>(false, I18n.get("messages", "receipt.validate.received.no_empty"));
         if (!VNString.checkUnsignedNumber(received))
-            return new Pair<>(false, I18n.get("messages", "receipt.validate.received.unsignedNumber.not"));
+            return new Pair<>(false, I18n.get("messages", "receipt.validate.received.unsigned_number.not"));
         return new Pair<>(true, I18n.get("messages", "receipt.validate.received"));
     }
 }

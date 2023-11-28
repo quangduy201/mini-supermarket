@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = __.ACCOUNT.ACCOUNT)
-public class Account extends SafeEntityDTO implements Serializable {
+public class Account extends EntityDTO implements Serializable {
     @Column(name = __.ACCOUNT.USERNAME)
     private String username;
     @Column(name = __.ACCOUNT.PASSWORD)

@@ -9,14 +9,12 @@ public class __ {
         public static final String ROLE = "role";
         public static final String STAFF = "staff";
         public static final String LAST_SIGNED_IN = "last_signed_in";
-        public static final String DELETED = "deleted";
 
         public static class COLUMN {
             public static final String ID = "account_id";
             public static final String USERNAME = "account_username";
             public static final String PASSWORD = "account_password";
             public static final String LAST_SIGNED_IN = "account_last_signed_in";
-            public static final String DELETED = "account_deleted";
         }
     }
 
@@ -31,6 +29,7 @@ public class __ {
             public static final String ID = "brand_id";
             public static final String NAME = "brand_name";
             public static final String SUPPLIER = "brand_supplier";
+            public static final String DELETED = "brand_deleted";
         }
     }
 

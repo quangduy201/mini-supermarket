@@ -9,7 +9,7 @@ import mini_supermarket.utils.__;
 
 import java.util.List;
 
-public class BrandBLL extends EntityBLL<Brand> {
+public class BrandBLL extends SafeEntityBLL<Brand> {
     public BrandBLL() {
         super(new BrandDAL());
     }
@@ -23,9 +23,7 @@ public class BrandBLL extends EntityBLL<Brand> {
             return new Pair<>(true, message);
         }
 
-        brands = findBy(
-            __.BRAND.NAME, newBrand.getName(),
-            __.BRAND.DELETED, false);
+        brands = findBy(__.BRAND.NAME, newBrand.getName());
         if (!brands.isEmpty()) {
             String message = I18n.get("messages", "brand.exists.name", newBrand.getName());
             return new Pair<>(true, message);

@@ -7,7 +7,6 @@ import mini_supermarket.utils.DateTime;
 import mini_supermarket.utils.VNString;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 
-
 public class Criteria<DTO extends BaseDTO> {
     protected final Class<DTO> type;
     protected final HibernateCriteriaBuilder builder;
@@ -22,6 +21,15 @@ public class Criteria<DTO extends BaseDTO> {
         this.root = criteriaQuery.from(type);
     }
 
+    public <Y> Join<DTO, Y> join(String attributeName) {
+        return root.join(attributeName);
+    }
+
+    public Criteria<DTO> where(Predicate... predicates) {
+        criteriaQuery.where(predicates);
+        return this;
+    }
+
     public Predicate not(Expression<Boolean> expression) {
         return builder.not(expression);
     }
@@ -34,9 +42,17 @@ public class Criteria<DTO extends BaseDTO> {
         return builder.or(predicates);
     }
 
+    public Predicate equal(Expression<?> attribute, Object value) {
+        return builder.equal(attribute, value);
+    }
+
     public Predicate equal(String attribute, Object value) {
         attribute = VNString.snakeCaseToCamelCase(attribute);
         return builder.equal(root.get(attribute), value);
+    }
+
+    public Predicate notEqual(Expression<?> attribute, Object value) {
+        return builder.notEqual(attribute, value);
     }
 
     public Predicate notEqual(String attribute, Object value) {
@@ -44,9 +60,17 @@ public class Criteria<DTO extends BaseDTO> {
         return builder.notEqual(root.get(attribute), value);
     }
 
+    public Predicate lt(Expression<Number> attribute, Number value) {
+        return builder.lt(attribute, value);
+    }
+
     public Predicate lt(String attribute, Number value) {
         attribute = VNString.snakeCaseToCamelCase(attribute);
         return builder.lt(root.get(attribute), value);
+    }
+
+    public Predicate le(Expression<Number> attribute, Number value) {
+        return builder.le(attribute, value);
     }
 
     public Predicate le(String attribute, Number value) {
@@ -54,9 +78,17 @@ public class Criteria<DTO extends BaseDTO> {
         return builder.le(root.get(attribute), value);
     }
 
+    public Predicate gt(Expression<Number> attribute, Number value) {
+        return builder.gt(attribute, value);
+    }
+
     public Predicate gt(String attribute, Number value) {
         attribute = VNString.snakeCaseToCamelCase(attribute);
         return builder.gt(root.get(attribute), value);
+    }
+
+    public Predicate ge(Expression<Number> attribute, Number value) {
+        return builder.ge(attribute, value);
     }
 
     public Predicate ge(String attribute, Number value) {
@@ -64,9 +96,21 @@ public class Criteria<DTO extends BaseDTO> {
         return builder.ge(root.get(attribute), value);
     }
 
+    public Predicate like(Expression<String> attribute, String value) {
+        return builder.like(attribute, value);
+    }
+
     public Predicate like(String attribute, String value) {
         attribute = VNString.snakeCaseToCamelCase(attribute);
         return builder.like(root.get(attribute), value);
+    }
+
+    public Predicate between(Expression<Integer> attribute, int start, int end) {
+        return builder.between(attribute, start, end);
+    }
+
+    public Predicate between(Expression<String> attribute, String start, String end) {
+        return builder.between(attribute, start, end);
     }
 
     public Predicate between(String attribute, int start, int end) {

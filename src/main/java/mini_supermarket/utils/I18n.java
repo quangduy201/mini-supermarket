@@ -5,15 +5,16 @@ import java.util.regex.Matcher;
 
 public class I18n {
     private static final int CACHE_SIZE_LIMIT = 50;
-    private static Map<String, ResourceBundle> resourceBundleCache = new LinkedHashMap<>(CACHE_SIZE_LIMIT + 1, 0.75F, true) {
-        @Override
-        protected boolean removeEldestEntry(Map.Entry<String, ResourceBundle> eldest) {
-            return size() > CACHE_SIZE_LIMIT;
-        }
-    };
+    private static Map<String, ResourceBundle> resourceBundleCache;
     private static Language language;
 
     public static void initialize() {
+        resourceBundleCache = new LinkedHashMap<>(CACHE_SIZE_LIMIT + 1, 0.75F, true) {
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<String, ResourceBundle> eldest) {
+                return size() > CACHE_SIZE_LIMIT;
+            }
+        };
         Properties properties = Resource.loadProperties(Settings.CONFIG_FILE, false);
         if (properties == null) {
             setCurrentLanguage(Language.VIETNAMESE);
@@ -24,6 +25,11 @@ public class I18n {
             setCurrentLanguage(Language.VIETNAMESE);
         else
             setCurrentLanguage(Language.ENGLISH);
+    }
+
+    public static void shutdown() {
+        if (resourceBundleCache != null)
+            resourceBundleCache.clear();
     }
 
     public static Language getCurrentLanguage() {

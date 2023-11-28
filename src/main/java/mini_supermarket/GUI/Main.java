@@ -54,6 +54,10 @@ public class Main extends JFrame {
         return mainMenu;
     }
 
+    public Account getAccount() {
+        return this.account;
+    }
+
     public void setAccount(Account account) {
         this.account = account;
         Settings.setLastAccount(account);
