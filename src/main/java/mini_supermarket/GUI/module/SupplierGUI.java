@@ -6,7 +6,11 @@ import mini_supermarket.DTO.Function;
 import mini_supermarket.DTO.Supplier;
 import mini_supermarket.GUI.component.CustomTable;
 import mini_supermarket.GUI.component.RoundPanel;
+import mini_supermarket.GUI.dialog.CustomerDialog;
+import mini_supermarket.GUI.dialog.SmallDialog;
+import mini_supermarket.GUI.dialog.SupplierDialog;
 import mini_supermarket.GUI.layout.ControlLayout;
+import mini_supermarket.main.MiniSupermarket;
 import mini_supermarket.utils.I18n;
 import mini_supermarket.utils.Pair;
 import mini_supermarket.utils.__;
@@ -19,6 +23,9 @@ import java.util.List;
 public class SupplierGUI extends ControlLayout {
     private final SupplierBLL supplierBLL;
     private final RoundPanel panelFunction;
+    private final SupplierDialog dialogAdd;
+    private final SupplierDialog dialogEdit;
+    private final SupplierDialog dialogDetail;
     private final RoundPanel panelData;
     private CustomTable dataTable;
     private Long[] idsOfCurrentData;
@@ -28,8 +35,14 @@ public class SupplierGUI extends ControlLayout {
         supplierBLL = new SupplierBLL();
         panelFunction = getTopPanel();
 
-        // TODO
+        dialogAdd = new SupplierDialog(I18n.get("dialog", "supplier.add"),
+            false, supplier -> supplierBLL.addSupplier(supplier.getSecond()));
 
+        dialogEdit = new SupplierDialog(I18n.get("dialog", "supplier.edit"),
+            false, supplier -> supplierBLL.editSupplier(supplier.getFirst(), supplier.getSecond()));
+
+        dialogDetail = new SupplierDialog(I18n.get("dialog", "supplier.detail"),
+            true, null);
         panelData = getBottomPanel();
         panelData.setLayout(new GridBagLayout());
 
@@ -77,22 +90,50 @@ public class SupplierGUI extends ControlLayout {
 
     @Override
     public void add() {
-        // TODO
+        dialogAdd.setVisible(true);
+        if(!dialogAdd.isCancel())
+            refresh();
     }
 
     @Override
     public void edit() {
-        // TODO
+        Supplier supplier = getSupplierFromSelectedRow();
+        if(supplier == null){
+            SmallDialog.showErrorWhenDataTableIsNotSelected(MiniSupermarket.main);
+            return;
+        }
+        dialogEdit.setData(supplier);
+        dialogEdit.setVisible(true);
+        if(!dialogEdit.isCancel())
+            refresh();
     }
 
     @Override
     public void remove() {
-        // TODO
+        Supplier supplier = getSupplierFromSelectedRow();
+        if(supplier == null){
+            SmallDialog.showErrorWhenDataTableIsNotSelected(MiniSupermarket.main);
+            return;
+        }
+        int choice = SmallDialog.showOptionDialogWhenDeleting(MiniSupermarket.main,
+            I18n.get("messages", "supplier.remove.success"));
+        if (choice != 0)
+            return;
+
+        Pair<Boolean, String> result = supplierBLL.removeSupplier(supplier);
+        SmallDialog.showResult(MiniSupermarket.main, result, this::refresh, null);
+
     }
 
     @Override
     public void detail() {
-        // TODO
+        Supplier supplier = getSupplierFromSelectedRow();
+        if(supplier == null){
+            SmallDialog.showErrorWhenDataTableIsNotSelected(MiniSupermarket.main);
+            return;
+        }
+        dialogDetail.setData(supplier);
+        dialogDetail.setVisible(true);
     }
 
     @Override
@@ -141,9 +182,9 @@ public class SupplierGUI extends ControlLayout {
             find();
         else
             comboBoxFilter.setSelectedIndex(0);
-//        dialogAdd.refresh();
-//        dialogEdit.refresh();
-//        dialogDetail.refresh();
+        dialogAdd.refresh();
+        dialogEdit.refresh();
+        dialogDetail.refresh();
         System.gc();
     }
 }

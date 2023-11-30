@@ -53,7 +53,6 @@ public class __ {
         public static final String ID = "id";
         public static final String NAME = "name";
         public static final String GENDER = "gender";
-        public static final String BIRTHDATE = "birthdate";
         public static final String PHONE = "phone";
         public static final String MEMBERSHIP = "membership";
         public static final String SIGNED_UP_DATE = "signed_up_date";
@@ -206,12 +205,14 @@ public class __ {
     public static class PROMOTION {
         public static final String PROMOTION = "promotion";
         public static final String ID = "id";
+        public static final String NAME = "name";
         public static final String START_DATE = "start_date";
         public static final String END_DATE = "end_date";
         public static final String STATUS = "status";
 
         public static class COLUMN {
             public static final String ID = "promotion_id";
+            public static final String NAME = "promotion_name";
             public static final String START_DATE = "promotion_start_date";
             public static final String END_DATE = "promotion_end_date";
             public static final String STATUS = "promotion_status";

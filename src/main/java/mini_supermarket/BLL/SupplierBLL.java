@@ -1,6 +1,7 @@
 package mini_supermarket.BLL;
 
 import mini_supermarket.DAL.SupplierDAL;
+import mini_supermarket.DTO.Customer;
 import mini_supermarket.DTO.Supplier;
 import mini_supermarket.utils.I18n;
 import mini_supermarket.utils.Pair;
@@ -15,33 +16,90 @@ public class SupplierBLL extends SafeEntityBLL<Supplier> {
         super(new SupplierDAL());
     }
 
+    public Pair<Boolean,String> addSupplier(Supplier supplier){
+        Pair<Boolean, String> result;
+        result = validateSuppleier(supplier);
+        if(!result.getFirst()){
+            return result;
+        }
+
+        result = exists(null, supplier);
+        if(result.getFirst()){
+            return new Pair<>(false, result.getSecond());
+        }
+        if (!add(supplier))
+            return new Pair<>(false, I18n.get("message", "supplier.add.failed"));
+        return new Pair<>(true, I18n.get("messages", "supplier.add.success"));
+    }
+
+    public Pair<Boolean, String> editSupplier(Supplier currentSupplier, Supplier supplier){
+        Pair<Boolean, String> result;
+        result = validateSuppleier(supplier);
+        if (!result.getFirst())
+            return result;
+
+        supplier.setId(currentSupplier.getId());
+        result = exists(currentSupplier, supplier);
+        if (result.getFirst())
+            return new Pair<>(false, result.getSecond());
+        if (supplier.getId() == 1 || !update(supplier))
+            return new Pair<>(false, I18n.get("messages", "supplier.edit.failed"));
+        return new Pair<>(true, I18n.get("messages", "supplier.edit.success"));
+    }
+
+    public Pair<Boolean, String> removeSupplier(Supplier Supplier){
+        if(Supplier.getId() == 1 || !delete(Supplier))
+            return new Pair<>(false, I18n.get("messages", "supplier.remove.failed"));
+        return new Pair<>(true, I18n.get("messages", "supplier.remove.success"));
+    }
     @Override
     public Pair<Boolean, String> exists(Supplier oldSupplier, Supplier newSupplier) {
+        boolean hasChanges = false;
         List<Supplier> suppliers;
-        suppliers = findBy(__.SUPPLIER.ID, newSupplier.getId());
-        if (!suppliers.isEmpty()) {
-            String message = I18n.get("messages", "supplier.exists");
-            return new Pair<>(true, message);
-        }
 
-        suppliers = findBy(
-            __.SUPPLIER.NAME, newSupplier.getName(),
-            __.SUPPLIER.DELETED, false);
-        if (!suppliers.isEmpty()) {
-            String message = I18n.get("messages", "supplier.exists.name");
-            return new Pair<>(true, message);
-        }
+       if(oldSupplier == null || newSupplier.getId()== null || !newSupplier.getId().equals(oldSupplier.getId())){
+           hasChanges = true;
+           suppliers = findBy(__.SUPPLIER.ID, newSupplier.getId());
+           if(!suppliers.isEmpty())
+               return  new Pair<>(true, I18n.get("messages", "supplier.exists"));
+       }
+       if(oldSupplier == null || !newSupplier.getPhone().equals(oldSupplier.getPhone())){
+           hasChanges = true;
+           suppliers = findBy(__.SUPPLIER.PHONE, newSupplier.getPhone());
+           if (!suppliers.isEmpty())
+               return new Pair<>(true, I18n.get("messages","supplier.exists.phone",newSupplier.getPhone()));
+       }
+       if(oldSupplier == null ||
+           !newSupplier.getName().equals(oldSupplier.getName())||
+           !newSupplier.getAddress().equals(oldSupplier.getAddress())||
+           !newSupplier.getEmail().equals(oldSupplier.getEmail())){
+           hasChanges = true;
+       }
+       if(!hasChanges)
+           return new Pair<>(true, I18n.get("messages", "supplier.edit.unchanged"));
+        return new Pair<>(false, I18n.get("messages", "supplier.exists.not"));
 
-        suppliers = findBy(
-            __.SUPPLIER.PHONE, newSupplier.getPhone(),
-            __.SUPPLIER.DELETED, false);
-        if (!suppliers.isEmpty()) {
-            String message = I18n.get("messages", "supplier.exists.phone");
-            return new Pair<>(true, message);
-        }
+    }
 
-        String message = I18n.get("messages", "supplier.exists.not");
-        return new Pair<>(false, message);
+
+    public static Pair<Boolean, String> validateSuppleier (Supplier supplier){
+        Pair<Boolean, String> result;
+        result = validate(__.SUPPLIER.NAME,supplier.getName());
+        if(!result.getFirst())
+            return new Pair<>(false, result.getSecond());
+
+        result = validate(__.SUPPLIER.PHONE, supplier.getPhone());
+        if(!result.getFirst())
+            return new Pair<>(false, result.getSecond());
+
+        result = validate(__.SUPPLIER.EMAIL, supplier.getEmail());
+        if(!result.getFirst())
+            return new Pair<>(false, result.getSecond());
+
+        return new Pair<>(true,I18n.get("messages" , "supplier.validate"));
+
+
+
     }
 
     public static Pair<Boolean, String> validate(String attribute, Object value) {

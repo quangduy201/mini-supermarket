@@ -522,6 +522,7 @@ INSERT INTO `product` (`id`, `name`, `brand_id`, `category_id`, `unit`, `cost`, 
 
 CREATE TABLE `promotion` (
   `id` bigint(20) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
   `status` bit(1) DEFAULT NULL

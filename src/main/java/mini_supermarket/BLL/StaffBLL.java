@@ -139,7 +139,11 @@ public class StaffBLL extends SafeEntityBLL<Staff> {
     }
 
     private static Pair<Boolean, String> validateBirthdate(Date birthdate) {
-        if (birthdate == null || !Date.isValidDate(birthdate.date))
+        if(birthdate == null)
+            return new Pair<>(false, I18n.get("messages", "staff.validate.birthdate.no_empty"));
+
+
+        if (!Date.isValidDate(birthdate.date))
             return new Pair<>(false, I18n.get("messages", "staff.validate.birthdate.format.not"));
         return new Pair<>(true, I18n.get("messages", "staff.validate.birthdate"));
     }
@@ -169,7 +173,10 @@ public class StaffBLL extends SafeEntityBLL<Staff> {
     }
 
     private static Pair<Boolean, String> validateEntryDate(Date entryDate) {
-        if (entryDate == null || !Date.isValidDate(entryDate.date))
+        if(entryDate == null)
+            return new Pair<>(false, I18n.get("messages", "staff.validate.entry_date.no_empty"));
+
+        if (!Date.isValidDate(entryDate.date))
             return new Pair<>(false, I18n.get("messages", "staff.validate.entry_date.format.not"));
         return new Pair<>(true, I18n.get("messages", "staff.validate.entry_date"));
     }

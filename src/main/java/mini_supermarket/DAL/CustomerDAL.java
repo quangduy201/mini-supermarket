@@ -11,7 +11,6 @@ public class CustomerDAL extends SafeEntityDAL<Customer> {
             __.CUSTOMER.COLUMN.ID,
             __.CUSTOMER.COLUMN.NAME,
             __.CUSTOMER.COLUMN.GENDER,
-            __.CUSTOMER.COLUMN.BIRTHDATE,
             __.CUSTOMER.COLUMN.PHONE,
             __.CUSTOMER.COLUMN.MEMBERSHIP,
             __.CUSTOMER.COLUMN.SIGNED_UP_DATE,

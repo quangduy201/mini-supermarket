@@ -9,6 +9,7 @@ public class PromotionDAL extends EntityDAL<Promotion> {
     public PromotionDAL() {
         super(Promotion.class, List.of(
             __.PROMOTION.COLUMN.ID,
+            __.PROMOTION.COLUMN.NAME,
             __.PROMOTION.COLUMN.START_DATE,
             __.PROMOTION.COLUMN.END_DATE,
             __.PROMOTION.COLUMN.STATUS

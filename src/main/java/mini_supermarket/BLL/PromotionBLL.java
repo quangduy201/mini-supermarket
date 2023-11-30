@@ -2,10 +2,7 @@ package mini_supermarket.BLL;
 
 import mini_supermarket.DAL.PromotionDAL;
 import mini_supermarket.DTO.Promotion;
-import mini_supermarket.utils.I18n;
-import mini_supermarket.utils.Pair;
-import mini_supermarket.utils.VNString;
-import mini_supermarket.utils.__;
+import mini_supermarket.utils.*;
 
 import java.util.List;
 
@@ -28,25 +25,29 @@ public class PromotionBLL extends EntityBLL<Promotion> {
     }
 
     public static Pair<Boolean, String> validate(String attribute, Object value) {
+        if(attribute.equals(__.PROMOTION.NAME))
+            return validateName((String) value);
         if (attribute.equals(__.PROMOTION.START_DATE))
-            return validateStartDate((String) value);
+            return validateStartDate((Date) value);
         if (attribute.equals(__.PROMOTION.END_DATE))
-            return validateEndDate((String) value);
+            return validateEndDate((Date) value);
         return new Pair<>(false, I18n.get("messages", "promotion.attribute.not_found", attribute));
     }
 
-    private static Pair<Boolean, String> validateStartDate(String startDate) {
-        if (startDate.isBlank())
+     private static  Pair<Boolean, String> validateName(String name){
+        if(name.isBlank())
             return new Pair<>(false, I18n.get("messages", "promotion.validate.start_date.no_empty"));
-        if (!VNString.checkFormatDate(startDate))
+         return new Pair<>(true, I18n.get("messages", "promotion.validate.name"));
+     }
+
+    private static Pair<Boolean, String> validateStartDate(Date startDate) {
+       if (startDate == null || !Date.isValidDate(startDate.date))
             return new Pair<>(false, I18n.get("messages", "promotion.validate.start_date.format.not"));
         return new Pair<>(true, I18n.get("messages", "promotion.validate.start_date"));
     }
 
-    private static Pair<Boolean, String> validateEndDate(String endDate) {
-        if (endDate.isBlank())
-            return new Pair<>(false, I18n.get("messages", "promotion.validate.end_date.no_empty"));
-        if (!VNString.checkFormatDate(endDate))
+    private static Pair<Boolean, String> validateEndDate(Date endDate) {
+     if(endDate == null || !Date.isValidDate(endDate.date))
             return new Pair<>(false, I18n.get("messages", "promotion.validate.end_date.format.not"));
         return new Pair<>(true, I18n.get("messages", "promotion.validate.end_date"));
     }

@@ -12,6 +12,8 @@ import java.util.Set;
 @Entity
 @Table(name = __.PROMOTION.PROMOTION)
 public class Promotion extends EntityDTO implements Serializable {
+    @Column(name = __.PROMOTION.NAME)
+    private String name;
     @Type(mini_supermarket.utils.DateUserType.class)
     @Column(name = __.PROMOTION.START_DATE)
     private Date startDate;
@@ -33,6 +35,14 @@ public class Promotion extends EntityDTO implements Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getStartDate() {
@@ -78,6 +88,7 @@ public class Promotion extends EntityDTO implements Serializable {
     @Override
     public String toString() {
         return getId() + VNString.NULL +
+            name + VNString.NULL +
             startDate + VNString.NULL +
             endDate + VNString.NULL +
             status;

@@ -16,9 +16,6 @@ public class Customer extends SafeEntityDTO implements Serializable {
     private String name;
     @Column(name = __.CUSTOMER.GENDER)
     private Boolean gender;
-    @Type(mini_supermarket.utils.DateUserType.class)
-    @Column(name = __.CUSTOMER.BIRTHDATE)
-    private Date birthdate;
     @Column(name = __.CUSTOMER.PHONE)
     private String phone;
     @Column(name = __.CUSTOMER.MEMBERSHIP)
@@ -34,11 +31,11 @@ public class Customer extends SafeEntityDTO implements Serializable {
     public Customer() {
     }
 
-    public Customer(Long id, String name, Boolean gender, Date birthdate, String phone, Boolean membership, Date signedUpDate, Integer point) {
+    public Customer(Long id, String name, Boolean gender, String phone, Boolean membership, Date signedUpDate, Integer point) {
         super(id);
         this.name = name;
         this.gender = gender;
-        this.birthdate = birthdate;
+
         this.phone = phone;
         this.membership = membership;
         this.signedUpDate = signedUpDate;
@@ -61,13 +58,6 @@ public class Customer extends SafeEntityDTO implements Serializable {
         this.gender = gender;
     }
 
-    public Date getBirthdate() {
-        return birthdate;
-    }
-
-    public void setBirthdate(Date birthdate) {
-        this.birthdate = birthdate;
-    }
 
     public String getPhone() {
         return phone;
@@ -114,7 +104,6 @@ public class Customer extends SafeEntityDTO implements Serializable {
         return getId() + VNString.NULL +
             name + VNString.NULL +
             gender + VNString.NULL +
-            birthdate + VNString.NULL +
             phone + VNString.NULL +
             membership + VNString.NULL +
             signedUpDate + VNString.NULL +
