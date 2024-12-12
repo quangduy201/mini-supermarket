@@ -11,7 +11,7 @@ public class SmallDialog {
     public static void showResult(Component parent, Pair<Boolean, String> result, Runnable runIfSuccess, Runnable runIfFailed) {
         if (result.getFirst()) {
             String title = I18n.get("dialog", "title.info");
-            JOptionPane.showMessageDialog(null, result.getSecond(), title, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(parent, result.getSecond(), title, JOptionPane.INFORMATION_MESSAGE);
             if (runIfSuccess != null)
                 runIfSuccess.run();
         } else {

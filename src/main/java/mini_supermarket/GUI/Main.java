@@ -152,6 +152,14 @@ public class Main extends JFrame {
             Settings.setTheme(UI.Theme.LIGHT);
         else
             Settings.setTheme(UI.Theme.DARK);
+        SwingUtilities.invokeLater(() -> {
+            SwingUtilities.updateComponentTreeUI(this);
+            for (JPanel panel : mainMenu.getAllPanelModules()) {
+                SwingUtilities.updateComponentTreeUI(panel);
+                panel.revalidate();
+                panel.repaint();
+            }
+        });
     }
 
     public void logout() {

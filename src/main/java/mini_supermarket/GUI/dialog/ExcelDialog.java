@@ -242,7 +242,7 @@ public class ExcelDialog extends JDialog {
                 }
                 if (hasError) {
                     JOptionPane.showMessageDialog(this,
-                        I18n.get("messages", "excel.import.error.paste"),
+                        I18n.get("messages", "excel.import.error.ignored"),
                         I18n.get("dialog", "title.info"), JOptionPane.INFORMATION_MESSAGE);
                 }
             } catch (Exception e) {

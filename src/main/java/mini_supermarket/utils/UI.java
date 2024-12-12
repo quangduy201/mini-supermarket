@@ -56,6 +56,8 @@ public class UI {
         } else {
             UIManager.put("Panel.background", new Color(215, 215, 215));
         }
+        FlatLaf.updateUI();
+        FlatLaf.revalidateAndRepaintAllFramesAndDialogs();
     }
 
     public enum Theme {

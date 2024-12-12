@@ -113,12 +113,18 @@ public class MainMenu extends BottomTopLayout {
         List<List<Function>> function2D = new ArrayList<>();
         for (int i = 0; i < decentralizations.size(); i++) {
             Module module = decentralizations.get(i).getId().getModule();
-            modules.add(module);
             List<Function> functions = new ArrayList<>();
+            boolean canView = false;
             do {
-                functions.add(decentralizations.get(i).getId().getFunction());
+                Function function = decentralizations.get(i).getId().getFunction();
+                if (function.getId() == 1) // view
+                    canView = true;
+                functions.add(function);
             } while (++i < decentralizations.size() && decentralizations.get(i).getId().getModule() == module);
-            function2D.add(functions);
+            if (canView) {
+                modules.add(module);
+                function2D.add(functions);
+            }
             i--;
         }
         return new Pair<>(modules, function2D);
